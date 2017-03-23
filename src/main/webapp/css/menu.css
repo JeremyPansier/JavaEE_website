@@ -1,0 +1,51 @@
+.menu {
+	list-style-type: none;
+	text-align: center;
+	display: inline-flex;
+	padding-left: 0;
+	width: 100%;
+}
+
+.menu li {
+	padding: 15px;
+	border-radius: 5px; @ include disable;
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#28D2DE),
+		to(#1A878F));
+	background-image: -webkit-linear-gradient(#28D2DE 0%, #1A878F 100%);
+	background-image: -moz-linear-gradient(#28D2DE 0%, #1A878F 100%);
+	background-image: -o-linear-gradient(#28D2DE 0%, #1A878F 100%);
+	background-image: linear-gradient(#28D2DE 0%, #1A878F 100%);
+	font: 16px Arial;
+	font-weight: bold;
+	text-transform: uppercase;
+	text-shadow: #000 0px 1px 5px;
+	border: 1px solid #000;
+	opacity: 0.7;
+	-webkit-box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.7);
+	-moz-box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.7);
+	box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.7);
+	border-top: 1px solid rgba(255, 255, 255, 0.8) !important;
+	-webkit-box-reflect: below 0px
+		-webkit-gradient(linear, left top, left bottom, from(transparent),
+		color-stop(50%, transparent), to(rgba(255, 255, 255, 0.2)));
+	width: 100%;
+	margin-left: 2%;
+	margin-right: 2%;	
+}
+
+.menu li:hover {
+	opacity: 1;
+}
+
+.menu li a {
+	color: white;
+	text-decoration: none;
+	padding: 15px;
+	padding-left: 10%;
+	padding-right: 10%;
+}
+
+.menu li:hover a {
+	opacity: 1;
+	cursor: pointer;
+}

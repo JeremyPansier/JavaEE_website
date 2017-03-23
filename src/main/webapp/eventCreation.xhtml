@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+    xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <meta charset="UTF-8"></meta>
+    <title>Creation</title>
+    <link
+        href="css/event.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/button.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/text.css"
+        rel="stylesheet"
+        type="text/css"></link>
+</h:head>
+<h:body>
+    <ui:include src="/banner.xhtml" />
+    <div class="wrapper">
+        <h1>Creation d'évènements</h1>
+        <p>Inserer un titre et une descprition svp</p>
+        <h:form
+            class="form"
+            enctype="multipart/form-data">
+            <h:inputText
+                id="title"
+                value="#{eventCreation.event.title}"
+                a:placeholder="Entrer un titre" />
+            <h:inputTextarea
+                rows="4"
+                name="description"
+                value="#{eventCreation.event.description}"
+                a:placeholder="Entrer une description..." />
+            <br />
+            <p:fileUpload
+                label="Ajoutez une image"
+                skinSimple="true"
+                fileUploadListener="#{eventCreation.upload}"
+                auto="true"
+                allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+                sizeLimit="10000000" />
+            <br />
+            <h:commandButton
+                class="submit"
+                value="Créer!"
+                action="#{eventCreation.createEvent}" />
+        </h:form>
+    </div>
+</h:body>
+</html>

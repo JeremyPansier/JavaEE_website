@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:metadata>
+    <f:viewParam
+        name="token"
+        value="#{eventConfirm.hash}" />
+    <f:viewAction action="#{eventConfirm.init}" />
+</f:metadata>
+<h:head>
+    <meta charset="UTF-8"></meta>
+    <title>Connexion</title>
+    <link
+        href="css/event.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/menu.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/button.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/text.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/table.css"
+        rel="stylesheet"
+        type="text/css"></link>
+</h:head>
+<h:body>
+    <div class="wrapper">
+        <h1>Confirmation d'ajout à l'évènement</h1>
+        <br />
+        <h1>#{eventConfirm.event.title}</h1>
+        <br />
+        <p style="color: white">#{eventConfirm.event.description}</p>
+        <h:graphicImage
+            id="image"
+            alt=""
+            value="FilesServlet/#{eventConfirm.event.fileName}" />
+        <br />
+        <br />
+        <h:form class="form">
+            <h:commandButton
+                value="Je serai présent"
+                action="#{eventConfirm.choose('ACCEPT')}" />
+            <h:commandButton
+                value="Je serai absent"
+                action="#{eventConfirm.choose('DECLINE')}" />
+        </h:form>
+        <br />
+        <br />
+        <br />
+        <p>votre email est : #{eventConfirm.user.email}</p>
+    </div>
+</h:body>
+</html>

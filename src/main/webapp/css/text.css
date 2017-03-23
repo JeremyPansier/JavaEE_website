@@ -1,0 +1,25 @@
+h1 {
+	text-align: $align;
+	padding: 30px 0px 0px 0px;
+	font: 25px Oswald;
+	color: #FFF;
+	text-transform: uppercase;
+	text-shadow: #000 0px 1px 5px;
+	margin: 0px;
+}
+
+p {
+	font: 14px Open Sans;
+	color: #6E6E6E;
+	text-shadow: #000 0px 1px 5px;
+	margin-bottom: 30px;
+}
+
+.instructionMessage {
+	 color:#28D2DE;
+}
+
+.texte_white {
+	color: white;
+	text-align: center;
+}

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<f:metadata>
+    <f:viewParam
+        name="id"
+        value="#{eventStat.idEvent}" />
+    <f:viewAction action="#{eventStat.init}" />
+</f:metadata>
+<h:head>
+    <meta charset="UTF-8"></meta>
+    <title>Statistics</title>
+    <link
+        href="css/event.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/menu.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/button.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/text.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/table.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <script
+        type="text/javascript"
+        src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+
+      // Load the Visualization API and the corechart package.
+      google.charts.load('current', {'packages':['corechart']});
+
+      // Set a callback to run when the Google Visualization API is loaded.
+      google.charts.setOnLoadCallback(drawChart1);
+      google.charts.setOnLoadCallback(drawChart2);
+      google.charts.setOnLoadCallback(drawChart3);
+
+      // Callback that creates and populates a data table,
+      // instantiates the pie chart, passes in the data and
+      // draws it.
+      function drawChart1() {
+
+        // Create the data table.
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Topping');
+        data.addColumn('number', 'Slices');
+        data.addRows([['Présent', #{eventStat.eventStatData.nbIsPresent}],['Non confirmé', #{eventStat.eventStatData.nbNotConfirmed}],['Ne viens pas', #{eventStat.eventStatData.nbIsNotPresent}]]);
+
+        // Set chart options
+        var options = {is3D: true,
+        				'width':410,
+                             'height':280,
+                             'chartArea': {'width': '100%', 'height': '80%'},
+                             backgroundColor: { fill:'transparent' },
+                             colors: ['#37E54C', '#0085E7','red'],
+                       legend: { position: 'bottom', alignment: 'center' ,textStyle: {color: 'white', fontSize: 14}}};
+
+        // Instantiate and draw our chart, passing in some options.
+          var chart = new google.visualization.PieChart(document.getElementById('drawChart1'));
+
+        chart.draw(data, options);
+      }
+      
+      function drawChart2() {
+
+          // Create the data table.
+          var data = new google.visualization.DataTable();
+          data.addColumn('string', 'Topping');
+          data.addColumn('number', 'Slices');
+          data.addRows([['Mails lus', #{eventStat.eventStatData.nbIsRead}],['Mails non lus', #{eventStat.eventStatData.nbIsNotRead}]]);
+
+          // Set chart options
+          var options = {is3D: true,
+          				'width':410,
+                               'height':280,
+                               'chartArea': {'width': '100%', 'height': '80%'},
+                               backgroundColor: { fill:'transparent' },
+                               colors: ['#37E54C', '#0085E7'],
+                         legend: { position: 'bottom', alignment: 'center' ,textStyle: {color: 'white', fontSize: 14}}};
+
+          // Instantiate and draw our chart, passing in some options.
+            var chart = new google.visualization.PieChart(document.getElementById('drawChart2'));
+
+          chart.draw(data, options);
+        }
+      
+      function drawChart3() {
+
+          // Create the data table.
+          var data = new google.visualization.DataTable();
+          data.addColumn('string', 'Topping');
+          data.addColumn('number', 'Slices');
+          data.addRows([['Present après ouverture du mail', #{eventStat.eventStatData.nbIsPresentAfterReading}],['Absent après ouverture du mail', #{eventStat.eventStatData.nbIsAbsentAfterReading}],['Non confirmé après ouverture du mail', #{eventStat.eventStatData.nbIsNotConfirmedAfterReading}]]);
+
+          // Set chart options
+          var options = {is3D: true,
+          				'width':410,
+                               'height':280,
+                               'chartArea': {'width': '100%', 'height': '80%'},
+                               backgroundColor: { fill:'transparent' },
+                               colors: ['#37E54C', 'red', '#0085E7'],
+                         legend: { position: 'bottom', alignment: 'center' ,textStyle: {color: 'white', fontSize: 14}}};
+
+          // Instantiate and draw our chart, passing in some options.
+            var chart = new google.visualization.PieChart(document.getElementById('drawChart3'));
+
+          chart.draw(data, options);
+        }
+      
+    </script>
+</h:head>
+<body>
+    <ui:include src="/banner.xhtml" />
+    <ui:include src="/menu.xhtml">
+        <ui:param
+            name="id"
+            value="#{eventStat.event.idEvent}" />
+    </ui:include>
+    <div class="wrapper">
+        <h1>Statistiques de l'evenement</h1>
+        <h1>#{eventStat.event.title}</h1>
+        <br />
+        <br />
+        <div class="texte_white">Membres invités</div>
+        <div class="emailList">
+            <table>
+                <tr>
+                    <td>Email</td>
+                    <td>Statut</td>
+                    <td>Date d'envoi</td>
+                </tr>
+                <ui:repeat
+                    value="#{eventStat.subscribers}"
+                    var="subscriber">
+                    <tr>
+                        <td>#{subscriber.email}</td>
+                        <td>
+                            <div align="center">
+                                <h:graphicImage
+                                    alt="#{subscriber.isPresentString}"
+                                    value="#{subscriber.iconeLink}"
+                                    width="17"
+                                    height="17" />
+                            </div>
+                        </td>
+                        <td>
+                            <div align="center">#{subscriber.sendingDateString}</div>
+                        </td>
+                    </tr>
+                </ui:repeat>
+            </table>
+            <br />
+            <div class="texte_white">Légende</div>
+            <table>
+                <tr>
+                    <td>
+                        <h:graphicImage
+                            value="images/accept.png"
+                            width="17"
+                            height="17" />
+                        = Présent
+                    </td>
+                    <td>
+                        <h:graphicImage
+                            value="images/decline.png"
+                            width="17"
+                            height="17" />
+                        = Absent
+                    </td>
+                    <td>
+                        <h:graphicImage
+                            value="images/pending.png"
+                            width="17"
+                            height="17" />
+                        = Non confirmé
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <br />
+        <!--Div that will hold the pie chart-->
+        <div class="emailList">
+            <div id="drawChart1"></div>
+        </div>
+        <div class="emailList">
+            <div id="drawChart2"></div>
+        </div>
+        <div class="emailList">
+            <div id="drawChart3"></div>
+        </div>
+    </div>
+</body>
+</html>

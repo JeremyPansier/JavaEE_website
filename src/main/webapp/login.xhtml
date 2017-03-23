@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+<h:head>
+    <meta charset="UTF-8"></meta>
+    <title>Connexion</title>
+    <link
+        href="css/event.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/button.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/text.css"
+        rel="stylesheet"
+        type="text/css"></link>
+</h:head>
+<h:body>
+    <div class="wrapper">
+        <a style="color: red"> #{banner.message} </a>
+        <h1>Connexion</h1>
+        <h:form class="form">
+            <h:inputText
+                id="username"
+                value="#{login.username}"
+                a:placeholder="Entrer un nom d'utilisateur" />
+            <h:message for="username" />
+            <h:inputSecret
+                id="password"
+                value="#{login.password}"
+                a:placeholder="Entrer votre mot de passe" />
+            <h:message for="password" />
+            <h:commandButton
+                value="Se connecter !"
+                action="#{login.login}" />
+        </h:form>
+        <br />
+        <p class="instructionMessage">Vous ne possédez pas de compte ?</p>
+        <a
+            class="bouton"
+            href="register.xhtml">Créer un compte</a>
+    </div>
+</h:body>
+</html>

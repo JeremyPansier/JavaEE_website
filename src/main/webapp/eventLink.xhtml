@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+<f:metadata>
+    <f:viewParam
+        name="id"
+        value="#{eventLink.idEvent}" />
+    <f:viewAction action="#{eventLink.init}" />
+</f:metadata>
+<h:head>
+    <meta charset="UTF-8"></meta>
+    <title>Status</title>
+    <link
+        href="css/event.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/menu.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/button.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/text.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/table.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <script
+        type="text/javascript"
+        src="show_hide.js"></script>
+</h:head>
+<body>
+    <ui:include src="/banner.xhtml" />
+    <ui:include src="/menu.xhtml">
+        <ui:param
+            name="id"
+            value="#{eventLink.event.idEvent}" />
+    </ui:include>
+    <div class="wrapper">
+        <h1>Inviter des amis à l'évènement :</h1>
+        <h1>#{eventLink.event.title}</h1>
+        <span
+            class="bouton"
+            id="button_text"
+            style="padding-top: 3px !important; padding-bottom: 3px !important;"
+            onclick="javascript:show_hide('text');">/!\ script is missing /!\</span>
+        <br />
+        <div
+            id="text"
+            class="text">
+            <p style="color: white">#{eventLink.event.description}</p>
+            <h:graphicImage
+                id="image"
+                alt=""
+                value="FilesServlet/#{eventLink.event.fileName}" />
+            <br />
+        </div>
+        <script type="text/javascript">
+									show_hide('text');
+								</script>
+        <br />
+        <h:form class="form">
+            <p class="instructionMessage">Entrer les emails des personnes à inviter séparés par un point virgule</p>
+            <h:message
+                for="email"
+                style="color:red" />
+            <h:inputText
+                id="email"
+                value="#{eventLink.emailList}"
+                a:placeholder="exemple : nom1@box.com;nom2@box.fr;nom3@box.net" />
+            <h:commandButton
+                value="Valider!"
+                class="submit"
+                action="#{eventLink.executeEventLink}" />
+            <br />
+            <br />
+            <div class="texte_white">Membres invités</div>
+            <div class="emailList">
+                <table>
+                    <tr>
+                        <td>Email</td>
+                        <td>Statut</td>
+                        <td>Date d'envoi</td>
+                    </tr>
+                    <ui:repeat
+                        value="#{eventLink.subscribers}"
+                        var="subscriber">
+                        <tr>
+                            <td>
+                                #{subscriber.email}
+                                <h:commandButton
+                                    class="littleButton"
+                                    value="Exclure"
+                                    onclick="if(!confirm('Exclure cette personne de l`évènement ?')) {return false;}"
+                                    action="#{eventLink.removeSubscriber(subscriber)}" />
+                            </td>
+                            <td>
+                                <div align="center">
+                                    <h:graphicImage
+                                        alt="#{subscriber.isPresentString}"
+                                        value="#{subscriber.iconeLink}"
+                                        width="17"
+                                        height="17" />
+                                </div>
+                            </td>
+                            <td>
+                                <div align="center">#{subscriber.sendingDateString}</div>
+                            </td>
+                        </tr>
+                    </ui:repeat>
+                </table>
+                <br />
+                <div class="texte_white">Légende</div>
+                <table>
+                    <tr>
+                        <td>
+                            <h:graphicImage
+                                value="images/accept.png"
+                                width="17"
+                                height="17" />
+                            = Présent
+                        </td>
+                        <td>
+                            <h:graphicImage
+                                value="images/decline.png"
+                                width="17"
+                                height="17" />
+                            = Absent
+                        </td>
+                        <td>
+                            <h:graphicImage
+                                value="images/pending.png"
+                                width="17"
+                                height="17" />
+                            = Non confirmé
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </h:form>
+    </div>
+</body>
+</html>

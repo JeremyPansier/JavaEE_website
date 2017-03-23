@@ -1,0 +1,61 @@
+.banner {
+	list-style-type: none;
+	margin: 2%;
+	padding: 0;
+	overflow: hidden;
+	background-color: #333;
+}
+
+.banner li {
+	float: left;
+	margin-right: 32px;
+}
+
+.whiteText {
+	display: block;
+	color: white;
+	padding: 14px 16px;
+}
+
+.active {
+	display: block;
+	width: 100%;
+	padding: 15px;
+	border-radius: 5px; @ include disable;
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#28D2DE),
+		to(#1A878F));
+	background-image: -webkit-linear-gradient(#28D2DE 0%, #1A878F 100%);
+	background-image: -moz-linear-gradient(#28D2DE 0%, #1A878F 100%);
+	background-image: -o-linear-gradient(#28D2DE 0%, #1A878F 100%);
+	background-image: linear-gradient(#28D2DE 0%, #1A878F 100%);
+	font: 16px Arial;
+	font-weight: bold;
+	color: #FFF;
+	text-transform: uppercase;
+	text-shadow: #000 0px 1px 5px;
+	border: 1px solid #000;
+	opacity: 0.7;
+	-webkit-box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.7);
+	-moz-box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.7);
+	box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.7);
+	border-top: 1px solid rgba(255, 255, 255, 0.8) !important;
+	-webkit-box-reflect: below 0px
+		-webkit-gradient(linear, left top, left bottom, from(transparent),
+		color-stop(50%, transparent), to(rgba(255, 255, 255, 0.2)));
+	text-decoration: none;
+	text-align: center;
+}
+
+.active:hover {
+	opacity: 1;
+	cursor: pointer;
+}
+
+.flashMessage {
+	display: block;
+	color: green;
+	visibility: hidden;
+	transition-property: visibility;
+	transition-duration: 5s;
+	transition-delay: 0s;
+}

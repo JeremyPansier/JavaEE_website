@@ -1,0 +1,30 @@
+table, th, td {
+	border: 1px solid rgba(26, 135, 143, 0.19);
+	border-collapse: collapse;
+}
+
+table {
+	width: 100%;
+}
+
+.emailList tr:first-child td {
+	font-weight: bolder;
+	text-align: center;
+}
+
+.eventsList a {
+	color: white;
+	text-decoration: none;
+}
+
+.eventsList a:hover {
+	text-decoration: underline;
+}
+
+.eventsList a:visited {
+	color: #28D2DE;
+}
+
+.eventsList td:hover {
+	background-color: #304545;
+}
