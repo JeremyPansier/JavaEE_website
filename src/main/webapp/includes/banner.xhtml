@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <link
+        href="css/text.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/banner.css"
+        rel="stylesheet"
+        type="text/css"></link>
+</h:head>
+<div class="banner">
+    <div class="left">
+        <p:commandButton
+            class="button"
+            value="Accueil"
+            actionListener="#{redirector.redirect('home')}" />
+    </div>
+    <ui:fragment rendered="#{banner.username != null}">
+        <div class="frame username left">#{banner.username}</div>
+        <div class="message success left">#{banner.message}</div>
+        <div class="right">
+            <p:commandButton
+                class="button"
+                value="Déconnexion"
+                actionListener="#{redirector.redirect('logout')}" />
+        </div>
+    </ui:fragment>
+    <ui:fragment rendered="#{banner.username == 'admin'}">
+        <div class="right">
+            <p:commandButton
+                class="admin button"
+                value="Administration"
+                actionListener="#{redirector.redirect('visitStat')}" />
+        </div>
+    </ui:fragment>
+    <ui:fragment rendered="#{banner.username == null}">
+        <div class="message error left">#{banner.message}</div>
+        <ui:fragment rendered="#{webpage != 'connection'}">
+            <div class="right">
+                <p:commandButton
+                    class="button"
+                    value="Connexion"
+                    actionListener="#{redirector.redirect('login')}" />
+            </div>
+        </ui:fragment>
+        <ui:fragment rendered="#{webpage == 'connection'}">
+            <div class="right">
+                <p:commandButton
+                    class="button"
+                    value="Inscription"
+                    actionListener="#{redirector.redirect('register')}" />
+            </div>
+        </ui:fragment>
+    </ui:fragment>
+</div>
+<br />
+</html>

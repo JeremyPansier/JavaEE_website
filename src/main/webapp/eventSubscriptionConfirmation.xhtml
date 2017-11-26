@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+<f:metadata>
+    <f:viewParam
+        name="token"
+        value="#{eventSubscriptionConfirmation.hash}" />
+    <f:viewAction action="#{eventSubscriptionConfirmation.init}" />
+</f:metadata>
+<h:head>
+    <meta charset="UTF-8"></meta>
+    <title>Confirmation</title>
+    <link
+        href="css/common.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/commonColors.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/button.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/text.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <script
+        type="text/javascript"
+        src="js/cssLoader.js"></script>
+</h:head>
+<body>
+    <script type="text/javascript">
+		applyStyle();
+	</script>
+    <div class="wrapper">
+        <h1>Vous serez #{eventSubscriptionConfirmation.subscriber.isPresentString} a l'évènement :</h1>
+        <br />
+        <h2 class="center theme1">#{eventSubscriptionConfirmation.event.title}</h2>
+        <br />
+        <h:form>
+        <p>#{eventSubscriptionConfirmation.event.description}</p>
+        <h:graphicImage
+            class="image"
+            alt=""
+            value="FilesServlet/#{eventSubscriptionConfirmation.event.filename}" />
+        <br />
+        <p>Merci pour votre réponse</p>
+        <br />
+        <p>Vous aussi, créez votre évènement !</p>
+            <p:commandButton
+                class="button"
+                value="Créer un évènement"
+                actionListener="#{eventsList.createNewEvent}" />
+        </h:form>
+    </div>
+</body>
+</html>

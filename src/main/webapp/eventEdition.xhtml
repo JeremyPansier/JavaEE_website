@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html
     xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:h="http://xmlns.jcp.org/jsf/html"
-    xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
     xmlns:p="http://primefaces.org/ui">
 <f:metadata>
     <f:viewParam
-        name="id"
+        name="eventId"
         value="#{eventEdition.id}" />
     <f:viewAction action="#{eventEdition.load}" />
 </f:metadata>
@@ -15,11 +15,11 @@
     <meta charset="UTF-8"></meta>
     <title>Edition</title>
     <link
-        href="css/event.css"
+        href="css/common.css"
         rel="stylesheet"
         type="text/css"></link>
     <link
-        href="css/menu.css"
+        href="css/commonColors.css"
         rel="stylesheet"
         type="text/css"></link>
     <link
@@ -30,40 +30,59 @@
         href="css/text.css"
         rel="stylesheet"
         type="text/css"></link>
+    <script
+        type="text/javascript"
+        src="js/cssLoader.js"></script>
 </h:head>
-<h:body>
-    <ui:include src="/banner.xhtml" />
-    <ui:include src="/menu.xhtml">
+<body>
+    <script type="text/javascript">
+		applyStyle();
+	</script>
+    <ui:include src="/includes/banner.xhtml" />
+    <ui:include src="/includes/menu.xhtml">
         <ui:param
-            name="id"
-            value="#{eventEdition.event.idEvent}" />
+            name="eventId"
+            value="#{eventEdition.event.id}" />
+        <ui:param
+            name="webpagename"
+            value="Édition d'évènement" />
     </ui:include>
     <div class="wrapper">
-        <h1>Édition d'évènements</h1>
-        <p>Insérer un titre et une descprition svp</p>
-        <h:form
-            class="form"
-            enctype="multipart/form-data">
-            <h:inputText
-                id="title"
-                value="#{eventEdition.event.title}" />
-            <h:inputTextarea
+        <h1>Édition d'évènement</h1>
+        <p>Insérer un titre et une description :</p>
+        <h:form enctype="multipart/form-data">
+            <p:inputText
+                class="form frame"
+                value="#{eventEdition.event.title}"
+                p:placeholder="Entrer un titre"/>
+            <p:inputTextarea
+                class="form frame"
                 rows="4"
-                value="#{eventEdition.event.description}" />
+                value="#{eventEdition.event.description}"
+                p:placeholder="Entrer une description"/>
             <br />
             <p:fileUpload
-                label="Ajoutez une image"
+                label="Changer d'image"
                 skinSimple="true"
                 fileUploadListener="#{eventEdition.upload}"
                 auto="true"
-                allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+                allowTypes="/(\.|\/)(gif|jpeg|png)$/"
                 sizeLimit="10000000" />
             <br />
-            <h:commandButton
-                class="submit"
-                value="Éditer!"
-                action="#{eventEdition.editEvent}" />
+            <p:commandButton
+                class="button"
+                value="Éditer !"
+                actionListener="#{eventEdition.editEvent}" />
         </h:form>
+        <br />
+        <div>
+            <ui:fragment rendered="#{eventEdition.event.filename != ''}">
+                <h:graphicImage
+                    class="image"
+                    alt=""
+                    value="FilesServlet/#{eventEdition.event.filename}" />
+            </ui:fragment>
+        </div>
     </div>
-</h:body>
+</body>
 </html>

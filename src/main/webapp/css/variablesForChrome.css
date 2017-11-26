@@ -1,0 +1,12 @@
+:root {
+	/* color-theme */
+	--r: 140;
+	--g: 190;
+	--b: 210;
+	--color1: var(--r), var(--g), var(--b);
+	--color1-deep: calc(var(--r) - 40), calc(var(--g) - 40), calc(var(--b) - 40);
+	--color1-dark: calc(var(--r) - 140), calc(var(--g) - 140), calc(var(--b) - 140);
+	--color2: calc(var(--b) + var(--r)), calc(var(--r) + var(--g)), calc(var(--g) + var(--b));
+
+    --transparent-background: rgba(0, 0, 0, 0.4);
+}

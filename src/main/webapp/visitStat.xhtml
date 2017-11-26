@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <meta charset="UTF-8"></meta>
+    <title>Visits</title>
+    <link
+        href="css/common.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/commonColors.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/button.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/text.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/dataTable.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <script
+        type="text/javascript"
+        src="js/detailsMasker.js"></script>
+    <script
+        type="text/javascript"
+        src="https://www.gstatic.com/charts/loader.js"></script>
+    <script
+        type="text/javascript"
+        src="js/chartBuilder.js"></script>
+    <script
+        type="text/javascript"
+        src="js/cssLoader.js"></script>
+    <script type="text/javascript">
+      // Load the Visualization API and the corechart package.
+      google.charts.load('current', {'packages':['corechart']});
+	</script>
+</h:head>
+<body onload="drawChart('chart', [#{visitStat.chartRow}])">
+    <script type="text/javascript">
+        applyStyle();
+    </script>
+    <ui:include src="/includes/banner.xhtml" />
+    <ui:include src="/includes/menu.xhtml" >
+        <ui:param
+            name="webpagename"
+            value="Données de fréquentation du site" />
+    </ui:include>
+    <div class="wrapper">
+        <h1 class="center">Données de fréquentation du site</h1>
+        <h:form class="form">
+                <p:dataTable
+                    value="#{visitStat.webpages}"
+                    var="visit"
+                    paginator="true"
+                    rows="20"
+                    paginatorAlwaysVisible="false">
+                    <f:facet name="header">
+                        Nombre de visites par page
+                    </f:facet>
+                    <p:column>
+                        <f:facet name="header">
+                            Page
+                        </f:facet>
+                        <div class="main">#{visit.resourceName}</div>
+                    </p:column>
+                    <p:column class="center count">
+                        <f:facet name="header">
+                            Nombre de visites
+                        </f:facet>
+                            #{visit.count}
+                    </p:column>
+                </p:dataTable>
+            <br />
+            <div id="files">
+                <p:dataTable
+                    value="#{visitStat.files}"
+                    var="visit"
+                    paginator="true"
+                    rows="5"
+                    paginatorAlwaysVisible="false">
+                    <f:facet name="header">
+                        Nombre de téléchargement par fichier
+                    </f:facet>
+                    <p:column>
+                        <f:facet name="header">
+                            Fichier
+                        </f:facet>
+                        <div class="main">#{visit.resourceName}</div>
+                    </p:column>
+                    <p:column class="center count">
+                        <f:facet name="header">
+                            Nombre de téléchargements
+                        </f:facet>
+                            #{visit.count}
+                    </p:column>
+                </p:dataTable>
+            </div>
+            <br />
+            <div class="frame center">
+                <div id="chart"></div>
+                <span class="title">Visites par page</span>            
+            </div>
+            <br />
+            <p:commandButton
+                class="button"
+                value="Effacer l'historique des visites"
+                actionListener="#{visitStat.deleteVisits}">
+                <p:confirm
+                    header="Confirmation"
+                    message="Confirmer ?"
+                    icon="ui-icon-alert" />
+            </p:commandButton>
+            <ui:include src="/includes/confirmationDialog.xhtml" />
+        </h:form>
+    </div>
+    <script type="text/javascript">
+        hideIfEmpty('files', #{visitStat.size});
+    </script>
+</body>
+</html>

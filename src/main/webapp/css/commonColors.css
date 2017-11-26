@@ -1,0 +1,153 @@
+/* gradient start */
+.button,
+.ui-fileupload .ui-button,
+.ui-confirm-dialog .ui-button,
+.ui-datatable .ui-datatable-header,
+.ui-datatable .ui-datatable-footer,
+.ui-datatable thead th,
+.ui-datatable tfoot th{
+	background: #1e5799; /* Old browsers */
+	background: -moz-linear-gradient(top, #8cbed2 0%, #6496aa 50%, #003246 100%) !important; /* FF3.6-15 */
+	background: -webkit-linear-gradient(top, #8cbed2 0%, #6496aa 50%, #003246 100%) !important; /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to bottom, #8cbed2 0%, #6496aa 50%, #003246 100%) !important; /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	background: linear-gradient(to bottom, rgb(var(--color1)) 0%, rgb(var(--color1-deep)) 50%, rgb(var(--color1-dark)) 100%) !important; /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#8cbed2', endColorstr='#003246',GradientType=0 ) !important; /* IE6-9 */
+}
+.submenu .ui-button:hover {
+	background: linear-gradient(to bottom, rgba(var(--color1), 0) 0%, rgba(var(--color1), 0.2) 25%, rgba(var(--color1), 0.2) 75%, rgba(var(--color1), 0) 100%) !important; /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
+/* gradient end */
+
+/* background start */
+.button:focus
+    {background:#8cbed2 !important;background:rgb(var(--color1)) !important;}
+/* .frame */
+/*     {background: rgba(0, 0, 0, 0.2) !important;background: rgba(var(--transparent-background), 0.2) !important;} */
+/* background end */
+
+/* background-color start */
+.submenu,
+.ui-datatable .ui-paginator
+	{background-color:#ffffff;background-color:rgb(var(--color2));}
+.ui-datatable .ui-paginator .ui-state-hover,
+.ui-datatable .ui-paginator .ui-state-active,
+.ui-datatable .ui-paginator .ui-state-default:focus
+    {background-color:#8cbed2 !important;background-color:rgb(var(--color1)) !important;}
+.ui-datatable tr
+    {background-color:rgba(100, 150, 170, 0.2) !important;background-color:rgba(var(--color1-deep),0.2) !important;}
+.ui-datatable tr:hover
+    {background-color: #ffffff !important;background-color:rgb(var(--color2)) !important;}
+/* background-color end */
+
+/* border-color start */
+.button
+    {border:1px solid #003246 !important;border:1px solid rgb(var(--color1-dark)) !important;}
+.ui-datatable .ui-datatable-header,
+.ui-datatable .ui-datatable-footer
+    {border-color:black !important;}
+.button,
+.ui-datatable .ui-datatable-header,
+.ui-datatable .ui-datatable-footer
+    {border-top-color:rgba(250, 250, 250, 0.8) !important;}
+.form.frame:hover,
+.ui-fileupload .ui-button,
+.ui-confirm-dialog .ui-button,
+.ui-datatable .ui-widget-content,
+.ui-datatable thead th,
+.ui-datatable tfoot th
+    {border-color:#6496aa !important;border-color:rgb(var(--color1-deep)) !important;}
+.ui-datatable th:first-child,
+.ui-datatable tr td:first-child,
+.ui-datatable .ui-paginator
+    {border-left-color:black !important}
+.ui-datatable th:last-child,
+.ui-datatable tr td:last-child,
+.ui-datatable .ui-paginator
+    {border-right-color:black !important}
+.form.frame:focus,
+.ui-datatable .ui-paginator .ui-state-hover,
+.ui-datatable .ui-paginator .ui-state-active,
+.ui-datatable .ui-paginator .ui-state-default:focus
+    {border-color:#8cbed2 !important;border-color:rgb(var(--color1)) !important;}
+/* border-color end */
+
+/* text color start */
+.link, h1, h2, p
+    {color:#6496aa !important;color:rgb(var(--color1-deep)) !important;}
+.link,
+.breadcrumb span
+    {color:#003246 !important;color:rgb(var(--color1-dark)) !important;}
+.button,
+.littleButton span,
+.ui-datatable thead th,
+.ui-datatable tfoot th,
+.ui-datatable .ui-state-default span,
+.ui-datatable .ui-datatable-header,
+.ui-datatable .ui-datatable-footer,
+.ui-datatable .ui-paginator-page.ui-state-active,
+.ui-datatable .ui-paginator-page.ui-state-hover
+    {color:#ffffff !important;color:rgb(var(--color2)) !important;}
+.ui-datatable .ui-paginator-page
+    {color:rgba(0, 50, 70, 0.7) !important;color:rgba(var(--color1-dark), 0.7) !important;}
+.frame,
+.ui-dialog-content span,
+.ui-dialog-titlebar span,
+.ui-datatable tbody td,
+.ui-datatable tbody td span
+	{color:#6496aa !important;color:rgb(var(--color1-deep)) !important;}
+.link:hover,
+.form.frame:focus
+    {color:#8cbed2 !important;color:rgb(var(--color1)) !important;}
+/* text color end */
+
+/* box-shadow start */
+.ui-button
+{   box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+	-moz-box-shadow: none !important;}
+.button
+    {box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.7) !important;
+    -webkit-box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.7) !important;
+	-moz-box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.7) !important;}
+.button:hover,
+.ui-fileupload .ui-button:hover,
+.ui-confirm-dialog .ui-button:hover,
+.ui-datatable .ui-paginator .ui-state-hover
+    {box-shadow:0 0 8px #003246 !important;box-shadow:0 0 8px rgb(var(--primary-dark)) !important;
+    -webkit-box-shadow:0 0 8px #003246 !important;box-shadow:0 0 8px rgb(var(--primary-dark)) !important;
+	-moz-box-shadow:0 0 8px #003246 !important;box-shadow:0 0 8px rgb(var(--primary-dark)) !important;}
+/* box-shadow end */
+
+/* miscellaneous */
+.form.frame {
+	--transparent-background: rgba(0, 0, 0, 0.4) !important;
+}
+
+.form.frame:hover {
+	--transparent-background: rgba(var(--color1-dark), 0.1) !important;
+}
+
+.form.frame:focus {
+	--transparent-background: rgba(var(--color1-dark), 0.2) !important;
+}
+
+@-webkit-keyframes autofill {
+    to {
+        color: #666;
+        background: var(--transparent-background);
+    }
+}
+
+input:-webkit-autofill {
+    -webkit-animation-name: autofill;
+    -webkit-animation-fill-mode: both;
+    -webkit-text-fill-color: #6496aa;
+    -webkit-text-fill-color: rgb(var(--color1-deep));
+}
+
+input:-webkit-autofill:focus {
+    -webkit-animation-name: autofill;
+    -webkit-animation-fill-mode: both;
+    -webkit-text-fill-color: #8cbed2;
+    -webkit-text-fill-color: rgb(var(--color1));
+}

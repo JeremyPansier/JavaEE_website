@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+    <meta charset="UTF-8"></meta>
+    <title>Home</title>
+    <link
+        href="css/common.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/commonColors.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/text.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/button.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <script
+        type="text/javascript"
+        src="js/cssLoader.js"></script>
+</h:head>
+<body>
+    <script type="text/javascript">
+		applyStyle();
+	</script>
+    <ui:include src="/includes/banner.xhtml" />
+    <div class="wrapper">
+        <h1>Accueil</h1>
+        <div class="frame" style="background-color: rgba(255, 255, 255, 0.8) !important;">
+            <img class="image" src="/images/welcome.png"></img>
+        </div>
+    <h:form enctype="multipart/form-data">
+        <!--         this empty form seems to be essential for the primefaces buttons listeners loading... -->
+    </h:form>
+    </div>
+</body>
+</html>

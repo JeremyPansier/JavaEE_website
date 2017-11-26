@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <meta charset="UTF-8"></meta>
+    <title>Gallery</title>
+    <link
+        href="css/common.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/commonColors.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/text.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/dataTable.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/button.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <script
+        type="text/javascript"
+        src="js/detailsMasker.js"></script>
+    <script
+        type="text/javascript"
+        src="js/cssLoader.js"></script>
+</h:head>
+<body>
+    <script type="text/javascript">
+		applyStyle();
+	</script>
+    <ui:include src="/includes/banner.xhtml" />
+    <ui:include src="/includes/menu.xhtml" >
+        <ui:param
+            name="webpagename"
+            value="Gallerie" />
+    </ui:include>
+    <div class="wrapper">
+    <h1>Gallerie</h1>
+        <br />
+        <h:form class="form">
+            <p:commandButton
+                class="button"
+                value="Ajouter une photo"
+                actionListener="#{picturesGallery.addNewPicture}" />
+            <br />
+            <br />
+            <ui:fragment rendered="#{picturesGallery.size == 0}">
+                <span>Vous n'avez encore publié aucune photo.</span>
+            </ui:fragment>
+            <ui:fragment rendered="#{picturesGallery.size != 0}">
+                <p:dataTable
+                    id="pictures"
+                    value="#{picturesGallery.pictures}"
+                    var="picture"
+                    paginator="true"
+                    rows="5"
+                    paginatorAlwaysVisible="false">
+                    <f:facet name="header">
+                        Gallerie de photos de : #{picturesGallery.author.username}
+                    </f:facet>
+                    <p:column class="main">
+                        <div class="main"><a
+                                        class="link"
+                                        href="#{picture.pictureLink}">#{picture.title}</a></div>
+                        <p:commandButton
+                            class="littleButton button"
+                            value="Supprimer !"
+                            update="pictures"
+                            actionListener="#{picturesGallery.removePicture(picture)}">
+                            <p:confirm
+                                header="Confirmation"
+                                message="Confirmer ?"
+                                icon="ui-icon-alert" />
+                        </p:commandButton>
+                        <ui:include src="/includes/confirmationDialog.xhtml" />
+                    </p:column>
+                    <f:facet name="footer">
+                        <ui:fragment rendered="#{picturesGallery.size == 0}">
+                            Vous n'avez aucune photo dans votre gallerie.
+                        </ui:fragment>
+                        <ui:fragment rendered="#{picturesGallery.size == 1}">
+                            Vous avez publié une photo.
+                        </ui:fragment>
+                        <ui:fragment rendered="#{picturesGallery.size >= 2}">
+                            Vous avez publié #{picturesGallery.size} photos.
+                        </ui:fragment>
+                    </f:facet>
+                </p:dataTable>
+            </ui:fragment>
+        </h:form>
+    </div>
+    <script type="text/javascript">
+        hideIfEmpty('table', #{picturesGallery.size});
+    </script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <meta charset="UTF-8"></meta>
+    <title>Profile</title>
+    <link
+        href="css/common.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/commonColors.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/button.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/text.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <script
+        type="text/javascript"
+        src="js/cssLoader.js"></script>
+</h:head>
+<body>
+    <script type="text/javascript">
+					applyStyle();
+	</script>
+    <ui:include src="/includes/banner.xhtml" />
+    <ui:include src="/includes/menu.xhtml" />
+    <div class="wrapper">
+        <h1>Édition du profil</h1>
+        <div class="frame" style="background-color: rgba(255, 255, 255, 0.8) !important;">
+            <img class="image" src="/images/under_construction.gif"></img>
+        </div>
+        <p>Insérer un titre et une description :</p>
+        <h:form enctype="multipart/form-data">
+            <p:commandButton
+                class="button"
+                value="Éditer ! (en cours de développement)"
+                actionListener="#{profileEdition.editProfile}" />
+            <br />
+        </h:form>
+    </div>
+</body>
+</html>

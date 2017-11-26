@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <link
+        href="css/menu.css"
+        rel="stylesheet"
+        type="text/css"></link>
+</h:head>
+<div class="breadcrumb frame">
+    <div>
+        <span>Aide à la navigation :&#160;</span>
+    </div>
+    <div>
+        <a
+            class="link"
+            href="/faces/home.xhtml">Accueil</a>
+    </div>
+    <ui:fragment rendered="#{eventId != null}">
+        <div><span>&#160;>&#160;</span></div>
+        <div>
+            <a
+                class="link"
+                href="eventsList.xhtml">Évènements</a>
+        </div>
+    </ui:fragment>
+    <ui:fragment rendered="#{pictureId != null}">
+        <div><span>&#160;>&#160;</span></div>
+        <div>
+            <a
+                class="link"
+                href="picturesGallery.xhtml">Gallerie</a>
+        </div>
+    </ui:fragment>
+    <ui:fragment rendered="#{webpagename != null}">
+        <div><span>&#160;>&#160;</span></div>
+        <div><span>#{webpagename}</span></div>
+    </ui:fragment>
+</div>
+<nav>
+    <ul class="menu">
+        <li class="tab">
+            <p:commandButton
+                class="button"
+                value="Profil"
+                actionListener="#{redirector.redirect('profileEdition')}" />
+        </li>
+        <li class="tab">
+            <p:commandButton
+                class="button"
+                value="Évènements"
+                actionListener="#{redirector.redirect('eventsList')}" />
+            <ui:fragment rendered="#{eventId != null}">
+                <ul class="submenu">
+                    <li>
+                        <p:commandButton
+                            value="Liste"
+                            actionListener="#{redirector.redirect('eventsList')}" />
+                    </li>
+                    <li>
+                        <p:commandButton
+                            value="Édition"
+                            actionListener="#{redirector.redirectEvent('eventEdition', eventId)}" />
+                    </li>
+                    <li>
+                        <p:commandButton
+                            value="Gestion"
+                            actionListener="#{redirector.redirectEvent('eventManagement', eventId)}" />
+                    </li>
+                    <li>
+                        <p:commandButton
+                            value="Stats"
+                            actionListener="#{redirector.redirectEvent('eventStat', eventId)}" />
+                    </li>
+                </ul>
+            </ui:fragment>
+        </li>
+        <li class="tab">
+            <p:commandButton
+                class="button"
+                value="Gallerie"
+                actionListener="#{redirector.redirect('picturesGallery')}" />
+            <ui:fragment rendered="#{pictureId != null}">
+                <ul class="submenu">
+                    <li>
+                        <p:commandButton
+                            value="Liste"
+                            actionListener="#{redirector.redirect('picturesGallery')}" />
+                    </li>
+                    <li>
+                        <p:commandButton
+                            value="Édition"
+                            actionListener="#{redirector.redirectPicture('pictureEdition', pictureId)}" />
+                    </li>
+                    <li>
+                        <p:commandButton
+                            value="Stats"
+                            actionListener="#{redirector.redirectPicture('pictureStat', pictureId)}" />
+                    </li>
+                </ul>
+            </ui:fragment>
+        </li>
+    </ul>
+</nav>
+</html>

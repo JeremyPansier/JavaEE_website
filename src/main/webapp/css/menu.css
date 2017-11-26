@@ -1,51 +1,93 @@
-.menu {
+.menu, .submenu {
 	list-style-type: none;
 	text-align: center;
-	display: inline-flex;
 	padding-left: 0;
+}
+
+.menu {
+	position: relative;
+	z-index: 200;
+	display: inline-flex;
 	width: 100%;
 }
 
-.menu li {
-	padding: 15px;
-	border-radius: 5px; @ include disable;
-	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#28D2DE),
-		to(#1A878F));
-	background-image: -webkit-linear-gradient(#28D2DE 0%, #1A878F 100%);
-	background-image: -moz-linear-gradient(#28D2DE 0%, #1A878F 100%);
-	background-image: -o-linear-gradient(#28D2DE 0%, #1A878F 100%);
-	background-image: linear-gradient(#28D2DE 0%, #1A878F 100%);
-	font: 16px Arial;
-	font-weight: bold;
+.menu .ui-button {
+	width: 200px;
+}
+
+.tab {
 	text-transform: uppercase;
-	text-shadow: #000 0px 1px 5px;
-	border: 1px solid #000;
-	opacity: 0.7;
-	-webkit-box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.7);
-	-moz-box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.7);
-	box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.7);
-	border-top: 1px solid rgba(255, 255, 255, 0.8) !important;
-	-webkit-box-reflect: below 0px
-		-webkit-gradient(linear, left top, left bottom, from(transparent),
-		color-stop(50%, transparent), to(rgba(255, 255, 255, 0.2)));
-	width: 100%;
-	margin-left: 2%;
-	margin-right: 2%;	
+	padding-left: 5px;
+	padding-right: 5px;
 }
 
-.menu li:hover {
-	opacity: 1;
+.tab:first-child {
+	padding-left: 0;
 }
 
-.menu li a {
-	color: white;
-	text-decoration: none;
-	padding: 15px;
-	padding-left: 10%;
-	padding-right: 10%;
+.tab:last-child {
+	padding-right: 0;
 }
 
-.menu li:hover a {
-	opacity: 1;
-	cursor: pointer;
+/* .tab:nth-child(n+2) {
+	margin-left: 5px;
+}
+
+.tab:nth-last-child(n+2) {
+	margin-right: 5px;
+}
+ */
+
+.tab:hover {
+	cursor: default;
+}
+
+.submenu {
+	display: none;
+	position: absolute;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+    margin-left: 4px;
+}
+
+.menu>li:hover .submenu {
+	display: block;
+}
+
+.submenu li:first-child {
+	padding-top: 5px;
+}
+
+.submenu li:last-child {
+	padding-bottom: 5px;
+}
+
+.submenu .ui-button {
+    background: none;
+    border: 0px !important;
+    width: 190px;
+}
+
+.breadcrumb {
+	height: 20px;
+	padding: 5px;
+}
+
+.breadcrumb div, .breadcrumb span {
+	float: left;
+}
+
+.breadcrumb span {
+	font-style: italic;
+}
+
+.breadcrumb.frame {
+	background: rgba(255, 255, 255, 0.3) !important;
+}
+
+
+@media screen and (max-width: 600px) { /* style for a small screen */
+    .menu {
+        width: 600px;
+    }
 }

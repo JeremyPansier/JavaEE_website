@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+<f:metadata>
+    <f:viewParam
+        name="eventId"
+        value="#{eventManagement.id}" />
+    <f:viewAction action="#{eventManagement.init}" />
+</f:metadata>
+<h:head>
+    <meta charset="UTF-8"></meta>
+    <title>Management</title>
+    <link
+        href="css/common.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/commonColors.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/button.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/text.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/dataTable.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <script
+        type="text/javascript"
+        src="js/detailsMasker.js"></script>
+    <script
+        type="text/javascript"
+        src="js/cssLoader.js"></script>
+</h:head>
+<body>
+    <script type="text/javascript">
+		applyStyle();
+	</script>
+    <ui:include src="/includes/banner.xhtml" />
+    <ui:include src="/includes/menu.xhtml">
+        <ui:param
+            name="eventId"
+            value="#{eventManagement.event.id}" />
+        <ui:param
+            name="webpagename"
+            value="Gestion de l'évènement" />
+    </ui:include>
+    <div class="wrapper">
+        <h1>Inviter des amis à l'évènement :</h1>
+        <h2 class="center theme1">#{eventManagement.event.title}</h2>
+        <br />
+        <h:form>
+            <span
+                class="button"
+                id="button_description"
+                onclick="javascript:switchVisibility('description');">/!\ script at the end of the body /!\</span>
+            <br />
+            <br />
+            <div id="description">
+                <p>#{eventManagement.event.description}</p>
+                <ui:fragment rendered="#{eventManagement.event.filename != ''}">
+                    <h:graphicImage
+                        class="image"
+                        alt=""
+                        value="FilesServlet/#{eventManagement.event.filename}" />
+                    <br />
+                </ui:fragment>
+            </div>
+            <br />
+            <h2>Inviter des amis à l'évènement :</h2>
+            <br />
+            <p>Entrer les emails des personnes à inviter séparés par un point virgule</p>
+            <p:inputText
+                class="form frame"
+                value="#{eventManagement.emailList}"
+                p:placeholder="exemple : nom1@box.com;nom2@box.fr;nom3@box.net" />
+            <p:dialog
+                widgetVar="statusDialog"
+                modal="true"
+                draggable="false"
+                closable="false"
+                resizable="false"
+                showHeader="false">
+                <h:graphicImage
+                    class="loading"
+                    value="images/loading.gif" />
+            </p:dialog>
+            <p:growl showDetail="true" />
+            <p:commandButton
+                class="button"
+                value="Valider !"
+                update="subscribers"
+                actionListener="#{eventManagement.addSubscribers}"
+                onclick="document.getElementById('table').style.display = 'block'"
+                onstart="PF('statusDialog').show()"
+                onsuccess="PF('statusDialog').hide()">
+                <p:confirm
+                    header="Confirmation"
+                    message="Confirmer ?"
+                    icon="ui-icon-alert" />
+            </p:commandButton>
+            <ui:include src="/includes/confirmationDialog.xhtml" />
+            <br />
+            <br />
+            <div id="table">
+                <p:dataTable
+                    id="subscribers"
+                    value="#{eventManagement.subscribers}"
+                    var="subscriber"
+                    paginator="true"
+                    rows="5"
+                    paginatorAlwaysVisible="false">
+                    <f:facet name="header">
+                    	Membres invités
+                    </f:facet>
+                    <p:column>
+                        <f:facet name="header">
+                        	email
+                       	</f:facet>
+                        <div class="main">#{subscriber.email}</div>
+                        <p:commandButton
+                            class="littleButton button"
+                            value="Exclure !"
+                            actionListener="#{eventManagement.removeSubscriber(subscriber)}"
+                            update="subscribers">
+                            <p:confirm
+                                header="Confirmation"
+                                message="Confirmer ?"
+                                icon="ui-icon-alert" />
+                        </p:commandButton>
+                        <ui:include src="/includes/confirmationDialog.xhtml" />
+                    </p:column>
+                    <p:column class="status">
+                        <f:facet name="header">
+                        	statut
+                        </f:facet>
+                        <div class="center">
+                            <h:graphicImage
+                                class="icon"
+                                alt="#{subscriber.isPresentString}"
+                                value="#{subscriber.iconPath}" />
+                        </div>
+                    </p:column>
+                    <p:column class="center emaildate">
+                        <f:facet name="header">
+                        	date d'invitation
+                        </f:facet>
+                        <span>#{subscriber.sendingDateString}</span>
+                    </p:column>
+                    <f:facet name="footer">
+                        <ui:fragment rendered="#{eventManagement.size == 0}">
+                        	Personne n'est invité à cet évènement.
+                        </ui:fragment>
+                        <ui:fragment rendered="#{eventManagement.size == 1}">
+                            Vous avez invité une personne à cet évènement.
+                        </ui:fragment>
+                        <ui:fragment rendered="#{eventManagement.size >= 2}">
+                        	Vous avez invité #{eventManagement.size} personnes à cet évènement.
+                        </ui:fragment>
+                    </f:facet>
+                </p:dataTable>
+            </div>
+        </h:form>
+    </div>
+    <script type="text/javascript">
+    	switchVisibility('description');
+	</script>
+    <script type="text/javascript">
+        hideIfEmpty('table', #{eventManagement.size});
+    </script>
+</body>
+</html>

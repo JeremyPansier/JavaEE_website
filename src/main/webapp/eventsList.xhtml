@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html
     xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:h="http://xmlns.jcp.org/jsf/html"
-    xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
 <h:head>
     <meta charset="UTF-8"></meta>
     <title>List</title>
     <link
-        href="css/event.css"
+        href="css/common.css"
         rel="stylesheet"
         type="text/css"></link>
     <link
-        href="css/button.css"
+        href="css/commonColors.css"
         rel="stylesheet"
         type="text/css"></link>
     <link
@@ -19,40 +21,81 @@
         rel="stylesheet"
         type="text/css"></link>
     <link
-        href="css/table.css"
+        href="css/dataTable.css"
         rel="stylesheet"
         type="text/css"></link>
+    <link
+        href="css/button.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <script
+        type="text/javascript"
+        src="js/cssLoader.js"></script>
 </h:head>
-<h:body>
-    <ui:include src="/banner.xhtml" />
+<body>
+    <script type="text/javascript">
+		applyStyle();
+	</script>
+    <ui:include src="/includes/banner.xhtml" />
+    <ui:include src="/includes/menu.xhtml" >
+        <ui:param
+            name="webpagename"
+            value="Évènements" />
+    </ui:include>
     <div class="wrapper">
+        <h1>Liste</h1>
         <br />
         <h:form class="form">
-            <h:commandButton
+            <p:commandButton
+                class="button"
                 value="Créer un nouvel évènement"
-                action="#{eventsList.createNewEvent}" />
+                actionListener="#{eventsList.createNewEvent}" />
             <br />
             <br />
-            <div class="texte_white">Liste des évènements de : #{eventsList.author.username}</div>
-            <div class="eventsList">
-                <table>
-                    <ui:repeat
-                        value="#{eventsList.events}"
-                        var="event">
-                        <tr>
-                            <td>
-                                <a href="#{event.linkToEventLinkServlet}">#{event.title}</a>
-                                <h:commandButton
-                                    class="littleButton"
-                                    value="Supprimer"
-                                    onclick="if(!confirm('Supprimer cet évènement ?')) {return false;}"
-                                    action="#{eventsList.removeEvent(event)}" />
-                            </td>
-                        </tr>
-                    </ui:repeat>
-                </table>
-            </div>
+            <ui:fragment rendered="#{eventsList.size == 0}">
+                <span>Vous n'avez encore créé aucun évènement.</span>
+            </ui:fragment>
+            <ui:fragment rendered="#{eventsList.size != 0}">
+                <p:dataTable
+                    id="events"
+                    value="#{eventsList.events}"
+                    var="event"
+                    paginator="true"
+                    rows="5"
+                    paginatorAlwaysVisible="false">
+                    <f:facet name="header">
+                        Liste des évènements de : #{eventsList.author.username}
+                    </f:facet>
+                    <p:column class="main">
+                        <div class="main"><a
+                                class="link"
+                                href="#{event.eventLink}">#{event.title}</a></div>
+                        <p:commandButton
+                            class="littleButton button"
+                            value="Supprimer !"
+                            update="events"
+                            actionListener="#{eventsList.removeEvent(event)}">
+                            <p:confirm
+                                header="Confirmation"
+                                message="Confirmer ?"
+                                icon="ui-icon-alert" />
+                        </p:commandButton>
+                        <ui:include src="/includes/confirmationDialog.xhtml" />
+                    </p:column>
+                    <f:facet name="footer">
+                        <ui:fragment rendered="#{eventsList.size == 0}">
+                            Vous n'avez aucun évènement à votre actif.
+                        </ui:fragment>
+                        <ui:fragment rendered="#{eventsList.size == 1}">
+                            Vous avez créé un évènement.
+                        </ui:fragment>
+                        <ui:fragment rendered="#{eventsList.size >= 2}">
+                            Vous avez créé #{eventsList.size} évènements.
+                        </ui:fragment>
+                    </f:facet>
+                </p:dataTable>
+            </ui:fragment>
         </h:form>
     </div>
-</h:body>
+</body>
 </html>

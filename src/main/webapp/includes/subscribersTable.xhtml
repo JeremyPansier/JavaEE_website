@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+<!--     xmlns:a="http://xmlns.jcp.org/jsf/passthrough" -->
+<p:dataTable
+    id="subscribers"
+    value="#{eventManagement.subscribers}"
+    var="subscriber"
+    paginator="true"
+    rows="5"
+    paginatorAlwaysVisible="false">
+    <f:facet name="header">
+                        Membres invités
+                    </f:facet>
+    <p:column class="email">
+        <f:facet name="header">
+                            email
+                        </f:facet>
+        <div class="email">#{subscriber.email}</div>
+        <p:commandButton
+            class="littleButton button"
+            value="Exclure !"
+            update="subscribers"
+            actionListener="#{eventManagement.removeSubscriber(subscriber)}"
+            onstart="PF('statusDialog').show()"
+            onsuccess="PF('statusDialog').hide()">
+            <p:confirm
+                header="Confirmation"
+                message="Confirmer ?"
+                icon="ui-icon-alert" />
+        </p:commandButton>
+        <ui:include src="/includes/confirmationDialog.xhtml" />
+    </p:column>
+    <p:column styleClass="status">
+        <f:facet name="header">
+                            statut
+                        </f:facet>
+        <div class="center">
+            <h:graphicImage
+                class="icon"
+                alt="#{subscriber.isPresentString}"
+                value="#{subscriber.iconPath}" />
+        </div>
+    </p:column>
+    <p:column class="center emaildate">
+        <f:facet name="header">
+                            date d'invitation
+                        </f:facet>
+        <span>#{subscriber.sendingDateString}</span>
+    </p:column>
+    <f:facet name="footer">
+        <ui:fragment rendered="#{eventManagement.size == 1}">
+                            Vous avez invité une personne à cet évènement.
+                        </ui:fragment>
+        <ui:fragment rendered="#{eventManagement.size == 0}">
+                            Vous n'avez encore invité personne à cet évènement.
+                        </ui:fragment>
+        <ui:fragment rendered="#{eventManagement.size >= 2}">
+                            Vous avez invité #{eventManagement.size} personnes à cet évènement.
+                        </ui:fragment>
+    </f:facet>
+</p:dataTable>
+</html>

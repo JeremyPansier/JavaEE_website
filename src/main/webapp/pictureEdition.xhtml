@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+<f:metadata>
+    <f:viewParam
+        name="pictureId"
+        value="#{pictureEdition.id}" />
+    <f:viewAction action="#{pictureEdition.load}" />
+</f:metadata>
+<h:head>
+    <meta charset="UTF-8"></meta>
+    <title>Edition</title>
+    <link
+        href="css/common.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/commonColors.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/button.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/text.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <script
+        type="text/javascript"
+        src="js/cssLoader.js"></script>
+</h:head>
+<body>
+    <script type="text/javascript">
+		applyStyle();
+	</script>
+    <ui:include src="/includes/banner.xhtml" />
+    <ui:include src="/includes/menu.xhtml">
+        <ui:param
+            name="pictureId"
+            value="#{pictureEdition.picture.id}" />
+        <ui:param
+            name="webpagename"
+            value="Édition de photos" />
+    </ui:include>
+    <div class="wrapper">
+        <h1>Édition la photo</h1>
+        <div class="frame" style="background-color: rgba(255, 255, 255, 0.8) !important;">
+            <img class="image" src="/images/under_construction.gif"></img>
+        </div>
+        <p>Insérer un titre et une description :</p>
+        <h:form enctype="multipart/form-data">
+            <p:inputText
+                class="form frame"
+                value="#{pictureEdition.picture.title}" 
+                p:placeholder="Entrer un titre"/>
+            <br />
+            <br />
+            <p:commandButton
+                class="button"
+                value="Éditer! (en cours de développement)"
+                actionListener="#{pictureEdition.editPicture}" />
+        </h:form>
+        <br />
+        <div>
+            <ui:fragment rendered="#{pictureEdition.picture.filename != ''}">
+                <h:graphicImage
+                    class="image"
+                    alt=""
+                    value="FilesServlet/#{pictureEdition.picture.filename}" />
+            </ui:fragment>
+        </div>
+    </div>
+</body>
+</html>

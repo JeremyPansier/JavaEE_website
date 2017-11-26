@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html
     xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:h="http://xmlns.jcp.org/jsf/html"
-    xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
 <h:head>
     <meta charset="UTF-8"></meta>
-    <title>Register</title>
+    <title>Registration</title>
     <link
-        href="css/event.css"
+        href="css/common.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/commonColors.css"
         rel="stylesheet"
         type="text/css"></link>
     <link
@@ -19,42 +23,39 @@
         href="css/text.css"
         rel="stylesheet"
         type="text/css"></link>
+    <script
+        type="text/javascript"
+        src="js/cssLoader.js"></script>
 </h:head>
-<h:body>
+<body>
+    <script type="text/javascript">
+		applyStyle();
+	</script>
+    <ui:include src="/includes/banner.xhtml">
+        <ui:param
+            name="webpage"
+            value="inscription" />
+    </ui:include>
     <div class="wrapper">
-        <a style="color: red"> #{banner.message} </a>
-        <h1>Register</h1>
-        <h:form class="form">
-            <h:inputText
-                id="username"
-                value="#{login.username}"
-                a:placeholder="Entrer un nom d'utilisateur" />
-            <h:message
-                for="username"
-                style="color:red" />
-            <h:inputSecret
-                id="password"
-                value="#{login.password}"
-                a:placeholder="Entrer votre mot de passe" />
-            <h:message
-                for="password"
-                style="color:red" />
-            <h:inputSecret
-                id="password2"
-                value="#{login.password2}"
-                a:placeholder="Entrer votre mot de passe" />
-            <h:message
-                for="password2"
-                style="color:red" />
-            <h:commandButton
-                value="S'enregister !"
-                action="#{login.register}" />
+        <h1>Inscription</h1>
+        <h:form>
+	       <p:inputText
+    	       class="form frame"
+    	       value="#{register.username}"
+    	       p:placeholder="Entrer un nom d'utilisateur" />
+	       <p:password
+                class="form frame"
+                value="#{register.password}"
+                p:placeholder="Entrer un mot de passe" />
+	       <p:password
+                class="form frame"
+                value="#{register.confirmationPassword}"
+                p:placeholder="Confirmer le mot de passe" />
+	       <p:commandButton
+                class="button"
+                value="S'inscrire !"
+                actionListener="#{register.register}" />
         </h:form>
-        <br />
-        <p class="instructionMessage">Vous possédez déjà un compte ?</p>
-        <a
-            class="bouton"
-            href="login.xhtml">Se connecter</a>
     </div>
-</h:body>
+</body>
 </html>

@@ -1,0 +1,55 @@
+body {
+	background: url(/images/grey.png);
+}
+
+.image {
+	width: 100%;
+}
+
+.icon {
+	vertical-align: middle;
+	width: 20px;
+    height: 20px;
+	
+}
+
+/*site container*/
+.wrapper {
+	width: 600px;
+	margin: auto;
+}
+
+.form {
+	width: 98%;
+}
+
+.frame {
+	border-radius: 5px;
+	border: 1px solid black !important;
+	margin-bottom: 10px;
+}
+
+.form.frame {
+	padding: 15px 5px 15px 5px;
+	box-shadow: inset 4px 6px 10px -4px rgba(0, 0, 0, 0.3), 0 1px 1px -1px rgba(255, 255, 255, 0.3) !important;
+}
+
+.form.frame:hover {
+	box-shadow: inset 4px 6px 10px -4px rgba(0, 0, 0, 0.7), 0 1px 1px -1px rgba(255, 255, 255, 0.3);
+}
+
+*:focus {
+    outline: none;
+}
+
+.form.frame:focus {
+	box-shadow: inset 4px 6px 10px -4px rgba(0, 0, 0, 0.7), 0 1px 1px -1px rgba(255, 255, 255, 0.3);
+}
+
+.loading {
+    width:400px;
+}
+
+.ui-fileupload-buttonbar span {
+    
+}

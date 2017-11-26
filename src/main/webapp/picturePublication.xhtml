@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <meta charset="UTF-8"></meta>
+    <title>Publication</title>
+    <link
+        href="css/common.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/commonColors.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/button.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/text.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <script
+        type="text/javascript"
+        src="js/cssLoader.js"></script>
+</h:head>
+<body>
+    <script type="text/javascript">
+		applyStyle();
+	</script>
+    <ui:include src="/includes/banner.xhtml" />
+    <ui:include src="/includes/menu.xhtml" >
+        <ui:param
+            name="webpagename"
+            value="Publication de photos" />
+    </ui:include>
+    <div class="wrapper">
+        <h1>Publication de photos</h1>
+        <p>Insérer un titre et une description svp</p>
+        <h:form enctype="multipart/form-data">
+            <p:inputText
+                class="form frame"
+                value="#{picturePublication.picture.title}"
+                p:placeholder="Entrer un titre" />
+            <p:inputTextarea
+                class="form frame"
+                rows="4"
+                value="#{picturePublication.picture.description}"
+                p:placeholder="Entrer une description..." />
+            <br />
+            <p:fileUpload
+                label="Choisir une photo"
+                skinSimple="true"
+                fileUploadListener="#{picturePublication.upload}"
+                auto="true"
+                allowTypes="/(\.|\/)(gif|jpeg|png)$/"
+                sizeLimit="10000000" />
+            <br />
+            <p:commandButton
+                class="button"
+                value="Publier !"
+                actionListener="#{picturePublication.addPicture}" />
+        </h:form>
+    </div>
+</body>
+</html>

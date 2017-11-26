@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html
     xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:h="http://xmlns.jcp.org/jsf/html"
-    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-    xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:p="http://primefaces.org/ui">
 <h:head>
     <meta charset="UTF-8"></meta>
     <title>Creation</title>
     <link
-        href="css/event.css"
+        href="css/common.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/commonColors.css"
         rel="stylesheet"
         type="text/css"></link>
     <link
@@ -20,38 +23,47 @@
         href="css/text.css"
         rel="stylesheet"
         type="text/css"></link>
+    <script
+        type="text/javascript"
+        src="js/cssLoader.js"></script>
 </h:head>
-<h:body>
-    <ui:include src="/banner.xhtml" />
+<body>
+    <script type="text/javascript">
+		applyStyle();
+	</script>
+    <ui:include src="/includes/banner.xhtml" />
+    <ui:include src="/includes/menu.xhtml" >
+        <ui:param
+            name="webpagename"
+            value="Création d'évènement" />
+    </ui:include>
     <div class="wrapper">
-        <h1>Creation d'évènements</h1>
-        <p>Inserer un titre et une descprition svp</p>
-        <h:form
-            class="form"
-            enctype="multipart/form-data">
-            <h:inputText
-                id="title"
+        <h1>Création d'évènement</h1>
+        <p>Insérer un titre et une description svp</p>
+        <h:form enctype="multipart/form-data">
+            <p:inputText
+                class="form frame"
                 value="#{eventCreation.event.title}"
-                a:placeholder="Entrer un titre" />
-            <h:inputTextarea
+                p:placeholder="Entrer un titre" />
+            <p:inputTextarea
+                class="form frame"
                 rows="4"
-                name="description"
                 value="#{eventCreation.event.description}"
-                a:placeholder="Entrer une description..." />
+                p:placeholder="Entrer une description..." />
             <br />
             <p:fileUpload
-                label="Ajoutez une image"
+                label="Choisir une image"
                 skinSimple="true"
                 fileUploadListener="#{eventCreation.upload}"
                 auto="true"
-                allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+                allowTypes="/(\.|\/)(gif|jpeg|png)$/"
                 sizeLimit="10000000" />
             <br />
-            <h:commandButton
-                class="submit"
-                value="Créer!"
-                action="#{eventCreation.createEvent}" />
+            <p:commandButton
+                class="button"
+                value="Créer !"
+                actionListener="#{eventCreation.createEvent}" />
         </h:form>
     </div>
-</h:body>
+</body>
 </html>
