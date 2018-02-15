@@ -7,7 +7,7 @@
     xmlns:p="http://primefaces.org/ui">
 <h:head>
     <meta charset="UTF-8"></meta>
-    <title>List</title>
+    <title>#{eventsList.webPage.title}</title>
     <link
         href="css/common.css"
         rel="stylesheet"
@@ -35,15 +35,15 @@
 <body>
     <script type="text/javascript">
 		applyStyle();
-	</script>
+ 	</script>
     <ui:include src="/includes/banner.xhtml" />
     <ui:include src="/includes/menu.xhtml" >
         <ui:param
-            name="webpagename"
-            value="Évènements" />
+            name="currentWebPage"
+            value="#{eventsList.webPage}" />
     </ui:include>
     <div class="wrapper">
-        <h1>Liste</h1>
+        <h1>#{eventsList.webPage.title}</h1>
         <br />
         <h:form class="form">
             <p:commandButton
@@ -52,10 +52,10 @@
                 actionListener="#{eventsList.createNewEvent}" />
             <br />
             <br />
-            <ui:fragment rendered="#{eventsList.size == 0}">
+            <ui:fragment rendered="#{eventsList.events.size() == 0}">
                 <span>Vous n'avez encore créé aucun évènement.</span>
             </ui:fragment>
-            <ui:fragment rendered="#{eventsList.size != 0}">
+            <ui:fragment rendered="#{eventsList.events.size() != 0}">
                 <p:dataTable
                     id="events"
                     value="#{eventsList.events}"
@@ -64,7 +64,7 @@
                     rows="5"
                     paginatorAlwaysVisible="false">
                     <f:facet name="header">
-                        Liste des évènements de : #{eventsList.author.username}
+                        Liste des évènements de : #{eventsList.author.name}
                     </f:facet>
                     <p:column class="main">
                         <div class="main"><a
@@ -83,14 +83,14 @@
                         <ui:include src="/includes/confirmationDialog.xhtml" />
                     </p:column>
                     <f:facet name="footer">
-                        <ui:fragment rendered="#{eventsList.size == 0}">
+                        <ui:fragment rendered="#{eventsList.events.size() == 0}">
                             Vous n'avez aucun évènement à votre actif.
                         </ui:fragment>
-                        <ui:fragment rendered="#{eventsList.size == 1}">
+                        <ui:fragment rendered="#{eventsList.events.size() == 1}">
                             Vous avez créé un évènement.
                         </ui:fragment>
-                        <ui:fragment rendered="#{eventsList.size >= 2}">
-                            Vous avez créé #{eventsList.size} évènements.
+                        <ui:fragment rendered="#{eventsList.events.size() >= 2}">
+                            Vous avez créé #{eventsList.events.size()} évènements.
                         </ui:fragment>
                     </f:facet>
                 </p:dataTable>

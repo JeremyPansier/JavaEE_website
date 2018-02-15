@@ -3,11 +3,11 @@
 ### Goal
 
 The aim of this project is to provide a hand-coded JavaEE website.<br/>
-This website lets an author to create events and to invite some gests to subscribe to those events. Each author can register or login to the website with a password which will be hashed before beeing stored in a database.
+This website lets an author to create events and to invite some guests to subscribe to those events. Each author can register or login to the website with a password which will be hashed before beeing stored in a database.
 
 ### Front-end
 
-The front-end uses html, css and javascript. A lot of components like buttons or tables use PrimeFaces (a UI framework).
+The front-end uses html, css and javascript. A lot of components like buttons or tables use PrimeFaces (a GUI framework).
 
 ### Back-end
 
@@ -49,27 +49,28 @@ Add a new user:<br/>
 ## Starting the server
 
 Go to the bin folder of wildfly.<br/>
-* Launcher for linux: `standalone.sh`
+* Launcher for linux: `standalone.sh` On a remote server, use: `standalone.sh -b 0.0.0.0`
 * Launcher for windows: `standalone.bat`
 
 ## Connection to the database
 
 ### Create the database:
 
-<ul><liFor Linux:<br/>
+<ul><li/>For Linux:<br/>
 In the shell, go to the folder /src/dataBase.<br/>
-Start MySQL: `sudo service mysql start`.<br/>
-Start the MySQL console: `mysql -u root -p`.<br/>
+Start MySQL: <code>sudo service mysql start</code>.<br/>
+Start the MySQL console: <code>mysql -u root -p</code>.<br/>
 Type the following commands:</li></ul>
 
-	mysql> CREATE DATABASE eventsdb;
-	mysql> SOURCE eventsdb.sql;
+	mysql> CREATE DATABASE website;
+	mysql> USE website;
+	mysql> SOURCE website.sql;
 	mysql> quit;
 <ul><li>For Windows:<br/>
 Download easyPHP and run it.<br/>
 Open the administration: http://127.0.0.1/home/.<br/>
 Then, open the administration module MySQL : PhpMyAdmin 4.1.4.<br/>
-Create a new database named eventsdb.<br/>
+Create a new database named website.<br/>
 Import the .sql file located into /src/dataBase.</li></ul>
 
 ### Setup wildfly to connect to the database:
@@ -83,9 +84,14 @@ Find mysql-connector-java-5.1.40-bin.jar.<br/>
 Choose DataSource: MySQL Datasource<br/>
 On step 1/3, set:
 
-	Name: eventsdb
-	JNDI Name: java:jboss/DataSources/eventsdb
+	Name: website
+	JNDI Name: java:jboss/DataSources/website
 On step 2/3 go to the tab "Detected Driver" and choose: mysql-connector-java-5.1.40-bin.jar_com.mysql.jdbc.Driver_5_1
+On step 3/3, set:
+
+	Connection URL: jdbc:mysql://localhost:3306/website
+	Username: (yourDatabaseUsername)
+	Password: (yourDatabasePassword)
 
 ## Connection to the mail box
 
@@ -101,10 +107,10 @@ Click on "View>", then on "OutBound Remote", then on "Add" and set:
 *Save*<br/>
 <br/>**2.** Go to "Configuration", then "Subsystems", then"Mail", click on "Add" and set:
 
-	Name: java:jboss/mail/Gmail
-	JNDI Name: java:jboss/mail/Gmail (name of the resource used in 'EmailObserver.java')
+	Name: java:jboss/mail/gmail
+	JNDI Name: java:jboss/mail/gmail (name of the resource used in 'EmailObserver.java')
 *Save*<br/>
-<br/>Click on your Mail Session, then click on "View", then on "Edit" and set:
+<br/>Click on your Mail Session, then click on "View", then on "Add" and set:
 
 	Socket Binding: (Socket Binding name, in our ex: mail-smtp-gmail)
 	Type: smtp
@@ -112,7 +118,7 @@ Click on "View>", then on "OutBound Remote", then on "Add" and set:
 	Password: (yourEmailPassword)
 	Use SSL (tick)
 *Save*<br/>
-<br/>**3.** Restart wildfly (in the shell: "Ctrl+C", then "O", then <a href="#starting-the-server" title="go to the 'Starting the server' chapter">start the server</a>).
+<br/>**3.** Restart wildfly (in the shell: "Ctrl+C", then <a href="#starting-the-server" title="go to the 'Starting the server' chapter">start the server</a>).
 
 ### Setup your mail box to accept external applications:
 
@@ -133,19 +139,20 @@ Run easyPHP.
 Go to the bin folder of wildfly.<br/>
 * Launcher for linux: `standalone.sh`
 * Launcher for windows: `standalone.bat`
+On a remote server, use: `standalone.sh -b 0.0.0.0`
 
 ## Deployment
 
 In the shell, go to the root folder of the java project, containing the pom.xml.<br/>
-Type the command: `mvn clean wildfly:deploy`.
+Type the command: `mvn clean wildfly:deploy`
 
-## Testing
+## Testing
 
 In a web browser, go to http://localhost:8080.
 
 # Built With
 
-* [Primefaces](http://www.primefaces.org "link to http://www.primefaces.org") - The web framework used.
+* [Primefaces](http://www.primefaces.org "link to http://www.primefaces.org") - Graphical User Interface.
 * [Maven](https://maven.apache.org "link to https://maven.apache.org") - Dependency Management.
 
 # Authors
@@ -157,6 +164,10 @@ See also the list of [contributors](https://github.com/JeremyPansier/JavaEE_webs
 # Acknowledgments
 
 * Special thanks to my brother Gwenall Pansier who helped me from my early days as developer.
-* Thanks to Thomas gros, the trainer who teached me basics in JavaEE.
+* Thanks to Thomas Gros, the trainer who teached me basics in JavaEE.
 * Thanks to Pascal Cunin, my schoolmate, with whom I started this project.
 * Thanks to [PurpleBooth](https://github.com/PurpleBooth "link to PurpleBooth's profile") for the template that I used to write this readme.
+
+## License
+![copyleft](http://unlicense.org/pd-icon.png)
+[http://unlicense.org/](http://unlicense.org/)

@@ -19,69 +19,70 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
-import com.website.beans.Email;
-import com.website.enumeration.Webpagename;
+import com.website.models.beans.Email;
 import com.website.tools.EventServiceException;
-import com.website.tools.PathBuilder;
+import com.website.views.WebPages;
 
 import freemarker.cache.WebappTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 
 @ApplicationScoped
-public class EmailObserver {
-    private static final Logger LOGGER = Logger.getLogger(EmailObserver.class.getName());
-    @Resource(lookup = "java:jboss/mail/Gmail")
-    private Session session;
+public class EmailObserver
+{
+	private static final Logger LOGGER = Logger.getLogger(EmailObserver.class.getName());
+	@Resource(lookup = "java:jboss/mail/Gmail")
+	private Session session;
 
-    public void listenToMyEvent(@Observes Email email) {
-        LOGGER.info(String.format("received event %s", email));
+	public void listenToMyEvent(@Observes final Email email)
+	{
+		try
+		{
+			final Message message = new MimeMessage(session);
+			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email.getAddress()));
+			message.setSubject("Invitation");
 
-        try {
-            Message message = new MimeMessage(session);
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email.getEmail()));
-            message.setSubject("Invitation");
+			// Freemarker configuration object
+			final Configuration cfg = new Configuration(Configuration.VERSION_2_3_25);
 
-            // Freemarker configuration object
-            Configuration cfg = new Configuration(Configuration.VERSION_2_3_25);
+			final ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+			final HttpServletRequest origRequest = (HttpServletRequest) ec.getRequest();
 
-            ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-            HttpServletRequest origRequest = (HttpServletRequest) ec.getRequest();
+			final String url = origRequest.getRequestURL().toString();
+			final String originWebSite = url.substring(0, url.lastIndexOf("/faces/"));
 
-            String URL = origRequest.getRequestURL().toString();
-            String originWebSite = URL.substring(0, URL.lastIndexOf("/faces/"));
+			final String imageLink = "<img src=\"" + originWebSite + "/ReadEmailTackerServlet?msg_id="
+					+ email.getHash()
+					+ "\"\" alt=\"\" width=\"\"0\"\" height=\"\"0\"\"style=\"\"width: 0px; height: 0px; border:0px;\"\" />";
+			final String link = originWebSite + WebPages.EVENT_SUBSCRIPTION.createJsfUrl("token", email.getHash());
 
-            String imageLink = "<img src=\"" + originWebSite + "/ReadEmailTackerServlet?msg_id="
-                    + email.getHash()
-                    + "\"\" alt=\"\" width=\"\"0\"\" height=\"\"0\"\"style=\"\"width: 0px; height: 0px; border:0px;\"\" />";
-            String link = originWebSite + PathBuilder.getJsfPath(Webpagename.eventSubscription.toString()) + "?token=" + email.getHash();
+			final WebappTemplateLoader templateLoader = new WebappTemplateLoader((ServletContext) ec.getContext(), "WEB-INF/templates");
 
-            WebappTemplateLoader templateLoader = new WebappTemplateLoader((ServletContext) ec.getContext(), "WEB-INF/templates");
+			templateLoader.setURLConnectionUsesCaches(false);
+			templateLoader.setAttemptFileAccess(false);
+			cfg.setTemplateLoader(templateLoader);
 
-            templateLoader.setURLConnectionUsesCaches(false);
-            templateLoader.setAttemptFileAccess(false);
-            cfg.setTemplateLoader(templateLoader);
+			cfg.setDefaultEncoding("UTF-8");
 
-            // cfg.setDirectoryForTemplateLoading(new File(fullPath));
-            cfg.setDefaultEncoding("UTF-8");
+			// Build the data-model
+			final Map<String, Object> root = new HashMap<>();
 
-            // Build the data-model
-            Map<String, Object> root = new HashMap<>();
+			// Put data into the root
+			root.put("link", link);
+			root.put("imageLink", imageLink);
+			root.put("title", email.getTitle());
 
-            // Put datas into the root
-            root.put("link", link);
-            root.put("imageLink", imageLink);
-            root.put("title", email.getTitle());
+			final Template temp = cfg.getTemplate("emailTemplate.ftl");
+			final Writer sw = new StringWriter();
+			temp.process(root, sw);
+			message.setContent(sw.toString(), "text/html; charset=utf-8");
+			Transport.send(message);
 
-            Template temp = cfg.getTemplate("emailTemplate.ftl");
-            Writer sw = new StringWriter();
-            temp.process(root, sw);
-            message.setContent(sw.toString(), "text/html; charset=utf-8");
-            Transport.send(message);
-
-        } catch (Exception e) {
-            LOGGER.info("Issue with Freemarker template location within the class " + this.getClass().toString());
-            throw new EventServiceException("Error - Email not send", e);
-        }
-    }
+		}
+		catch (final Exception e)
+		{
+			LOGGER.info("Issue with Freemarker template location within the class " + this.getClass().toString());
+			throw new EventServiceException("Error - Email not send", e);
+		}
+	}
 }

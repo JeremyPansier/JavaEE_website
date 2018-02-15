@@ -13,7 +13,7 @@
 </f:metadata>
 <h:head>
     <meta charset="UTF-8"></meta>
-    <title>Edition</title>
+    <title>#{pictureEdition.webPage.title}</title>
     <link
         href="css/common.css"
         rel="stylesheet"
@@ -44,11 +44,11 @@
             name="pictureId"
             value="#{pictureEdition.picture.id}" />
         <ui:param
-            name="webpagename"
-            value="Édition de photos" />
+            name="currentWebPage"
+            value="#{pictureEdition.webPage}" />
     </ui:include>
     <div class="wrapper">
-        <h1>Édition la photo</h1>
+        <h1>#{pictureEdition.webPage.title}</h1>
         <div class="frame" style="background-color: rgba(255, 255, 255, 0.8) !important;">
             <img class="image" src="/images/under_construction.gif"></img>
         </div>

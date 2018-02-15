@@ -3,33 +3,43 @@ package com.website.tools;
 import java.io.IOException;
 import java.io.Serializable;
 
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+
+import org.jboss.logging.Logger;
 
 @Named
 @ViewScoped
 public class Redirector implements Serializable
 {
 
+	/** The serial version UID. */
 	private static final long serialVersionUID = 1148601551383990989L;
 
-	public void redirect(String link) throws IOException
-	{
-		ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-		ec.redirect(link + ".xhtml");
-	}
+	/** The logger. */
+	private static final Logger LOGGER = Logger.getLogger(SessionManager.class);
 
-	public void redirectEvent(String link, int id) throws IOException
+	/**
+	 * Redirects to the given URL.
+	 *
+	 * @param url the URL
+	 */
+	public static void redirect(final String url)
 	{
-		ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-		ec.redirect(link + ".xhtml?eventId=" + id);
-	}
-
-	public void redirectPicture(String link, int id) throws IOException
-	{
-		ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-		ec.redirect(link + ".xhtml?pictureId=" + id);
+		try
+		{
+			ContextManager.CONTEXT.redirect(url);
+		}
+		catch (final IllegalStateException e)
+		{
+			LOGGER.error("Session not found", e);
+			HttpErrorHandler.print500(e, "No session found");
+			return;
+		}
+		catch (final IOException e)
+		{
+			HttpErrorHandler.print500(e, "Redirection issue");
+			return;
+		}
 	}
 }

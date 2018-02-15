@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <meta charset="UTF-8"></meta>
+    <title>#{connection.webPage.title}</title>
+    <link
+        href="css/common.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/commonColors.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/button.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/text.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <script
+        type="text/javascript"
+        src="js/cssLoader.js"></script>
+</h:head>
+<body>
+    <script type="text/javascript">
+		applyStyle();
+	</script>
+    <ui:include src="/includes/banner.xhtml">
+        <ui:param
+            name="name"
+            value="connection" />
+    </ui:include>
+    <div class="wrapper">
+	    <h1>#{connection.webPage.title}</h1>
+        <h:form>
+            <p:inputText
+                class="form frame"
+                value="#{connection.authorName}"
+                p:placeholder="Entrer un nom d'utilisateur"/>
+            <p:password
+                class="form frame"
+                value="#{connection.password}"
+                p:placeholder="Entrer un mot de passe" />
+            <p:commandButton
+                class="button"
+                value="Se connecter !"
+                actionListener="#{connection.login}" />
+        </h:form>
+    </div>
+</body>
+</html>

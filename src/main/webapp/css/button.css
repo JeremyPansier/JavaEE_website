@@ -1,3 +1,7 @@
+.ui-button:first-letter {
+    text-transform: capitalize;
+}
+
 .button {
 	width: 100%;
 	padding: 15px 25px 15px 25px;
@@ -17,7 +21,6 @@
 }
 
 .button:hover {
-	/* opacity: 1; */
 	cursor: pointer;
 }
 

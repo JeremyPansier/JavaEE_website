@@ -10,38 +10,48 @@ import org.apache.logging.log4j.Logger;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
-public class Uploader {
-    private static final Logger LOGGER = LogManager.getLogger();
+public class Uploader
+{
+	private static final Logger LOGGER = LogManager.getLogger();
 
-    private Uploader() {
-        super();
-    }
+	private static final String UPLOAD_DIRECTORY_NAME = "/Upload/";
 
-    public static String uploadFile(FileUploadEvent fue) {
-        String filename = null;
-        try {
-            fue.getSource();
-            UploadedFile uploadedFile = fue.getFile();
-            if (uploadedFile != null) {
-                filename = uploadedFile.getFileName();
-                String tempname = "temp.tmp";
-                InputStream is = uploadedFile.getInputstream();
-    			File temp = new File(getHomePath() + "/Uploads/" + tempname);
-                Files.copy(is, temp.toPath());
-                File file = new File(getHomePath() + "/Uploads/" + filename);
-                temp.renameTo(file);
-                temp.delete();
-            }
-        } catch (IOException e) {
-            LOGGER.info("File copy issue, this file may already exists in the directory", e);
-        }
-        return filename;
-    }
+	public static String uploadFile(final FileUploadEvent fue)
+	{
+		String fileName = null;
+		try
+		{
+			fue.getSource();
+			final UploadedFile uploadedFile = fue.getFile();
+			if (uploadedFile != null)
+			{
+				fileName = uploadedFile.getFileName();
+				final String temporaryFileName = "temp.tmp";
+				final InputStream inputStream = uploadedFile.getInputstream();
+				final File uploadsDirectory = new File(getHomePath() + UPLOAD_DIRECTORY_NAME);
+				if (!uploadsDirectory.toPath().toFile().exists())
+				{
+					Files.createDirectory(uploadsDirectory.toPath());
+				}
+				final File temporaryFile = new File(getHomePath() + UPLOAD_DIRECTORY_NAME + temporaryFileName);
+				Files.copy(inputStream, temporaryFile.toPath());
+				final File file = new File(getHomePath() + UPLOAD_DIRECTORY_NAME + fileName);
+				if (!temporaryFile.renameTo(file))
+				{
+					LOGGER.warn("File rename issue, aborted.");
+				}
+				Files.delete(temporaryFile.toPath());
+			}
+		}
+		catch (final IOException e)
+		{
+			LOGGER.info("File copy issue, this file may already exists in the directory", e);
+		}
+		return fileName;
+	}
 
-    public static String getHomePath() {
-        return  System.getProperty("user.home");
-    }
-    public static File getFileDependingOnHomePath(String filename) {
-        return new File(System.getProperty("user.home") + "/Uploads", filename);
-    }
+	private static String getHomePath()
+	{
+		return System.getProperty("user.home");
+	}
 }

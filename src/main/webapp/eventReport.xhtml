@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+<f:metadata>
+    <f:viewParam
+        name="eventId"
+        value="#{eventReport.id}" />
+    <f:viewAction action="#{eventReport.load}" />
+</f:metadata>
+<h:head>
+    <meta charset="UTF-8"></meta>
+    <title>#{eventReport.webPage.title}</title>
+    <link
+        href="css/common.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/commonColors.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/button.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/text.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/dataTable.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <script
+        type="text/javascript"
+        src="js/cssLoader.js"></script>
+    <script
+        type="text/javascript"
+        src="https://www.gstatic.com/charts/loader.js"></script>
+    <script
+        type="text/javascript"
+        src="js/chartBuilder.js"></script>
+    <script type="text/javascript">
+      // Load the Visualization API and the corechart package.
+      google.charts.load('current', {'packages':['corechart']});
+    </script>
+</h:head>
+<body onload="drawChart('chart1', [['Présent', #{eventReport.eventDataManager.acceptedInvitationsCount}], ['Absent', #{eventReport.eventDataManager.declinedInvitationsCount}], ['Sans réponse', #{eventReport.eventDataManager.pendingAnswerInvitationsCount}]]);
+			  drawChart('chart2', [['Emails lus', #{eventReport.eventDataManager.knownInvitationsCount}], ['Emails non lus', #{eventReport.eventDataManager.notKnownInvitationsCount}]]);
+			  drawChart('chart3', [['Présent', #{eventReport.eventDataManager.acceptedKnownInvitationsCount}], ['Absent', #{eventReport.eventDataManager.declinedKnownInvitationsCount}], ['Sans réponse', #{eventReport.eventDataManager.pendingAnswerKnownInvitationsCount}]]);">
+    <script type="text/javascript">
+		applyStyle();
+	</script>
+    <ui:include src="/includes/banner.xhtml" />
+    <ui:include src="/includes/menu.xhtml">
+        <ui:param
+            name="eventId"
+            value="#{eventReport.event.id}" />
+        <ui:param
+            name="currentWebPage"
+            value="#{eventReport.webPage}" />
+    </ui:include>
+    <div class="wrapper">
+        <h1>#{eventReport.webPage.title}</h1>
+        <h2 class="center theme1">#{eventReport.event.title}</h2>
+        <br />
+        <br />
+        <h:form>
+            <p:dataTable
+                id="guests"
+                value="#{eventReport.guests}"
+                var="guest"
+                paginator="true"
+                rows="5"
+                paginatorAlwaysVisible="false">
+                <f:facet name="header">
+                	Membres invités
+                </f:facet>
+                <p:column class="email">
+                    <f:facet name="header">
+                    	email
+                    </f:facet>
+                    <div class="email">#{guest.user.email}</div>
+                </p:column>
+                <p:column styleClass="status">
+                    <f:facet name="header">
+                    	statut
+                    </f:facet>
+                    <div class="center">
+                        <h:graphicImage
+                            class="icon"
+                            title="#{guest.status.getDescription()}"
+                            value="#{guest.status.getIconPath()}" />
+                    </div>
+                </p:column>
+                <p:column class="center emaildate">
+                    <f:facet name="header">
+                    	date d'invitation
+                    </f:facet>
+                    <span>#{guest.getFormattedEmailDate()}</span>
+                </p:column>
+                <f:facet name="footer">
+                    <ui:fragment rendered="#{eventReport.guests.size() == 1}">
+                    	Vous avez invité une personne à cet évènement.
+                    </ui:fragment>
+                    <ui:fragment rendered="#{eventReport.guests.size() == 0}">
+                    	Vous n'avez encore invité personne à cet évènement.
+                    </ui:fragment>
+                    <ui:fragment rendered="#{eventReport.guests.size() >= 2}">
+                    	Vous avez invité #{eventReport.guests.size()} personnes à cet évènement.
+                    </ui:fragment>
+                </f:facet>
+            </p:dataTable>
+        </h:form>
+        <br />
+        <br />
+        <div class="frame center">
+            <div id="chart1"></div>
+            <span class="title">Réponse après invitation</span>            
+        </div>
+        <div class="frame center">
+            <div id="chart2"></div>
+            <span class="title">Statut d'email après invitation</span>            
+        </div>
+        <div class="frame center">
+            <div id="chart3"></div>
+            <span class="title">Réponse après ouverture d'email</span>            
+        </div>
+    </div>
+</body>
+</html>

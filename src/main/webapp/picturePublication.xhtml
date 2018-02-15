@@ -6,7 +6,7 @@
     xmlns:p="http://primefaces.org/ui">
 <h:head>
     <meta charset="UTF-8"></meta>
-    <title>Publication</title>
+    <title>#{picturePublication.webPage.title}</title>
     <link
         href="css/common.css"
         rel="stylesheet"
@@ -34,11 +34,11 @@
     <ui:include src="/includes/banner.xhtml" />
     <ui:include src="/includes/menu.xhtml" >
         <ui:param
-            name="webpagename"
-            value="Publication de photos" />
+            name="currentWebPage"
+            value="#{picturePublication.webPage}" />
     </ui:include>
     <div class="wrapper">
-        <h1>Publication de photos</h1>
+        <h1>#{picturePublication.webPage.title}</h1>
         <p>Insérer un titre et une description svp</p>
         <h:form enctype="multipart/form-data">
             <p:inputText

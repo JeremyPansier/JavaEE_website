@@ -19,7 +19,7 @@
         <p:commandButton
             class="button"
             value="Accueil"
-            actionListener="#{redirector.redirect('home')}" />
+            actionListener="#{redirector.redirect(home.webPage.createUrl())}" />
     </div>
     <ui:fragment rendered="#{banner.username != null}">
         <div class="frame username left">#{banner.username}</div>
@@ -28,7 +28,7 @@
             <p:commandButton
                 class="button"
                 value="Déconnexion"
-                actionListener="#{redirector.redirect('logout')}" />
+                actionListener="#{disconnection.logout()}" />
         </div>
     </ui:fragment>
     <ui:fragment rendered="#{banner.username == 'admin'}">
@@ -36,25 +36,25 @@
             <p:commandButton
                 class="admin button"
                 value="Administration"
-                actionListener="#{redirector.redirect('visitStat')}" />
+                actionListener="#{redirector.redirect(visitsRecording.webPage.createUrl())}" />
         </div>
     </ui:fragment>
     <ui:fragment rendered="#{banner.username == null}">
         <div class="message error left">#{banner.message}</div>
-        <ui:fragment rendered="#{webpage != 'connection'}">
+        <ui:fragment rendered="#{name != 'connection'}">
             <div class="right">
                 <p:commandButton
                     class="button"
                     value="Connexion"
-                    actionListener="#{redirector.redirect('login')}" />
+                    actionListener="#{redirector.redirect(connection.webPage.createUrl())}" />
             </div>
         </ui:fragment>
-        <ui:fragment rendered="#{webpage == 'connection'}">
+        <ui:fragment rendered="#{name == 'connection'}">
             <div class="right">
                 <p:commandButton
                     class="button"
                     value="Inscription"
-                    actionListener="#{redirector.redirect('register')}" />
+                    actionListener="#{redirector.redirect(registration.webPage.createUrl())}" />
             </div>
         </ui:fragment>
     </ui:fragment>

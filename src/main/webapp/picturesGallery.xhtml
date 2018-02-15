@@ -7,7 +7,7 @@
     xmlns:p="http://primefaces.org/ui">
 <h:head>
     <meta charset="UTF-8"></meta>
-    <title>Gallery</title>
+    <title>#{picturesGallery.webPage.title}</title>
     <link
         href="css/common.css"
         rel="stylesheet"
@@ -42,11 +42,11 @@
     <ui:include src="/includes/banner.xhtml" />
     <ui:include src="/includes/menu.xhtml" >
         <ui:param
-            name="webpagename"
-            value="Gallerie" />
+            name="currentWebPage"
+            value="#{picturesGallery.webPage}" />
     </ui:include>
     <div class="wrapper">
-    <h1>Gallerie</h1>
+    <h1>#{picturesGallery.webPage.title}</h1>
         <br />
         <h:form class="form">
             <p:commandButton
@@ -55,10 +55,10 @@
                 actionListener="#{picturesGallery.addNewPicture}" />
             <br />
             <br />
-            <ui:fragment rendered="#{picturesGallery.size == 0}">
+            <ui:fragment rendered="#{picturesGallery.pictures.size() == 0}">
                 <span>Vous n'avez encore publié aucune photo.</span>
             </ui:fragment>
-            <ui:fragment rendered="#{picturesGallery.size != 0}">
+            <ui:fragment rendered="#{picturesGallery.pictures.size() != 0}">
                 <p:dataTable
                     id="pictures"
                     value="#{picturesGallery.pictures}"
@@ -67,7 +67,7 @@
                     rows="5"
                     paginatorAlwaysVisible="false">
                     <f:facet name="header">
-                        Gallerie de photos de : #{picturesGallery.author.username}
+                        Gallerie de photos de : #{picturesGallery.author.name}
                     </f:facet>
                     <p:column class="main">
                         <div class="main"><a
@@ -86,14 +86,14 @@
                         <ui:include src="/includes/confirmationDialog.xhtml" />
                     </p:column>
                     <f:facet name="footer">
-                        <ui:fragment rendered="#{picturesGallery.size == 0}">
+                        <ui:fragment rendered="#{picturesGallery.pictures.size() == 0}">
                             Vous n'avez aucune photo dans votre gallerie.
                         </ui:fragment>
-                        <ui:fragment rendered="#{picturesGallery.size == 1}">
+                        <ui:fragment rendered="#{picturesGallery.pictures.size() == 1}">
                             Vous avez publié une photo.
                         </ui:fragment>
-                        <ui:fragment rendered="#{picturesGallery.size >= 2}">
-                            Vous avez publié #{picturesGallery.size} photos.
+                        <ui:fragment rendered="#{picturesGallery.pictures.size() >= 2}">
+                            Vous avez publié #{picturesGallery.pictures.size()} photos.
                         </ui:fragment>
                     </f:facet>
                 </p:dataTable>
@@ -101,7 +101,7 @@
         </h:form>
     </div>
     <script type="text/javascript">
-        hideIfEmpty('table', #{picturesGallery.size});
+        hideIfEmpty('table', #{picturesGallery.pictures.size()});
     </script>
 </body>
 </html>

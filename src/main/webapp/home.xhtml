@@ -5,7 +5,7 @@
     xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
     <meta charset="UTF-8"></meta>
-    <title>Home</title>
+    <title>#{home.webPage.title}</title>
     <link
         href="css/common.css"
         rel="stylesheet"
@@ -32,12 +32,12 @@
 	</script>
     <ui:include src="/includes/banner.xhtml" />
     <div class="wrapper">
-        <h1>Accueil</h1>
+        <h1>#{home.webPage.title}</h1>
         <div class="frame" style="background-color: rgba(255, 255, 255, 0.8) !important;">
             <img class="image" src="/images/welcome.png"></img>
         </div>
     <h:form enctype="multipart/form-data">
-        <!--         this empty form seems to be essential for the primefaces buttons listeners loading... -->
+        <!--         this empty form seems to be essential for the PrimeFaces buttons listeners loading... -->
     </h:form>
     </div>
 </body>

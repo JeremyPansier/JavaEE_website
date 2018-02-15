@@ -7,9 +7,9 @@
     xmlns:p="http://primefaces.org/ui">
 <!--     xmlns:a="http://xmlns.jcp.org/jsf/passthrough" -->
 <p:dataTable
-    id="subscribers"
-    value="#{eventManagement.subscribers}"
-    var="subscriber"
+    id="guests"
+    value="#{eventManagement.guests}"
+    var="guest"
     paginator="true"
     rows="5"
     paginatorAlwaysVisible="false">
@@ -20,12 +20,12 @@
         <f:facet name="header">
                             email
                         </f:facet>
-        <div class="email">#{subscriber.email}</div>
+        <div class="email">#{guest.email}</div>
         <p:commandButton
             class="littleButton button"
             value="Exclure !"
-            update="subscribers"
-            actionListener="#{eventManagement.removeSubscriber(subscriber)}"
+            update="guests"
+            actionListener="#{eventManagement.removeGuest(guest)}"
             onstart="PF('statusDialog').show()"
             onsuccess="PF('statusDialog').hide()">
             <p:confirm
@@ -42,25 +42,25 @@
         <div class="center">
             <h:graphicImage
                 class="icon"
-                alt="#{subscriber.isPresentString}"
-                value="#{subscriber.iconPath}" />
+                alt="#{guest.isPresentString}"
+                value="#{guest.iconPath}" />
         </div>
     </p:column>
     <p:column class="center emaildate">
         <f:facet name="header">
                             date d'invitation
                         </f:facet>
-        <span>#{subscriber.sendingDateString}</span>
+        <span>#{guest.sendingDateString}</span>
     </p:column>
     <f:facet name="footer">
-        <ui:fragment rendered="#{eventManagement.size == 1}">
+        <ui:fragment rendered="#{eventManagement.guests.size() == 1}">
                             Vous avez invité une personne à cet évènement.
                         </ui:fragment>
-        <ui:fragment rendered="#{eventManagement.size == 0}">
+        <ui:fragment rendered="#{eventManagement.guests.size() == 0}">
                             Vous n'avez encore invité personne à cet évènement.
                         </ui:fragment>
-        <ui:fragment rendered="#{eventManagement.size >= 2}">
-                            Vous avez invité #{eventManagement.size} personnes à cet évènement.
+        <ui:fragment rendered="#{eventManagement.guests.size() >= 2}">
+                            Vous avez invité #{eventManagement.guests.size()} personnes à cet évènement.
                         </ui:fragment>
     </f:facet>
 </p:dataTable>

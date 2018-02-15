@@ -18,7 +18,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.logging.log4j.LogManager;
 
-import com.website.services.EventService;
+import com.website.persistence.EventService;
 
 @WebFilter("/*")
 public class FlashScopeFilter implements Filter {

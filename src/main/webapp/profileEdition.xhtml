@@ -6,7 +6,7 @@
     xmlns:p="http://primefaces.org/ui">
 <h:head>
     <meta charset="UTF-8"></meta>
-    <title>Profile</title>
+    <title>#{profileEdition.webPage.title}</title>
     <link
         href="css/common.css"
         rel="stylesheet"
@@ -32,9 +32,13 @@
 					applyStyle();
 	</script>
     <ui:include src="/includes/banner.xhtml" />
-    <ui:include src="/includes/menu.xhtml" />
+    <ui:include src="/includes/menu.xhtml">
+    <ui:param
+            name="currentWebPage"
+            value="#{profileEdition.webPage}" />
+    </ui:include>
     <div class="wrapper">
-        <h1>Édition du profil</h1>
+        <h1>#{profileEdition.webPage.title}</h1>
         <div class="frame" style="background-color: rgba(255, 255, 255, 0.8) !important;">
             <img class="image" src="/images/under_construction.gif"></img>
         </div>

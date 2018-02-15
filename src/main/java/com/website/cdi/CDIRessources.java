@@ -7,14 +7,14 @@ import javax.mail.Session;
 import javax.sql.DataSource;
 
 @ApplicationScoped
-public class CDIRessources {
-    @Produces
-    @Eventsdb
-    @Resource(lookup = "java:jboss/DataSources/eventsdb")
-    private DataSource eventsdb;
+public class CDIRessources
+{
+	@Produces
+	@Website
+	@Resource(lookup = "java:jboss/DataSources/website")
+	private DataSource website;
 
-    @Produces
-    @Resource(name = "java:jboss/mail/Gmail")
-    private Session session;
-
+	@Produces
+	@Resource(name = "java:jboss/mail/gmail")
+	private Session session;
 }

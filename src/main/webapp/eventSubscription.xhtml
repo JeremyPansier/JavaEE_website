@@ -8,11 +8,11 @@
     <f:viewParam
         name="token"
         value="#{eventSubscription.hash}" />
-    <f:viewAction action="#{eventSubscription.init}" />
+    <f:viewAction action="#{eventSubscription.load}" />
 </f:metadata>
 <h:head>
     <meta charset="UTF-8"></meta>
-    <title>Subscription</title>
+    <title>#{eventSubscription.webPage.title}</title>
     <link
         href="css/common.css"
         rel="stylesheet"
@@ -38,7 +38,7 @@
 		applyStyle();
 	</script>
     <div class="wrapper">
-        <h1>Souscription à l'évènement</h1>
+        <h1>#{eventSubscription.webPage.title}</h1>
         <br />
         <h2 class="center theme1">#{eventSubscription.event.title}</h2>
         <br />
@@ -53,16 +53,12 @@
             <p:commandButton
                 class="button"
                 value="Je serai présent"
-                actionListener="#{eventSubscription.choose('ACCEPT')}" />
+                actionListener="#{eventSubscription.accept()}" />
             <p:commandButton
                 class="button"
                 value="Je serai absent"
-                actionListener="#{eventSubscription.choose('DECLINE')}" />
+                actionListener="#{eventSubscription.decline()}" />
         </h:form>
-        <br />
-        <br />
-        <br />
-        <p>votre email est : #{eventSubscription.user.email}</p>
     </div>
 </body>
 </html>

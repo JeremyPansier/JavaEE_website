@@ -9,11 +9,11 @@
     <f:viewParam
         name="eventId"
         value="#{eventManagement.id}" />
-    <f:viewAction action="#{eventManagement.init}" />
+    <f:viewAction action="#{eventManagement.load}" />
 </f:metadata>
 <h:head>
     <meta charset="UTF-8"></meta>
-    <title>Management</title>
+    <title>#{eventManagement.webPage.title}</title>
     <link
         href="css/common.css"
         rel="stylesheet"
@@ -51,11 +51,12 @@
             name="eventId"
             value="#{eventManagement.event.id}" />
         <ui:param
-            name="webpagename"
-            value="Gestion de l'évènement" />
+            name="currentWebPage"
+            value="#{eventManagement.webPage}" />
     </ui:include>
     <div class="wrapper">
-        <h1>Inviter des amis à l'évènement :</h1>
+    <h1>#{eventManagement.webPage.title}</h1>
+        <h2>Inviter des amis à l'évènement :</h2>
         <h2 class="center theme1">#{eventManagement.event.title}</h2>
         <br />
         <h:form>
@@ -81,7 +82,7 @@
             <p>Entrer les emails des personnes à inviter séparés par un point virgule</p>
             <p:inputText
                 class="form frame"
-                value="#{eventManagement.emailList}"
+                value="#{eventManagement.emails}"
                 p:placeholder="exemple : nom1@box.com;nom2@box.fr;nom3@box.net" />
             <p:dialog
                 widgetVar="statusDialog"
@@ -98,8 +99,8 @@
             <p:commandButton
                 class="button"
                 value="Valider !"
-                update="subscribers"
-                actionListener="#{eventManagement.addSubscribers}"
+                update="guests"
+                actionListener="#{eventManagement.addGuests}"
                 onclick="document.getElementById('table').style.display = 'block'"
                 onstart="PF('statusDialog').show()"
                 onsuccess="PF('statusDialog').hide()">
@@ -113,9 +114,9 @@
             <br />
             <div id="table">
                 <p:dataTable
-                    id="subscribers"
-                    value="#{eventManagement.subscribers}"
-                    var="subscriber"
+                    id="guests"
+                    value="#{eventManagement.guests}"
+                    var="guest"
                     paginator="true"
                     rows="5"
                     paginatorAlwaysVisible="false">
@@ -126,12 +127,12 @@
                         <f:facet name="header">
                         	email
                        	</f:facet>
-                        <div class="main">#{subscriber.email}</div>
+                        <div class="main">#{guest.user.email}</div>
                         <p:commandButton
                             class="littleButton button"
                             value="Exclure !"
-                            actionListener="#{eventManagement.removeSubscriber(subscriber)}"
-                            update="subscribers">
+                            actionListener="#{eventManagement.removeGuest(guest)}"
+                            update="guests">
                             <p:confirm
                                 header="Confirmation"
                                 message="Confirmer ?"
@@ -146,25 +147,25 @@
                         <div class="center">
                             <h:graphicImage
                                 class="icon"
-                                alt="#{subscriber.isPresentString}"
-                                value="#{subscriber.iconPath}" />
+                                title="#{guest.status.getDescription()}"
+                                value="#{guest.status.getIconPath()}" />
                         </div>
                     </p:column>
                     <p:column class="center emaildate">
                         <f:facet name="header">
                         	date d'invitation
                         </f:facet>
-                        <span>#{subscriber.sendingDateString}</span>
+                        <span>#{guest.getFormattedEmailDate()}</span>
                     </p:column>
                     <f:facet name="footer">
-                        <ui:fragment rendered="#{eventManagement.size == 0}">
+                        <ui:fragment rendered="#{eventManagement.guests.size() == 0}">
                         	Personne n'est invité à cet évènement.
                         </ui:fragment>
-                        <ui:fragment rendered="#{eventManagement.size == 1}">
+                        <ui:fragment rendered="#{eventManagement.guests.size() == 1}">
                             Vous avez invité une personne à cet évènement.
                         </ui:fragment>
-                        <ui:fragment rendered="#{eventManagement.size >= 2}">
-                        	Vous avez invité #{eventManagement.size} personnes à cet évènement.
+                        <ui:fragment rendered="#{eventManagement.guests.size() >= 2}">
+                        	Vous avez invité #{eventManagement.guests.size()} personnes à cet évènement.
                         </ui:fragment>
                     </f:facet>
                 </p:dataTable>
@@ -175,7 +176,7 @@
     	switchVisibility('description');
 	</script>
     <script type="text/javascript">
-        hideIfEmpty('table', #{eventManagement.size});
+        hideIfEmpty('table', #{eventManagement.guests.size()});
     </script>
 </body>
 </html>

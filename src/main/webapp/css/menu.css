@@ -16,7 +16,6 @@
 }
 
 .tab {
-	text-transform: uppercase;
 	padding-left: 5px;
 	padding-right: 5px;
 }
@@ -28,15 +27,6 @@
 .tab:last-child {
 	padding-right: 0;
 }
-
-/* .tab:nth-child(n+2) {
-	margin-left: 5px;
-}
-
-.tab:nth-last-child(n+2) {
-	margin-right: 5px;
-}
- */
 
 .tab:hover {
 	cursor: default;

@@ -17,27 +17,27 @@
     <div>
         <a
             class="link"
-            href="/faces/home.xhtml">Accueil</a>
+            href="#{home.webPage.createJsfUrl()}">#{home.webPage.name}</a>
     </div>
-    <ui:fragment rendered="#{eventId != null}">
+    <ui:fragment rendered="#{webPagesTreeManager.checkChild(currentWebPage,eventsList.webPage)}">
         <div><span>&#160;>&#160;</span></div>
         <div>
             <a
                 class="link"
-                href="eventsList.xhtml">Évènements</a>
+                href="#{eventsList.webPage.createJsfUrl()}">#{eventsList.webPage.name}</a>
         </div>
     </ui:fragment>
-    <ui:fragment rendered="#{pictureId != null}">
+    <ui:fragment rendered="#{webPagesTreeManager.checkChild(currentWebPage, picturesGallery.webPage)}">
         <div><span>&#160;>&#160;</span></div>
         <div>
             <a
                 class="link"
-                href="picturesGallery.xhtml">Gallerie</a>
+                href="#{picturesGallery.webPage.createJsfUrl()}">#{picturesGallery.webPage.name}</a>
         </div>
     </ui:fragment>
-    <ui:fragment rendered="#{webpagename != null}">
+    <ui:fragment rendered="#{currentWebPage != null}">
         <div><span>&#160;>&#160;</span></div>
-        <div><span>#{webpagename}</span></div>
+        <div><span>#{currentWebPage.name}</span></div>
     </ui:fragment>
 </div>
 <nav>
@@ -46,34 +46,29 @@
             <p:commandButton
                 class="button"
                 value="Profil"
-                actionListener="#{redirector.redirect('profileEdition')}" />
+                actionListener="#{redirector.redirect(profileEdition.webPage.createUrl())}" />
         </li>
         <li class="tab">
             <p:commandButton
                 class="button"
-                value="Évènements"
-                actionListener="#{redirector.redirect('eventsList')}" />
-            <ui:fragment rendered="#{eventId != null}">
+                value="#{eventsList.webPage.name}"
+                actionListener="#{redirector.redirect(eventsList.webPage.createUrl())}" />
+            <ui:fragment rendered="#{webPagesTreeManager.checkChild(currentWebPage,eventsList.webPage)}">
                 <ul class="submenu">
                     <li>
                         <p:commandButton
-                            value="Liste"
-                            actionListener="#{redirector.redirect('eventsList')}" />
+                            value="#{eventEdition.webPage.name}"
+                            actionListener="#{redirector.redirect(eventEdition.webPage.createUrl('eventId', eventId))}" />
                     </li>
                     <li>
                         <p:commandButton
-                            value="Édition"
-                            actionListener="#{redirector.redirectEvent('eventEdition', eventId)}" />
+                            value="#{eventManagement.webPage.name}"
+                            actionListener="#{redirector.redirect(eventManagement.webPage.createUrl('eventId', eventId))}" />
                     </li>
                     <li>
                         <p:commandButton
-                            value="Gestion"
-                            actionListener="#{redirector.redirectEvent('eventManagement', eventId)}" />
-                    </li>
-                    <li>
-                        <p:commandButton
-                            value="Stats"
-                            actionListener="#{redirector.redirectEvent('eventStat', eventId)}" />
+                            value="#{eventReport.webPage.name}"
+                            actionListener="#{redirector.redirect(eventReport.webPage.createUrl('eventId', eventId))}" />
                     </li>
                 </ul>
             </ui:fragment>
@@ -81,24 +76,19 @@
         <li class="tab">
             <p:commandButton
                 class="button"
-                value="Gallerie"
-                actionListener="#{redirector.redirect('picturesGallery')}" />
-            <ui:fragment rendered="#{pictureId != null}">
+                value="#{picturesGallery.webPage.name}"
+                actionListener="#{redirector.redirect(picturesGallery.webPage.createUrl())}" />
+            <ui:fragment rendered="#{webPagesTreeManager.checkChild(currentWebPage,picturesGallery.webPage)}">
                 <ul class="submenu">
                     <li>
                         <p:commandButton
-                            value="Liste"
-                            actionListener="#{redirector.redirect('picturesGallery')}" />
+                            value="#{pictureEdition.webPage.name}"
+                            actionListener="#{redirector.redirect(pictureEdition.webPage.createUrl('pictureId', pictureId))}" />
                     </li>
                     <li>
                         <p:commandButton
-                            value="Édition"
-                            actionListener="#{redirector.redirectPicture('pictureEdition', pictureId)}" />
-                    </li>
-                    <li>
-                        <p:commandButton
-                            value="Stats"
-                            actionListener="#{redirector.redirectPicture('pictureStat', pictureId)}" />
+                            value="#{pictureReport.webPage.name}"
+                            actionListener="#{redirector.redirect(pictureReport.webPage.createUrl('pictureId', pictureId))}" />
                     </li>
                 </ul>
             </ui:fragment>

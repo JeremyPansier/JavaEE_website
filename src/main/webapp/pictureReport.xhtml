@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+<f:metadata>
+    <f:viewParam
+        name="pictureId"
+        value="#{pictureReport.id}" />
+    <f:viewAction action="#{pictureReport.load}" />
+</f:metadata>
+<h:head>
+    <meta charset="UTF-8"></meta>
+    <title>#{pictureReport.webPage.title}</title>
+    <link
+        href="css/common.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/commonColors.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/button.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <link
+        href="css/text.css"
+        rel="stylesheet"
+        type="text/css"></link>
+    <script
+        type="text/javascript"
+        src="js/cssLoader.js"></script>
+</h:head>
+<body>
+    <script type="text/javascript">
+					applyStyle();
+				</script>
+    <ui:include src="/includes/banner.xhtml" />
+    <ui:include src="/includes/menu.xhtml">
+        <ui:param
+            name="pictureId"
+            value="#{pictureReport.picture.id}" />
+        <ui:param
+            name="currentWebPage"
+            value="#{pictureReport.webPage}" />
+    </ui:include>
+    <h:form enctype="multipart/form-data">
+        <!--         this empty form seems to be essential for the primefaces buttons listeners loading... -->
+    </h:form>
+    <div class="wrapper">
+        <h1>#{pictureReport.picture.title}</h1>
+        <h2 class="center theme1">#{pictureReport.picture.title}</h2>
+        <br />
+        <div class="frame" style="background-color: rgba(255, 255, 255, 0.8) !important;">
+            <img class="image" src="/images/under_construction.gif"></img>
+        </div>
+    </div>
+</body>
+</html>

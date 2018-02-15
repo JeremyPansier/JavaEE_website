@@ -13,7 +13,7 @@
 </f:metadata>
 <h:head>
     <meta charset="UTF-8"></meta>
-    <title>Edition</title>
+    <title>#{eventEdition.webPage.title}</title>
     <link
         href="css/common.css"
         rel="stylesheet"
@@ -44,11 +44,11 @@
             name="eventId"
             value="#{eventEdition.event.id}" />
         <ui:param
-            name="webpagename"
-            value="Édition d'évènement" />
+            name="currentWebPage"
+            value="#{eventEdition.webPage}" />
     </ui:include>
     <div class="wrapper">
-        <h1>Édition d'évènement</h1>
+        <h1>#{eventEdition.webPage.title}</h1>
         <p>Insérer un titre et une description :</p>
         <h:form enctype="multipart/form-data">
             <p:inputText

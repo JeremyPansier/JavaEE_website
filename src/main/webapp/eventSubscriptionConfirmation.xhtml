@@ -8,11 +8,11 @@
     <f:viewParam
         name="token"
         value="#{eventSubscriptionConfirmation.hash}" />
-    <f:viewAction action="#{eventSubscriptionConfirmation.init}" />
+    <f:viewAction action="#{eventSubscriptionConfirmation.load}" />
 </f:metadata>
 <h:head>
     <meta charset="UTF-8"></meta>
-    <title>Confirmation</title>
+    <title>#{eventSubscriptionConfirmation.webPage.title}</title>
     <link
         href="css/common.css"
         rel="stylesheet"
@@ -38,7 +38,7 @@
 		applyStyle();
 	</script>
     <div class="wrapper">
-        <h1>Vous serez #{eventSubscriptionConfirmation.subscriber.isPresentString} a l'évènement :</h1>
+        <h1>Vous serez #{eventSubscriptionConfirmation.guest.status.getDescription()} a l'évènement :</h1>
         <br />
         <h2 class="center theme1">#{eventSubscriptionConfirmation.event.title}</h2>
         <br />
