@@ -14,8 +14,8 @@ import com.website.models.entities.Event;
 import com.website.models.entities.Guest;
 import com.website.models.entities.User;
 import com.website.tools.EventServiceException;
-import com.website.tools.GuestStatus;
-import com.website.tools.Hasher;
+import com.website.tools.data.GuestStatus;
+import com.website.tools.security.Hasher;
 
 /**
  * The service managing the guest persistence.</br>
@@ -23,8 +23,8 @@ import com.website.tools.Hasher;
  * @author Jérémy Pansier
  */
 @Stateless
-public class GuestService
-{
+public class GuestService {
+
 	/** The entity manager binding the model to the persistence entity. */
 	@PersistenceContext(unitName = "website")
 	private EntityManager entityManager;
@@ -53,22 +53,16 @@ public class GuestService
 	/** The hash persistence data category name. */
 	private static final String HASH = PersistenceDataCategories.HASH.getName();
 
-	public void insertGuests(final Event event, final String emailList)
-	{
-		for (final String email : emailList.split(";"))
-		{
+	public void insertGuests(final Event event, final String emailList) {
+		for (final String email : emailList.split(";")) {
 			User user;
-			if (userService.selectUserByEmail(email) == null)
-			{
+			if (userService.selectUserByEmail(email) == null) {
 				user = userService.insertUser(email);
-			}
-			else
-			{
+			} else {
 				user = userService.selectUserByEmail(email);
 			}
 			String hash = selectHashByEventIdAndUserId(event.getId(), user.getId());
-			if (hash == null)
-			{
+			if (hash == null) {
 				final Guest guest = insertGuest(event, user);
 				hash = guest.getHash();
 			}
@@ -76,160 +70,128 @@ public class GuestService
 		}
 	}
 
-	public Guest insertGuest(final Event event, final User user)
-	{
+	public Guest insertGuest(final Event event, final User user) {
 		final Guest guest = new Guest(user, event);
 		guest.setHash(Hasher.sha1ToHex(user.getEmail() + "#" + event.getId()));
 		entityManager.persist(guest);
 		return guest;
 	}
 
-	public String selectHashByEventIdAndUserId(final Long eventId, final Long userId)
-	{
-		try
-		{
+	public String selectHashByEventIdAndUserId(final Long eventId, final Long userId) {
+		try {
 			final String jpql = "SELECT guest.hash FROM Guest guest WHERE guest.event.id = :eventId AND guest.user.id = :userId";
 			final TypedQuery<String> query = entityManager.createQuery(jpql, String.class);
 			query.setParameter(EVENTID, eventId);
 			query.setParameter(USERID, userId);
 			return query.getSingleResult();
 		}
-		catch (final NoResultException e)
-		{
+		catch (final NoResultException e) {
 			return null;
 		}
 	}
 
-	public Guest selectGuestByHash(final String hash)
-	{
-		try
-		{
+	public Guest selectGuestByHash(final String hash) {
+		try {
 			final String jpql = "SELECT guest FROM Guest guest WHERE guest.hash = :hash";
 			final TypedQuery<Guest> query = entityManager.createQuery(jpql, Guest.class);
 			query.setParameter(HASH, hash);
 			return query.getSingleResult();
 		}
-		catch (final NoResultException e)
-		{
+		catch (final NoResultException e) {
 			return null;
 		}
 	}
 
-	public List<Guest> selectGuestsByEventId(final Long eventId)
-	{
+	public List<Guest> selectGuestsByEventId(final Long eventId) {
 		final String jpql = "SELECT guest FROM Guest guest WHERE guest.event.id = :eventId";
 		final TypedQuery<Guest> query = entityManager.createQuery(jpql, Guest.class);
 		query.setParameter(EVENTID, eventId);
 		return query.getResultList();
 	}
 
-	public Long countGuestsByEventAndByStatus(final Long eventId, final int accept)
-	{
-		try
-		{
+	public Long countGuestsByEventAndByStatus(final Long eventId, final int accept) {
+		try {
 			final String jpql = "SELECT COUNT(guest) FROM Guest guest WHERE guest.event.id = :eventId AND guest.status = :status";
 			final TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);
 			query.setParameter(EVENTID, eventId);
 			query.setParameter(STATUS, accept);
 			return query.getSingleResult();
 		}
-		catch (final NoResultException e)
-		{
+		catch (final NoResultException e) {
 			return 0L;
 		}
 	}
 
-	public Long countGuestsBySatusAndByEventAfterEmailReading(final Long eventId, final int accept)
-	{
-		try
-		{
-			final String jpql = "SELECT COUNT(guest) FROM Guest guest WHERE guest.event.id=:eventId AND guest.emailstatus = 1 AND guest.status=:status";
+	public Long countGuestsBySatusAndByEventAfterBeingInformed(final Long eventId, final int accept) {
+		try {
+			final String jpql = "SELECT COUNT(guest) FROM Guest guest WHERE guest.event.id=:eventId AND guest.informed = 1 AND guest.status=:status";
 			final TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);
 			query.setParameter(EVENTID, eventId);
 			query.setParameter(STATUS, accept);
 			return query.getSingleResult();
 		}
-		catch (final NoResultException e)
-		{
+		catch (final NoResultException e) {
 			return 0L;
 		}
 	}
 
-	public boolean countGuestsByHash(final String hash)
-	{
-		try
-		{
+	public boolean countGuestsByHash(final String hash) {
+		try {
 			final String jpql = "SELECT COUNT(guest) FROM Guest guest WHERE guest.hash=:hash";
 			final TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);
 			query.setParameter(HASH, hash);
 			return query.getSingleResult() == 1L;
 		}
-		catch (final NoResultException e)
-		{
+		catch (final NoResultException e) {
 			return false;
 		}
 	}
 
-	public Long countReadEmailsByEvent(final Long eventId)
-	{
-		try
-		{
-			final String jpql = "SELECT COUNT(guest) FROM Guest guest WHERE guest.event.id = :eventId AND guest.emailstatus = 1";
+	public Long countInformedGuestsByEvent(final Long eventId) {
+		try {
+			final String jpql = "SELECT COUNT(guest) FROM Guest guest WHERE guest.event.id = :eventId AND guest.informed = 1";
 			final TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);
 			query.setParameter(EVENTID, eventId);
 			return query.getSingleResult();
 		}
-		catch (final NoResultException e)
-		{
+		catch (final NoResultException e) {
 			return 0L;
 		}
 	}
 
-	public void updateGuestStatusByHash(final String hash, final GuestStatus status)
-	{
-		try
-		{
+	public void updateGuestStatusByHash(final String hash, final GuestStatus status) {
+		try {
 			final Guest guest = selectGuestByHash(hash);
-			if (guest != null)
-			{
+			if (guest != null) {
 				guest.setStatus(status);
 			}
 		}
-		catch (final Exception e)
-		{
+		catch (final Exception e) {
 			throw new EventServiceException("Error with update guest status for hash = " + hash, e);
 		}
 	}
 
-	public void updateGuestsEmailstatusByHash(final String hash, final int emailstatus)
-	{
-		try
-		{
+	public void updateGuestInformedByHash(final String hash, final int informed) {
+		try {
 			final Guest guest = selectGuestByHash(hash);
-			if (guest != null)
-			{
-				guest.setEmailstatus(emailstatus);
+			if (guest != null) {
+				guest.setInformed(informed);
 			}
 		}
-		catch (final Exception e)
-		{
-			throw new EventServiceException("Error with update guest's emailstatus for hash" + hash, e);
+		catch (final Exception e) {
+			throw new EventServiceException("The guest with the hash " + hash + " doesn't exist or have been excluded", e);
 		}
 	}
 
-	public void deleteGuest(final Long id)
-	{
+	public void deleteGuest(final Long id) {
 		final Guest guest = entityManager.find(Guest.class, id);
 		entityManager.remove(guest);
 	}
 
-	public void deleteGuestsByEventId(final Long idEvent)
-	{
+	public void deleteGuestsByEventId(final Long idEvent) {
 		final List<Guest> guests = selectGuestsByEventId(idEvent);
-		for (final Guest guest : guests)
-		{
+		for (final Guest guest : guests) {
 			entityManager.remove(guest);
 		}
 	}
-
 }

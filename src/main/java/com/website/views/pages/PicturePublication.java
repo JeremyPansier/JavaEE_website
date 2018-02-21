@@ -14,11 +14,11 @@ import com.website.models.entities.Picture;
 import com.website.persistence.AuthorService;
 import com.website.persistence.PictureService;
 import com.website.tools.EventServiceException;
-import com.website.tools.HttpErrorHandler;
-import com.website.tools.MessageManager;
-import com.website.tools.Redirector;
-import com.website.tools.SessionManager;
-import com.website.tools.Uploader;
+import com.website.tools.context.HttpErrorHandler;
+import com.website.tools.context.MessageManager;
+import com.website.tools.context.Redirector;
+import com.website.tools.context.SessionManager;
+import com.website.tools.file.Uploader;
 import com.website.views.WebPages;
 
 /**

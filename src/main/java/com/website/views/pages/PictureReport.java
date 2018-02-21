@@ -10,12 +10,12 @@ import javax.inject.Named;
 import com.website.models.entities.Author;
 import com.website.models.entities.Picture;
 import com.website.persistence.AuthorService;
-import com.website.persistence.EventService;
 import com.website.persistence.PictureService;
-import com.website.tools.ContextManager;
+import com.website.persistence.VisitService;
 import com.website.tools.EventServiceException;
-import com.website.tools.HttpErrorHandler;
-import com.website.tools.SessionManager;
+import com.website.tools.context.ContextManager;
+import com.website.tools.context.HttpErrorHandler;
+import com.website.tools.context.SessionManager;
 import com.website.views.WebPages;
 
 /**
@@ -26,14 +26,14 @@ import com.website.views.WebPages;
  */
 @Named
 @ViewScoped
-public class PictureReport implements Serializable
-{
+public class PictureReport implements Serializable {
+
 	/** The serial version UID. */
 	private static final long serialVersionUID = 4582347711226573145L;
 
-	/** The service managing the event persistence. */
+	/** The service managing the visit persistence. */
 	@Inject
-	private EventService eventService;
+	private VisitService visitService;
 
 	/** The service managing the picture persistence. */
 	@Inject
@@ -65,15 +65,12 @@ public class PictureReport implements Serializable
 	 * Initializes the session user name and the author just after the construction.
 	 */
 	@PostConstruct
-	public void init()
-	{
-		try
-		{
+	public void init() {
+		try {
 			sessionUserName = SessionManager.checkSessionUserName();
 			author = authorService.selectAuthorByAuthorName(sessionUserName);
 		}
-		catch (final EventServiceException eventServiceException)
-		{
+		catch (final EventServiceException eventServiceException) {
 			HttpErrorHandler.print500(eventServiceException);
 			return;
 		}
@@ -82,12 +79,9 @@ public class PictureReport implements Serializable
 	/**
 	 * Sets the picture and the views count on the web page loading, depending on the HTTP request parameter:
 	 */
-	public void load()
-	{
-		try
-		{
-			if (!pictureService.isPicturesAuthor(id, sessionUserName))
-			{
+	public void load() {
+		try {
+			if (!pictureService.isPicturesAuthor(id, sessionUserName)) {
 				return;
 			}
 			final String websiteURL = ContextManager.getWebsiteUrl();
@@ -95,20 +89,17 @@ public class PictureReport implements Serializable
 			picture = pictureService.selectPictureByPictureId(id);
 
 			final String url = websiteURL + "/" + "FilesServlet" + "/" + picture.getFilename();
-			viewsCount = eventService.countVisitsByUrlGroupByUrl(url);
+			viewsCount = visitService.countVisitsByUrlGroupByUrl(url);
 		}
-		catch (final EventServiceException e)
-		{
+		catch (final EventServiceException e) {
 			HttpErrorHandler.print500(e);
 			return;
 		}
-		catch (final NumberFormatException e)
-		{
+		catch (final NumberFormatException e) {
 			HttpErrorHandler.print404(e, "The http parameter cannot be formatted to Integer. Method: " + Thread.currentThread().getStackTrace()[1].getMethodName() + " Class: " + this.getClass().getName());
 			return;
 		}
-		catch (final IllegalStateException e)
-		{
+		catch (final IllegalStateException e) {
 			HttpErrorHandler.print500(e, "Forward issue");
 			return;
 		}
@@ -119,8 +110,7 @@ public class PictureReport implements Serializable
 	 *
 	 * @return the web page
 	 */
-	public WebPages getWebPage()
-	{
+	public WebPages getWebPage() {
 		return WEB_PAGE;
 	}
 
@@ -129,8 +119,7 @@ public class PictureReport implements Serializable
 	 *
 	 * @return the id
 	 */
-	public Long getId()
-	{
+	public Long getId() {
 		return id;
 	}
 
@@ -139,8 +128,7 @@ public class PictureReport implements Serializable
 	 *
 	 * @param id the new id
 	 */
-	public void setId(final Long id)
-	{
+	public void setId(final Long id) {
 		this.id = id;
 	}
 
@@ -149,8 +137,7 @@ public class PictureReport implements Serializable
 	 *
 	 * @return the picture
 	 */
-	public Picture getPicture()
-	{
+	public Picture getPicture() {
 		return picture;
 	}
 
@@ -159,8 +146,7 @@ public class PictureReport implements Serializable
 	 *
 	 * @return the author
 	 */
-	public Author getAuthor()
-	{
+	public Author getAuthor() {
 		return author;
 	}
 
@@ -169,8 +155,7 @@ public class PictureReport implements Serializable
 	 *
 	 * @return the views count
 	 */
-	public Long getViewsCount()
-	{
+	public Long getViewsCount() {
 		return viewsCount;
 	}
 }

@@ -9,12 +9,12 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.website.models.entities.Visit;
-import com.website.persistence.EventService;
+import com.website.persistence.VisitService;
 import com.website.tools.EventServiceException;
-import com.website.tools.HttpErrorHandler;
-import com.website.tools.Redirector;
-import com.website.tools.SessionManager;
-import com.website.tools.TableManager;
+import com.website.tools.context.HttpErrorHandler;
+import com.website.tools.context.Redirector;
+import com.website.tools.context.SessionManager;
+import com.website.tools.data.TableManager;
 import com.website.views.WebPages;
 
 /**
@@ -25,14 +25,14 @@ import com.website.views.WebPages;
  */
 @Named
 @RequestScoped
-public class VisitsRecording
-{
+public class VisitsRecording {
+
 	/** The web page. */
 	public static final WebPages WEB_PAGE = WebPages.VISITS_RECORDING;
 
-	/** The service managing the event persistence. */
+	/** The service managing the visit persistence. */
 	@Inject
-	private EventService eventService;
+	private VisitService visitService;
 
 	/** The visited web pages. */
 	private List<Visit> webpages;
@@ -47,35 +47,29 @@ public class VisitsRecording
 	 * Initializes the web pages and the files just after the construction.
 	 */
 	@PostConstruct
-	public void init()
-	{
-		try
-		{
+	public void init() {
+		try {
 			final String username = SessionManager.checkSessionUserName();
-			if ("admin".compareTo(username) != 0)
-			{
+			if ("admin".compareTo(username) != 0) {
 				HttpErrorHandler.print401("L'autheur n'a pas accès a cette page");
 				return;
 			}
-			final List<Visit> visits = eventService.selectVisits();
+			final List<Visit> visits = visitService.selectVisits();
 			webpages = TableManager.groupByName(visits, TableManager.WEBPAGES);
 			files = TableManager.groupByName(visits, "files");
 			Collections.sort(webpages);
 			Collections.sort(files);
 
-			if (!webpages.isEmpty())
-			{
+			if (!webpages.isEmpty()) {
 				final StringBuilder chartRowBuilder = new StringBuilder("['" + webpages.get(0).getResourceName() + "', " + webpages.get(0).getCount() + "]");
-				for (int i = 1; i < webpages.size(); i++)
-				{
+				for (int i = 1; i < webpages.size(); i++) {
 					chartRowBuilder.append(", ['" + webpages.get(i).getResourceName() + "', " + webpages.get(i).getCount() + "]");
 				}
 				chartRow = chartRowBuilder.toString();
 			}
 
 		}
-		catch (final EventServiceException e)
-		{
+		catch (final EventServiceException e) {
 			HttpErrorHandler.print500(e);
 			return;
 		}
@@ -86,8 +80,7 @@ public class VisitsRecording
 	 *
 	 * @return the web page
 	 */
-	public WebPages getWebPage()
-	{
+	public WebPages getWebPage() {
 		return WEB_PAGE;
 	}
 
@@ -96,8 +89,7 @@ public class VisitsRecording
 	 *
 	 * @return the visited web pages
 	 */
-	public List<Visit> getWebpages()
-	{
+	public List<Visit> getWebpages() {
 		return webpages;
 	}
 
@@ -106,8 +98,7 @@ public class VisitsRecording
 	 *
 	 * @return the down-loaded files
 	 */
-	public List<Visit> getFiles()
-	{
+	public List<Visit> getFiles() {
 		return files;
 	}
 
@@ -116,22 +107,18 @@ public class VisitsRecording
 	 *
 	 * @return the chart row
 	 */
-	public String getChartRow()
-	{
+	public String getChartRow() {
 		return chartRow;
 	}
 
 	/**
 	 * Delete all the recorded visits.
 	 */
-	public void deleteVisits()
-	{
-		try
-		{
-			eventService.deleteVisits();
+	public void deleteVisits() {
+		try {
+			visitService.deleteVisits();
 		}
-		catch (final EventServiceException eventServiceException)
-		{
+		catch (final EventServiceException eventServiceException) {
 			HttpErrorHandler.print500(eventServiceException);
 			return;
 		}

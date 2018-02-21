@@ -11,9 +11,9 @@ import com.website.models.entities.Author;
 import com.website.models.entities.Profile;
 import com.website.persistence.AuthorService;
 import com.website.tools.EventServiceException;
-import com.website.tools.HttpErrorHandler;
-import com.website.tools.Redirector;
-import com.website.tools.SessionManager;
+import com.website.tools.context.HttpErrorHandler;
+import com.website.tools.context.Redirector;
+import com.website.tools.context.SessionManager;
 import com.website.views.WebPages;
 
 /**

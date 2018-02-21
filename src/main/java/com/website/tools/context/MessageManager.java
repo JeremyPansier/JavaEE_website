@@ -1,4 +1,4 @@
-package com.website.tools;
+package com.website.tools.context;
 
 /**
  * The message manager.</br>

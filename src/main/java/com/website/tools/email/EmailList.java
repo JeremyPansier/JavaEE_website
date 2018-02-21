@@ -1,4 +1,4 @@
-package com.website.cdi;
+package com.website.tools.email;
 
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.FIELD;

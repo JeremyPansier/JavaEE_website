@@ -9,9 +9,9 @@ import com.website.models.entities.Guest;
 import com.website.persistence.EventService;
 import com.website.persistence.GuestService;
 import com.website.tools.EventServiceException;
-import com.website.tools.GuestStatus;
-import com.website.tools.HttpErrorHandler;
-import com.website.tools.Redirector;
+import com.website.tools.context.HttpErrorHandler;
+import com.website.tools.context.Redirector;
+import com.website.tools.data.GuestStatus;
 import com.website.views.WebPages;
 
 /**

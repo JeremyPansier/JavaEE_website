@@ -48,14 +48,6 @@ public class EventService
 		return e.getId();
 	}
 
-	public void insertVisit(final String url, final String ip)
-	{
-		final Visit s = new Visit();
-		s.setUrl(url);
-		s.setIp(ip);
-		entityManager.persist(s);
-	}
-
 	public Event selectEventByEventId(final Long id)
 	{
 		return entityManager.find(Event.class, id);
@@ -67,28 +59,6 @@ public class EventService
 		final TypedQuery<Event> query = entityManager.createQuery(jpql, Event.class);
 		query.setParameter(NAME, authorName);
 		return query.getResultList();
-	}
-
-	public List<Visit> selectVisits()
-	{
-		final String jpql = "SELECT v FROM Visit v";
-		final TypedQuery<Visit> query = entityManager.createQuery(jpql, Visit.class);
-		return query.getResultList();
-	}
-
-	public Long countVisitsByUrlGroupByUrl(final String url)
-	{
-		try
-		{
-			final String jpql = "SELECT COUNT(v) FROM Visit v WHERE v.url = :url GROUP BY v.url";
-			final TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);
-			query.setParameter("url", url);
-			return query.getSingleResult();
-		}
-		catch (final NoResultException e)
-		{
-			return 0L;
-		}
 	}
 
 	public boolean countEventsById(final Long eventId)
@@ -123,15 +93,6 @@ public class EventService
 		guestService.deleteGuestsByEventId(id);
 		final Event event = entityManager.find(Event.class, id);
 		entityManager.remove(event);
-	}
-
-	public void deleteVisits()
-	{
-		final List<Visit> visits = selectVisits();
-		for (final Visit visit : visits)
-		{
-			entityManager.remove(visit);
-		}
 	}
 
 }

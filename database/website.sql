@@ -33,9 +33,9 @@ CREATE TABLE `User` (
   `email` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 INSERT INTO `User` (`id`, `email`) VALUES
-(1, 'notread@test.com'),
-(2, 'accept@test.com'),
-(3, 'decline@test.com');
+(1, 'pending@example.com'),
+(2, 'accept@example.com'),
+(3, 'decline@example.com');
 
 DROP TABLE IF EXISTS `Author`;
 CREATE TABLE `Author` (
@@ -53,11 +53,11 @@ CREATE TABLE `Guest` (
   `userId` int(11) NOT NULL,
   `hash` varchar(255) DEFAULT NULL,
   `status` int(1) DEFAULT '0',
-  `emailstatus` int(11) NOT NULL DEFAULT '0',
+  `informed` int(11) NOT NULL DEFAULT '0',
   `emaildate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
-INSERT INTO `Guest` (`id`, `eventId`, `userId`, `hash`, `status`, `emailstatus`, `emaildate`) VALUES
+INSERT INTO `Guest` (`id`, `eventId`, `userId`, `hash`, `status`, `informed`, `emaildate`) VALUES
 (1, 1, 1, '6636D4B9742B791C3616E40D998056A224CB73D8', 0, 0, '2017-01-18 15:19:23'),
 (2, 1, 2, '6636D4B9742B791C3616E40D998056A224CB73D8', 1, 1, '2017-01-18 15:19:23'),
 (3, 1, 3, '6636D4B9742B791C3616E40D998056A224CB73D8', 2, 1, '2017-01-18 15:19:23');

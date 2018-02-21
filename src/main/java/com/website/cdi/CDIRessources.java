@@ -7,10 +7,9 @@ import javax.mail.Session;
 import javax.sql.DataSource;
 
 @ApplicationScoped
-public class CDIRessources
-{
+public class CDIRessources {
+
 	@Produces
-	@Website
 	@Resource(lookup = "java:jboss/DataSources/website")
 	private DataSource website;
 

@@ -3,9 +3,9 @@ package com.website.views.pages;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 
-import com.website.tools.MessageManager;
-import com.website.tools.Redirector;
-import com.website.tools.SessionManager;
+import com.website.tools.context.MessageManager;
+import com.website.tools.context.Redirector;
+import com.website.tools.context.SessionManager;
 import com.website.views.WebPages;
 
 /**

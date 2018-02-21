@@ -1,4 +1,4 @@
-package com.website.tools;
+package com.website.tools.data;
 
 public class EventDataManager
 {

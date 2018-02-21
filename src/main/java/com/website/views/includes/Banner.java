@@ -3,8 +3,8 @@ package com.website.views.includes;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 
-import com.website.tools.MessageManager;
-import com.website.tools.SessionManager;
+import com.website.tools.context.MessageManager;
+import com.website.tools.context.SessionManager;
 
 /**
  * A view for the banner showed on most of this project web pages.</br>

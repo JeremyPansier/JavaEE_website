@@ -7,15 +7,15 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import com.website.cdi.EmailList;
 import com.website.models.entities.Event;
 import com.website.models.entities.Guest;
 import com.website.persistence.AuthorService;
 import com.website.persistence.EventService;
 import com.website.persistence.GuestService;
 import com.website.tools.EventServiceException;
-import com.website.tools.HttpErrorHandler;
-import com.website.tools.SessionManager;
+import com.website.tools.context.HttpErrorHandler;
+import com.website.tools.context.SessionManager;
+import com.website.tools.email.EmailList;
 import com.website.views.WebPages;
 
 /**

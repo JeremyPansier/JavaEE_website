@@ -1,4 +1,4 @@
-package com.website.servlets;
+package com.website.views;
 
 import java.io.IOException;
 
@@ -14,36 +14,47 @@ import org.apache.logging.log4j.Logger;
 
 import com.website.persistence.GuestService;
 import com.website.tools.EventServiceException;
-import com.website.tools.HttpErrorHandler;
+import com.website.tools.context.HttpErrorHandler;
 
-@WebServlet("/ReadEmailTackerServlet")
-public class ReadEmailTrackerServlet extends HttpServlet
-{
-	private static final long serialVersionUID = 1L;
+/**
+ * The email tracker.</br>
+ * Tracks if the email has been opened.
+ *
+ * @author Jérémy Pansier
+ */
+@WebServlet("/OpenedEmailTackerServlet")
+public class OpenedEmailTrackerServlet extends HttpServlet {
+
+	/** The serialVersionUID. */
+	private static final long serialVersionUID = 689631047245938893L;
+
+	/** The Logger. */
 	private static final Logger LOGGER = LogManager.getLogger();
-	private static final int ISREAD = 1;
+
+	/** The code indicating that the guest is aware of the invitation to the event, i.e. he has opened the invitation email. */
+	private static final int INFORMED = 1;
+
 	/** The service managing the guest persistence. */
 	@Inject
 	private GuestService guestService;
 
+	/* (non-Javadoc)
+	 * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse) */
 	@Override
 	protected void doGet(final HttpServletRequest request, final HttpServletResponse response)
-			throws ServletException, IOException
-	{
+			throws ServletException, IOException {
 		final String hash = request.getParameter("msg_id");
-		try
-		{
-			guestService.updateGuestsEmailstatusByHash(hash, ISREAD);
+		try {
+			guestService.updateGuestInformedByHash(hash, INFORMED);
+
 			request.getRequestDispatcher("/images/pixel.png")
 					.forward(request, response);
 		}
-		catch (final EventServiceException e)
-		{
+		catch (final EventServiceException e) {
 			HttpErrorHandler.print500(response, e);
 			return;
 		}
-		catch (final Exception e)
-		{
+		catch (final Exception e) {
 			LOGGER.error("forward issue", e);
 			return;
 		}

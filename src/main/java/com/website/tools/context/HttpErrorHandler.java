@@ -1,9 +1,11 @@
-package com.website.tools;
+package com.website.tools.context;
 
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import com.website.tools.EventServiceException;
 
 public class HttpErrorHandler
 {

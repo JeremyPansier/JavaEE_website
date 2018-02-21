@@ -13,7 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.website.tools.GuestStatus;
+import com.website.persistence.GuestService;
+import com.website.tools.data.GuestStatus;
 
 /**
  * The guest model.</br>
@@ -22,8 +23,7 @@ import com.website.tools.GuestStatus;
  * @author Jérémy Pansier
  */
 @Entity
-public class Guest
-{
+public class Guest {
 
 	/** The id. */
 	@Id
@@ -40,14 +40,21 @@ public class Guest
 	@JoinColumn(name = "eventId")
 	private Event event;
 
-	/** The hash. */
+	/** The hash used to access the dedicated guest's pages securely without logging in. */
 	private String hash;
 
-	/** The status (pending = 0, accept = 1, decline = 2). */
+	/** The status code (pending = 0, accept = 1, decline = 2). */
 	private int status;
 
-	/** The email status (not read = 0, read = 1). */
-	private int emailstatus;
+	/**
+	 * If the guest is aware of the invitation to the event, i.e. if he has opened the invitation email (not informed = 0, informed = 1).</br>
+	 * This field is used by the guest service directly from the persistence unit. This entity only lets to set it.
+	 * 
+	 * @see GuestService#countGuestsBySatusAndByEventAfterBeingInformed
+	 * @see GuestService#countInformedGuestsByEvent
+	 */
+	@SuppressWarnings("unused")
+	private int informed;
 
 	/** The email date. */
 	@Column(insertable = false, updatable = false)
@@ -58,9 +65,7 @@ public class Guest
 	 * This default constructor is needed by the Java Persistence API.
 	 */
 	@SuppressWarnings("unused")
-	private Guest()
-	{
-	}
+	private Guest() {}
 
 	/**
 	 * Instantiates a new guest.
@@ -68,8 +73,7 @@ public class Guest
 	 * @param user the user corresponding to this guest
 	 * @param event the event to which this guest may subscribe
 	 */
-	public Guest(final User user, final Event event)
-	{
+	public Guest(final User user, final Event event) {
 		this.user = user;
 		this.event = event;
 	}
@@ -79,8 +83,7 @@ public class Guest
 	 *
 	 * @return the id
 	 */
-	public Long getId()
-	{
+	public Long getId() {
 		return id;
 	}
 
@@ -89,8 +92,7 @@ public class Guest
 	 *
 	 * @return the user
 	 */
-	public User getUser()
-	{
+	public User getUser() {
 		return user;
 	}
 
@@ -99,8 +101,7 @@ public class Guest
 	 *
 	 * @return the event
 	 */
-	public Event getEvent()
-	{
+	public Event getEvent() {
 		return event;
 	}
 
@@ -109,8 +110,7 @@ public class Guest
 	 *
 	 * @return the hash
 	 */
-	public String getHash()
-	{
+	public String getHash() {
 		return hash;
 	}
 
@@ -119,8 +119,7 @@ public class Guest
 	 *
 	 * @param hash the new hash
 	 */
-	public void setHash(final String hash)
-	{
+	public void setHash(final String hash) {
 		this.hash = hash;
 	}
 
@@ -129,8 +128,7 @@ public class Guest
 	 *
 	 * @return the status
 	 */
-	public GuestStatus getStatus()
-	{
+	public GuestStatus getStatus() {
 		return GuestStatus.getStatus(status);
 	}
 
@@ -139,29 +137,17 @@ public class Guest
 	 *
 	 * @param status the new status
 	 */
-	public void setStatus(final GuestStatus status)
-	{
+	public void setStatus(final GuestStatus status) {
 		this.status = status.getCode();
 	}
 
 	/**
-	 * Gets the email status.
+	 * Sets whether the guest is informed of the invitation to the event.
 	 *
-	 * @return the email status
+	 * @param informed whether the guest is informed of the invitation to the event
 	 */
-	public int getEmailstatus()
-	{
-		return emailstatus;
-	}
-
-	/**
-	 * Sets the email status.
-	 *
-	 * @param mailstatus the new email status
-	 */
-	public void setEmailstatus(final int mailstatus)
-	{
-		this.emailstatus = mailstatus;
+	public void setInformed(final int informed) {
+		this.informed = informed;
 	}
 
 	/**
@@ -169,8 +155,7 @@ public class Guest
 	 *
 	 * @return the formatted email date
 	 */
-	public String getFormattedEmailDate()
-	{
+	public String getFormattedEmailDate() {
 		final SimpleDateFormat formater = new SimpleDateFormat("dd/MM/yyyy - HH:mm");
 		return formater.format(emaildate);
 	}

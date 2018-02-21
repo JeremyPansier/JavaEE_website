@@ -1,4 +1,4 @@
-package com.website.tools;
+package com.website.tools.security;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
