@@ -59,7 +59,7 @@ public class FlashScopeFilter implements Filter {
 			final Map<String, Object> flashParams = new HashMap<>();
 			flashParamStorage(request, httpRequest, flashParams);
 			if (flashParams.size() > 0) {
-				final HttpSession session = httpRequest.getSession(false);
+				final HttpSession session = httpRequest.getSession(true);
 				session.setAttribute(FLASH_SESSION_KEY, flashParams);
 			}
 		}
