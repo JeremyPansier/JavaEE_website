@@ -190,17 +190,19 @@ After [running](#running "go to the 'running' chapter") the project, go to http:
 
 ### Front-end
 
-The front-end uses html, css and javascript.
+Layer: html5
+Style: css3
+Control: javascript.
+Graphical User Interface: [Primefaces](http://www.primefaces.org "Primefaces website").
 
 ### Back-end
 
-Graphical User Interface: [Primefaces](http://www.primefaces.org "Primefaces website").
 Template: Facelets
-View/Web layer: [JSF (Java Server Faces)](http://www.oracle.com/technetwork/java/javaee/javaserverfaces-139869.html "JSF documentation on Oracle website").
+View: [JSF (Java Server Faces)](http://www.oracle.com/technetwork/java/javaee/javaserverfaces-139869.html "JSF documentation on Oracle website").
 
 ### Persistence
 
-Application programming interface/Domain layer/Relational data management: [JPA (Java Persistence API)](http://www.oracle.com/technetwork/java/javaee/tech/persistence-jsp-140049.html "JPA documentation on Oracle website").
+Application programming interface: [JPA (Java Persistence API)](http://www.oracle.com/technetwork/java/javaee/tech/persistence-jsp-140049.html "JPA documentation on Oracle website").
 
 ## Supported browsers
 
