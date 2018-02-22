@@ -148,7 +148,7 @@ Click on "View>", then on "OutBound Remote", then on "Add" and set:
 **setup your mail box to accept external applications:**
 
 **1.** Authorize less secure applications to access to your email service (for Gmail, go [there](https://myaccount.google.com/lesssecureapps "Gmail webpage letting to activate/deactivate less secure application authorization")).
-</p>
+
 **2.** Check that the outgoing mails analysis is disable in your anti-virus.
 
 ## Running
