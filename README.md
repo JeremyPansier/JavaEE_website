@@ -186,23 +186,23 @@ After [running](#running "go to the 'running' chapter") the project, go to http:
 
 ### Structure
 
-[Maven](https://maven.apache.org "Apache Maven website") - Build automation tool.
+Build automation tool: [Maven](https://maven.apache.org "Apache Maven website")
 
 ### Front-end
 
-Layer: html5
-Style: css3
-Control: javascript.
-Graphical User Interface: [Primefaces](http://www.primefaces.org "Primefaces website").
+Layer | Style | Control    | Graphical User Interface
+----- | ----- | ---------- | ---
+html5 | css3  | javascript | [Primefaces](http://www.primefaces.org "Primefaces website")
 
 ### Back-end
 
-Template: Facelets
-View: [JSF (Java Server Faces)](http://www.oracle.com/technetwork/java/javaee/javaserverfaces-139869.html "JSF documentation on Oracle website").
+Template | View
+-------- | ---
+Facelets | [JSF (Java Server Faces)](http://www.oracle.com/technetwork/java/javaee/javaserverfaces-139869.html "JSF documentation on Oracle website")
 
 ### Persistence
 
-Application programming interface: [JPA (Java Persistence API)](http://www.oracle.com/technetwork/java/javaee/tech/persistence-jsp-140049.html "JPA documentation on Oracle website").
+Application programming interface: [JPA (Java Persistence API)](http://www.oracle.com/technetwork/java/javaee/tech/persistence-jsp-140049.html "JPA documentation on Oracle website")
 
 ## Supported browsers
 
