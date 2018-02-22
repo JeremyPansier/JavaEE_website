@@ -1,60 +1,85 @@
 ﻿# **JavaEE website**
 
-### Goal
+## Table of Contents
+
+* [Overview](#overview)
+	* [General Purpose](#general-purpose)
+	* [Use case](#use-case)
+	* [Data model](#data-model)
+* [Getting Started](#getting-started)
+* [Prerequisites](#prerequisites)
+	* [The java development kit](#the-java-development-kit)
+	* [The build automation tool](#the-build-automation-tool)
+	* [The application server](#the-application-server)
+* [Installing](#installing)
+	* [Starting the server](#starting-the-server)
+	* [Connection to the database](#connection-to-the-database)
+	* [Connection to the mail box](#connection-to-the-mail-box)
+* [Running](#running)
+	* [Starting the database](#starting-the-database)
+	* [Starting the server](#starting-the-server)
+	* [Deployment](#deployment)
+* [Testing](#testing)
+	* [Manual test](#manual-test)
+	* [Continuous integration](#continuous-integration)
+* [Built With](#built-with)
+* [Supported browsers](#supported-browsers)
+* [Authors](#authors)
+* [Acknowledgments](#acknowledgments)
+* [License](#license)
+
+## Overview
+
+### General Purpose
 
 The aim of this project is to provide a hand-coded JavaEE website.<br/>
-This website lets an author to create events and to invite some guests to subscribe to those events. Each author can register or login to the website with a password which will be hashed before beeing stored in a database.
+This website lets an author to create events and to invite some guests to subscribe to those events. Each author can register or login to the website with a password which will be hashed before being stored in a database.
 
-### Front-end
+### Use case
+![use case](modelling/useCase.png "The general use case diagram")
 
-The front-end uses html, css and javascript. A lot of components like buttons or tables use PrimeFaces (a GUI framework).
+### Data model
+![data model](modelling/dataModel.png "The data model class diagram")
 
-### Back-end
-
-The back-end is managed by JSF.
-
-### Persistence
-
-The data persistence is managed by JPA.
-
-# Getting Started
+## Getting Started
 
 Clone the project into your workspace.
 
-# Prerequisites
+## Prerequisites
 
-## The java development kit
+### The java development kit
 
 Download the java development kit: jdk 1.8.0_111.<br/>
 Create an environment variable called JAVA_HOME pointing on the bin folder of the jdk.<br/>
 Add the variable to the Path.
 
-## The build automation tool
+### The build automation tool
 
 Download the build automation tool: apache-maven-3.3.9-bin.<br/>
 Create an environment variable called MAVEN_HOME pointing on the bin folder of maven.<br/>
 Add the variable to the Path.
 
-## The application server
+### The application server
 
 Download the application server: wildfly-10.0.0.Final.<br/>
 Create an environment variable called JBOSS_HOME pointing on the bin folder of wildfly.<br/>
 Go to the bin folder of wildfly.<br/>
 Add a new user:<br/>
-* For linux, run: `add-user.sh`
-* For windows, run: `add-user.bat`
+* For Linux, run: `add-user.sh`
+* For Windows, run: `add-user.bat`
 
-# Installing
+## Installing
 
-## Starting the server
+### Starting the server
 
 Go to the bin folder of wildfly.<br/>
-* Launcher for linux: `standalone.sh` On a remote server, use: `standalone.sh -b 0.0.0.0`
-* Launcher for windows: `standalone.bat`
+* Launcher for Linux: `standalone.sh`
+* Launcher for Windows: `standalone.bat`
+* On a remote Linux server, use: `standalone.sh -b 0.0.0.0`
 
-## Connection to the database
+### Connection to the database
 
-### Create the database:
+**create the database:**
 
 <ul><li/>For Linux:<br/>
 In the shell, go to the folder /src/dataBase.<br/>
@@ -73,7 +98,7 @@ Then, open the administration module MySQL : PhpMyAdmin 4.1.4.<br/>
 Create a new database named website.<br/>
 Import the .sql file located into /src/dataBase.</li></ul>
 
-### Setup wildfly to connect to the database:
+**setup wildfly to connect to the database:**
 
 Download the driver mysql-connector-java-5.1.4: https://dev.mysql.com/downloads/file/?id=465644.<br/>
 <br/>**1.** Open the administration of wildfly: http://localhost:9990.<br/>
@@ -93,9 +118,9 @@ On step 3/3, set:
 	Username: (yourDatabaseUsername)
 	Password: (yourDatabasePassword)
 
-## Connection to the mail box
+### Connection to the mail box
 
-### Setup wildfly to connect to the mail box:
+**setup wildfly to connect to the mail box:**
 
 Open the administration of wildfly: http://localhost:9990.<br/>
 <br/>**1.** Go to "Configuration", then "Socket Binding" and click on "View".<br/>
@@ -118,55 +143,85 @@ Click on "View>", then on "OutBound Remote", then on "Add" and set:
 	Password: (yourEmailPassword)
 	Use SSL (tick)
 *Save*<br/>
-<br/>**3.** Restart wildfly (in the shell: "Ctrl+C", then <a href="#starting-the-server" title="go to the 'Starting the server' chapter">start the server</a>).
+<br/>**3.** Restart wildfly (in the shell: "Ctrl+C", then [start the server](#starting-the-server "go to the 'starting the server' chapter")).
 
-### Setup your mail box to accept external applications:
+**setup your mail box to accept external applications:**
 
-Go to https://myaccount.google.com/lesssecureapps and authorize less secure applications.</br>
-Check that the outgoing mails analysis is disable in your antivirus.
+**1.** Authorize less secure applications to access to your email service (for Gmail, go [there](https://myaccount.google.com/lesssecureapps "Gmail webpage letting to activate/deactivate less secure application authorization")).
+</p>
+**2.** Check that the outgoing mails analysis is disable in your anti-virus.
 
-# Running
+## Running
 
-## Starting the database
+### Starting the database
 
 * For Linux:<br/>
 Start MySQL: `sudo service mysql start`.
 * For Windows:<br/>
 Run easyPHP.
 
-## Starting the server
+### Starting the server
 
 Go to the bin folder of wildfly.<br/>
-* Launcher for linux: `standalone.sh`
-* Launcher for windows: `standalone.bat`
+* Launcher for Linux: `standalone.sh`
+* Launcher for Windows: `standalone.bat`
 On a remote server, use: `standalone.sh -b 0.0.0.0`
 
-## Deployment
+### Deployment
 
 In the shell, go to the root folder of the java project, containing the pom.xml.<br/>
 Type the command: `mvn clean wildfly:deploy`
 
 ## Testing
 
-In a web browser, go to http://localhost:8080.
+### Manual test
 
-# Built With
+After [running](#running "go to the 'running' chapter") the project, go to http://localhost:8080.
 
-* [Primefaces](http://www.primefaces.org "link to http://www.primefaces.org") - Graphical User Interface.
-* [Maven](https://maven.apache.org "link to https://maven.apache.org") - Dependency Management.
+### Continuous integration
 
-# Authors
+[![Build Status](https://travis-ci.org/JeremyPansier/JavaEE_website.svg?branch=master)](https://travis-ci.org/JeremyPansier/JavaEE_website)
+
+## Built With
+
+### Structure
+
+[Maven](https://maven.apache.org "Apache Maven website") - Build automation tool.
+
+### Front-end
+
+The front-end uses html, css and javascript.
+
+### Back-end
+
+Graphical User Interface: [Primefaces](http://www.primefaces.org "Primefaces website").
+Template: Facelets
+View/Web layer: [JSF (Java Server Faces)](http://www.oracle.com/technetwork/java/javaee/javaserverfaces-139869.html "JSF documentation on Oracle website").
+
+### Persistence
+
+Application programming interface/Domain layer/Relational data management: [JPA (Java Persistence API)](http://www.oracle.com/technetwork/java/javaee/tech/persistence-jsp-140049.html "JPA documentation on Oracle website").
+
+## Supported browsers
+
+This project have been manually tested with the following browsers:
+* Chrome, Chromium
+* Firefox
+* IE 9 and 10
+* Opera
+* Safari
+
+## Authors
 
 * **Jérémy Pansier** - *Initial work* - [JeremyPansier](https://github.com/JeremyPansier "link to Jérémy's profile")
 
 See also the list of [contributors](https://github.com/JeremyPansier/JavaEE_website/contributors "link to the contributors of the project") who participated in this project.
 
-# Acknowledgments
+## Acknowledgments
 
 * Special thanks to my brother Gwenall Pansier who helped me from my early days as developer.
 * Thanks to Thomas Gros, the trainer who teached me basics in JavaEE.
 * Thanks to Pascal Cunin, my schoolmate, with whom I started this project.
-* Thanks to [PurpleBooth](https://github.com/PurpleBooth "link to PurpleBooth's profile") for the template that I used to write this readme.
 
 ## License
 ![copyleft](http://unlicense.org/pd-icon.png)
