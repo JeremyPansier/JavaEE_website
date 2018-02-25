@@ -13,9 +13,9 @@ import com.website.persistence.AuthorService;
 import com.website.persistence.EventService;
 import com.website.persistence.GuestService;
 import com.website.tools.EventServiceException;
-import com.website.tools.context.HttpErrorHandler;
-import com.website.tools.context.SessionManager;
 import com.website.tools.email.EmailList;
+import com.website.tools.navigation.HttpErrorHandler;
+import com.website.tools.navigation.SessionManager;
 import com.website.views.WebPages;
 
 /**

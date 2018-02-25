@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.inject.Inject;
 import javax.servlet.Filter;
@@ -16,18 +17,16 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.logging.log4j.LogManager;
-
 import com.website.persistence.VisitService;
 
 @WebFilter("/*")
 public class FlashScopeFilter implements Filter {
 
-	/** The Logger. */
-	private static final org.apache.logging.log4j.Logger LOGGER = LogManager.getLogger();
+	/** The first part of the flash parameter name that which will be caught by the filter. */
+	public static final String FLASH_PARAM_NAME_START = "flash.";
 
-	/** The flash session key. */
-	private static final String FLASH_SESSION_KEY = "FLASH_SESSION_KEY";
+	/** The flash session scope. */
+	private static final String FLASH_SESSION_SOPE = "FLASH_SESSION_SCOPE";
 
 	/** The service managing the visit persistence. */
 	@Inject
@@ -36,31 +35,25 @@ public class FlashScopeFilter implements Filter {
 	@Override
 	public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException, ServletException {
 
-		/* re-instantiate any flash scoped parameter from the users session and clear the session */
+		/* Re-instantiate any flash scoped parameter from the user session and clear the session */
 		if (request instanceof HttpServletRequest) {
 			flashParamReinstantiation(request);
 			final String ipAddress = request.getRemoteAddr();
 			final String url = ((HttpServletRequest) request).getRequestURL().toString();
-			try {
-				visitService.insertVisit(url, ipAddress);
-			}
-			catch (final Exception e) {
-				LOGGER.error("probleme de filtre", e);
-				return;
-			}
+			visitService.insertVisit(url, ipAddress);
 		}
 
-		// process the chain
+		/* Process the chain */
 		chain.doFilter(request, response);
 
-		/* store any flash scoped parameter in the user's session for the next request */
+		/* Store any flash scoped parameter in the user session for the next request */
 		if (request instanceof HttpServletRequest) {
 			final HttpServletRequest httpRequest = (HttpServletRequest) request;
 			final Map<String, Object> flashParams = new HashMap<>();
 			flashParamStorage(request, httpRequest, flashParams);
 			if (flashParams.size() > 0) {
-				final HttpSession session = httpRequest.getSession(true);
-				session.setAttribute(FLASH_SESSION_KEY, flashParams);
+				final HttpSession session = httpRequest.getSession(false);
+				session.setAttribute(FLASH_SESSION_SOPE, flashParams);
 			}
 		}
 	}
@@ -70,23 +63,23 @@ public class FlashScopeFilter implements Filter {
 		final HttpSession session = httpRequest.getSession();
 		if (session != null) {
 			@SuppressWarnings("unchecked")
-			final Map<String, Object> flashParams = (Map<String, Object>) session.getAttribute(FLASH_SESSION_KEY);
+			final Map<String, Object> flashParams = (Map<String, Object>) session.getAttribute(FLASH_SESSION_SOPE);
 			if (flashParams != null) {
-				for (final Map.Entry<String, Object> flashEntry : flashParams.entrySet()) {
+				for (final Entry<String, Object> flashEntry : flashParams.entrySet()) {
 					request.setAttribute(flashEntry.getKey(), flashEntry.getValue());
 				}
-				session.removeAttribute(FLASH_SESSION_KEY);
+				session.removeAttribute(FLASH_SESSION_SOPE);
 			}
 		}
 	}
 
 	public void flashParamStorage(final ServletRequest request, final HttpServletRequest httpRequest, final Map<String, Object> flashParams) {
-		final Enumeration<?> e = httpRequest.getAttributeNames();
-		while (e.hasMoreElements()) {
-			String paramName = (String) e.nextElement();
-			if (paramName.startsWith("flash.")) {
+		final Enumeration<String> attributeNames = httpRequest.getAttributeNames();
+		while (attributeNames.hasMoreElements()) {
+			String paramName = attributeNames.nextElement();
+			if (paramName.startsWith(FLASH_PARAM_NAME_START)) {
 				final Object value = request.getAttribute(paramName);
-				paramName = paramName.substring(6);
+				paramName = paramName.substring(FLASH_PARAM_NAME_START.length());
 				flashParams.put(paramName, value);
 			}
 		}

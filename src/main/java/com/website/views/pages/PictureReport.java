@@ -13,9 +13,9 @@ import com.website.persistence.AuthorService;
 import com.website.persistence.PictureService;
 import com.website.persistence.VisitService;
 import com.website.tools.EventServiceException;
-import com.website.tools.context.ContextManager;
-import com.website.tools.context.HttpErrorHandler;
-import com.website.tools.context.SessionManager;
+import com.website.tools.navigation.ContextManager;
+import com.website.tools.navigation.HttpErrorHandler;
+import com.website.tools.navigation.SessionManager;
 import com.website.views.WebPages;
 
 /**

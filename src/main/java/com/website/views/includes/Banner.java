@@ -3,8 +3,8 @@ package com.website.views.includes;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 
-import com.website.tools.context.MessageManager;
-import com.website.tools.context.SessionManager;
+import com.website.tools.navigation.ContextManager;
+import com.website.tools.navigation.SessionManager;
 
 /**
  * A view for the banner showed on most of this project web pages.</br>
@@ -14,16 +14,15 @@ import com.website.tools.context.SessionManager;
  */
 @Named
 @RequestScoped
-public class Banner
-{
+public class Banner {
+
 	/**
 	 * Gets the flash message to be displayed in the banner of the web page.
 	 *
 	 * @return the flash message to be displayed in the banner of the web page
 	 */
-	public String getMessage()
-	{
-		return MessageManager.getMessage();
+	public String getMessage() {
+		return ContextManager.getMessage();
 	}
 
 	/**
@@ -31,8 +30,7 @@ public class Banner
 	 *
 	 * @return the user name to be displayed in the banner of the web page
 	 */
-	public String getUsername()
-	{
+	public String getUsername() {
 		return SessionManager.getSessionUserName();
 	}
 }

@@ -14,7 +14,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.website.persistence.GuestService;
 import com.website.tools.EventServiceException;
-import com.website.tools.context.HttpErrorHandler;
+import com.website.tools.navigation.HttpErrorHandler;
 
 /**
  * The email tracker.</br>

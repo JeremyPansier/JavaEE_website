@@ -7,9 +7,8 @@ import javax.inject.Named;
 import org.mindrot.jbcrypt.BCrypt;
 
 import com.website.persistence.AuthorService;
-import com.website.tools.context.MessageManager;
-import com.website.tools.context.Redirector;
-import com.website.tools.context.SessionManager;
+import com.website.tools.navigation.Redirector;
+import com.website.tools.navigation.SessionManager;
 import com.website.views.WebPages;
 
 /**
@@ -20,8 +19,7 @@ import com.website.views.WebPages;
  */
 @Named
 @RequestScoped
-public class Connection
-{
+public class Connection {
 
 	/** The service managing the author persistence. */
 	@Inject
@@ -39,8 +37,7 @@ public class Connection
 	/**
 	 * @return the web page
 	 */
-	public WebPages getWebPage()
-	{
+	public WebPages getWebPage() {
 		return WEB_PAGE;
 	}
 
@@ -49,8 +46,7 @@ public class Connection
 	 *
 	 * @return the author name used to log in
 	 */
-	public String getAuthorName()
-	{
+	public String getAuthorName() {
 		return authorName;
 	}
 
@@ -59,8 +55,7 @@ public class Connection
 	 *
 	 * @param authorName the new author name used to log in
 	 */
-	public void setAuthorName(final String authorName)
-	{
+	public void setAuthorName(final String authorName) {
 		this.authorName = authorName;
 	}
 
@@ -69,8 +64,7 @@ public class Connection
 	 *
 	 * @return the password
 	 */
-	public String getPassword()
-	{
+	public String getPassword() {
 		return password;
 	}
 
@@ -79,37 +73,28 @@ public class Connection
 	 *
 	 * @param password the new password
 	 */
-	public void setPassword(final String password)
-	{
+	public void setPassword(final String password) {
 		this.password = password;
 	}
 
 	/**
 	 * Logs the website user in.
 	 */
-	public void login()
-	{
-		SessionManager.putSessionUserName(authorName);
+	public void login() {
+		SessionManager.trackUser(authorName);
 
-		if (!authorService.isAuthor(authorName))
-		{
-			MessageManager.putMessage("Utilisateur inconnu ou mot de passe incorrect");
-			SessionManager.clearSession();
-			Redirector.redirect(WebPages.CONNECTION.createJsfUrl());
+		if (!authorService.isAuthor(authorName)) {
+			Redirector.redirect(WEB_PAGE.createJsfUrl(), true, "Utilisateur inconnu ou mot de passe incorrect");
 			return;
 		}
 
 		final String storedPassword = authorService.selectPasswordByAuthorName(authorName);
 
-		if (!BCrypt.checkpw(password, storedPassword))
-		{
-			MessageManager.putMessage("Utilisateur inconnu ou mot de passe incorrect");
-			SessionManager.clearSession();
-			Redirector.redirect(WebPages.CONNECTION.createJsfUrl());
+		if (!BCrypt.checkpw(password, storedPassword)) {
+			Redirector.redirect(WEB_PAGE.createJsfUrl(), true, "Utilisateur inconnu ou mot de passe incorrect");
 			return;
 		}
 
-		MessageManager.putMessage("Connection réussie");
-		Redirector.redirect(WebPages.EVENTS_LIST.createJsfUrl());
+		Redirector.redirect(WebPages.EVENTS_LIST.createJsfUrl(), false, "Connection réussie");
 	}
 }

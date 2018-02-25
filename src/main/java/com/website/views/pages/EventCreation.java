@@ -14,11 +14,10 @@ import com.website.models.entities.Event;
 import com.website.persistence.AuthorService;
 import com.website.persistence.EventService;
 import com.website.tools.EventServiceException;
-import com.website.tools.context.HttpErrorHandler;
-import com.website.tools.context.MessageManager;
-import com.website.tools.context.Redirector;
-import com.website.tools.context.SessionManager;
 import com.website.tools.file.Uploader;
+import com.website.tools.navigation.HttpErrorHandler;
+import com.website.tools.navigation.Redirector;
+import com.website.tools.navigation.SessionManager;
 import com.website.views.WebPages;
 
 /**
@@ -29,8 +28,7 @@ import com.website.views.WebPages;
  */
 @Named
 @ViewScoped
-public class EventCreation implements Serializable
-{
+public class EventCreation implements Serializable {
 
 	/** The serial version UID. */
 	private static final long serialVersionUID = 6144143620477608461L;
@@ -56,16 +54,13 @@ public class EventCreation implements Serializable
 	 * Initializes the event and the author just after the construction.
 	 */
 	@PostConstruct
-	public void init()
-	{
-		try
-		{
+	public void init() {
+		try {
 			event = new Event();
 			final String sessionUserName = SessionManager.checkSessionUserName();
 			author = authorService.selectAuthorByAuthorName(sessionUserName);
 		}
-		catch (final EventServiceException eventServiceException)
-		{
+		catch (final EventServiceException eventServiceException) {
 			HttpErrorHandler.print500(eventServiceException);
 			return;
 		}
@@ -74,8 +69,7 @@ public class EventCreation implements Serializable
 	/**
 	 * @return the web page
 	 */
-	public WebPages getWebPage()
-	{
+	public WebPages getWebPage() {
 		return WEB_PAGE;
 	}
 
@@ -84,8 +78,7 @@ public class EventCreation implements Serializable
 	 *
 	 * @return the event
 	 */
-	public Event getEvent()
-	{
+	public Event getEvent() {
 		return event;
 	}
 
@@ -94,8 +87,7 @@ public class EventCreation implements Serializable
 	 *
 	 * @return the author
 	 */
-	public Author getAuthor()
-	{
+	public Author getAuthor() {
 		return author;
 	}
 
@@ -104,8 +96,7 @@ public class EventCreation implements Serializable
 	 *
 	 * @param fileUploadEvent the file upload event
 	 */
-	public void upload(final FileUploadEvent fileUploadEvent)
-	{
+	public void upload(final FileUploadEvent fileUploadEvent) {
 		final String filename = Uploader.uploadFile(fileUploadEvent);
 		event.setFilename(filename);
 	}
@@ -113,25 +104,20 @@ public class EventCreation implements Serializable
 	/**
 	 * Creates the event.
 	 */
-	public void createEvent()
-	{
+	public void createEvent() {
 		String message = "avec succès";
-		if (null == event.getFilename())
-		{
-			event.setFilename("");
+		if (null == event.getFilename()) {
+// event.setFilename("");
 			message = "sans image";
 		}
 		Long id = null;
-		try
-		{
+		try {
 			id = eventService.insertEvent(author.getId(), event.getTitle(), event.getDescription(), event.getFilename());
 		}
-		catch (final EventServiceException eventServiceException)
-		{
+		catch (final EventServiceException eventServiceException) {
 			HttpErrorHandler.print500(eventServiceException);
 			return;
 		}
-		MessageManager.putMessage("Évènement créé " + message);
-		Redirector.redirect(WebPages.EVENT_MANAGEMENT.createJsfUrl("eventId", id));
+		Redirector.redirect(WebPages.EVENT_MANAGEMENT.createJsfUrl("eventId", id), false, "Évènement créé " + message);
 	}
 }

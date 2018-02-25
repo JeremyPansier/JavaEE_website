@@ -8,7 +8,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import com.website.models.entities.Author;
-import com.website.tools.context.HttpErrorHandler;
+import com.website.tools.navigation.HttpErrorHandler;
 
 /**
  * The service managing the author persistence.</br>

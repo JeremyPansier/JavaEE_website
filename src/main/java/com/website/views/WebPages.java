@@ -9,8 +9,7 @@ import java.util.ResourceBundle;
  *
  * @author Jérémy Pansier
  */
-public enum WebPages
-{
+public enum WebPages {
 	/** The page "index". */
 	INDEX,
 
@@ -93,12 +92,11 @@ public enum WebPages
 	private static final String EQUAL_SIGN = "=";
 
 	/**
-	 * Creates the absolute URL for the web page in a JSF context.
+	 * Creates the absolute URL for this web page in a JSF context.
 	 * 
-	 * @return the absolute URL for this web page in a JSF context.
+	 * @return the absolute URL for this web page in a JSF context
 	 */
-	public String createJsfUrl()
-	{
+	public String createJsfUrl() {
 		return FACES + getFilename() + EXTENSION;
 	}
 
@@ -108,11 +106,10 @@ public enum WebPages
 	 * 
 	 * @param parameterName the name of the URL parameter
 	 * @param parameterValue the value of the parameter
-	 * @return the absolute URL with parameter for this web page in a JSF context.
+	 * @return the absolute URL with parameter for this web page in a JSF context
 	 * @see Long#toString()
 	 */
-	public String createJsfUrl(final String parameterName, final Long parameterValue)
-	{
+	public String createJsfUrl(final String parameterName, final Long parameterValue) {
 		return createJsfUrl(parameterName, parameterValue.toString());
 	}
 
@@ -121,20 +118,18 @@ public enum WebPages
 	 * 
 	 * @param parameterName the name of the URL parameter
 	 * @param parameterValue the value of the parameter
-	 * @return the absolute URL with parameter for this web page in a JSF context.
+	 * @return the absolute URL with parameter for this web page in a JSF context
 	 */
-	public String createJsfUrl(final String parameterName, final String parameterValue)
-	{
+	public String createJsfUrl(final String parameterName, final String parameterValue) {
 		return FACES + getFilename() + EXTENSION + PARAMETER_MARK + parameterName + EQUAL_SIGN + parameterValue;
 	}
 
 	/**
-	 * Creates the absolute URL for the web page in a JSF context.
+	 * Creates the absolute URL for this web page in a JSF context.
 	 * 
-	 * @return the absolute URL for this web page in a JSF context.
+	 * @return the absolute URL for this web page in a JSF context
 	 */
-	public String createUrl()
-	{
+	public String createUrl() {
 		return getFilename() + EXTENSION;
 	}
 
@@ -144,11 +139,10 @@ public enum WebPages
 	 * 
 	 * @param parameterName the name of the URL parameter
 	 * @param parameterValue the value of the parameter
-	 * @return the absolute URL with parameter for this web page in a JSF context.
+	 * @return the absolute URL with parameter for this web page in a JSF context
 	 * @see Long#toString()
 	 */
-	public String createUrl(final String parameterName, final Long parameterValue)
-	{
+	public String createUrl(final String parameterName, final Long parameterValue) {
 		return createUrl(parameterName, parameterValue.toString());
 	}
 
@@ -157,46 +151,42 @@ public enum WebPages
 	 * 
 	 * @param parameterName the name of the URL parameter
 	 * @param parameterValue the value of the parameter
-	 * @return the absolute URL with parameter for this web page in a JSF context.
+	 * @return the absolute URL with parameter for this web page in a JSF context
 	 */
-	public String createUrl(final String parameterName, final String parameterValue)
-	{
+	public String createUrl(final String parameterName, final String parameterValue) {
 		return getFilename() + EXTENSION + PARAMETER_MARK + parameterName + EQUAL_SIGN + parameterValue;
 	}
 
 	/**
-	 * Finds the file name corresponding to the web page.</br>
+	 * Finds the file name corresponding to this web page.</br>
 	 * 
-	 * @return the file name of the web page
+	 * @return the file name of this web page
 	 */
-	public String getFilename()
-	{
+	public String getFilename() {
 		final ResourceBundle bundle = ResourceBundle.getBundle(RESOURCE, Locale.ROOT);
 		return bundle.getString(name()).split(SEPARATOR)[FILENAME_POSITION];
 	}
 
 	/**
-	 * Finds the localized title of the web page.</br>
+	 * Finds the localized title of this web page.</br>
 	 * The localized title depends on the default {@link Locale}.
 	 * 
-	 * @return the localized title of the web page
+	 * @return the localized title of this web page
 	 * @see Locale#getDefault()
 	 */
-	public String getTitle()
-	{
+	public String getTitle() {
 		final ResourceBundle bundle = ResourceBundle.getBundle(RESOURCE);
 		return bundle.getString(name()).split(SEPARATOR)[TITLE_POSITION];
 	}
 
 	/**
-	 * Finds the localized name of the web page.</br>
+	 * Finds the localized name of this web page.</br>
 	 * The localized title depends on the default {@link Locale}.
 	 * 
-	 * @return the localized title of the web page
+	 * @return the localized title of this web page
 	 * @see Locale#getDefault()
 	 */
-	public String getName()
-	{
+	public String getName() {
 		final ResourceBundle bundle = ResourceBundle.getBundle(RESOURCE);
 		return bundle.getString(name()).split(SEPARATOR)[NAME_POSITION];
 	}

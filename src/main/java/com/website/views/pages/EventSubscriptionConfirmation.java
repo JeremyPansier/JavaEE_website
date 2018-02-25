@@ -11,7 +11,7 @@ import com.website.persistence.EventService;
 import com.website.persistence.GuestService;
 import com.website.persistence.UserService;
 import com.website.tools.EventServiceException;
-import com.website.tools.context.HttpErrorHandler;
+import com.website.tools.navigation.HttpErrorHandler;
 import com.website.views.WebPages;
 
 /**

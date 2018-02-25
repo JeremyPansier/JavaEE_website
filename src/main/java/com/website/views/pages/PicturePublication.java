@@ -14,11 +14,10 @@ import com.website.models.entities.Picture;
 import com.website.persistence.AuthorService;
 import com.website.persistence.PictureService;
 import com.website.tools.EventServiceException;
-import com.website.tools.context.HttpErrorHandler;
-import com.website.tools.context.MessageManager;
-import com.website.tools.context.Redirector;
-import com.website.tools.context.SessionManager;
 import com.website.tools.file.Uploader;
+import com.website.tools.navigation.HttpErrorHandler;
+import com.website.tools.navigation.Redirector;
+import com.website.tools.navigation.SessionManager;
 import com.website.views.WebPages;
 
 /**
@@ -29,10 +28,11 @@ import com.website.views.WebPages;
  */
 @Named
 @ViewScoped
-public class PicturePublication implements Serializable
-{
+public class PicturePublication implements Serializable {
+
 	/** The serial version UID. */
 	private static final long serialVersionUID = 8837046975013227692L;
+
 	/** The web page. */
 	public static final WebPages WEB_PAGE = WebPages.PICTURE_PUBLICATION;
 
@@ -57,14 +57,11 @@ public class PicturePublication implements Serializable
 	 * Initializes the the author just after the construction.
 	 */
 	@PostConstruct
-	public void init()
-	{
-		try
-		{
+	public void init() {
+		try {
 			author = authorService.selectAuthorByAuthorName(SessionManager.checkSessionUserName());
 		}
-		catch (final EventServiceException eventServiceException)
-		{
+		catch (final EventServiceException eventServiceException) {
 			HttpErrorHandler.print500(eventServiceException);
 			return;
 		}
@@ -75,8 +72,7 @@ public class PicturePublication implements Serializable
 	 *
 	 * @return the web page
 	 */
-	public WebPages getWebPage()
-	{
+	public WebPages getWebPage() {
 		return WEB_PAGE;
 	}
 
@@ -85,8 +81,7 @@ public class PicturePublication implements Serializable
 	 *
 	 * @return the id
 	 */
-	public Long getId()
-	{
+	public Long getId() {
 		return id;
 	}
 
@@ -95,8 +90,7 @@ public class PicturePublication implements Serializable
 	 *
 	 * @param id the new id
 	 */
-	public void setId(final Long id)
-	{
+	public void setId(final Long id) {
 		this.id = id;
 	}
 
@@ -105,8 +99,7 @@ public class PicturePublication implements Serializable
 	 *
 	 * @return the picture
 	 */
-	public Picture getPicture()
-	{
+	public Picture getPicture() {
 		return picture;
 	}
 
@@ -115,8 +108,7 @@ public class PicturePublication implements Serializable
 	 *
 	 * @return the author
 	 */
-	public Author getAuthor()
-	{
+	public Author getAuthor() {
 		return author;
 	}
 
@@ -125,31 +117,24 @@ public class PicturePublication implements Serializable
 	 *
 	 * @param fileUploadEvent the file upload event
 	 */
-	public void upload(final FileUploadEvent fileUploadEvent)
-	{
+	public void upload(final FileUploadEvent fileUploadEvent) {
 		picture.setFilename(Uploader.uploadFile(fileUploadEvent));
 	}
 
 	/**
 	 * Adds the picture.
 	 */
-	public void addPicture()
-	{
-		if (picture.getFilename() == null)
-		{
-			MessageManager.putMessage("Vous devez choisir une image");
-			Redirector.redirect(WebPages.PICTURE_PUBLICATION.createJsfUrl());
+	public void addPicture() {
+		if (picture.getFilename() == null) {
+			Redirector.redirect(WebPages.PICTURE_PUBLICATION.createJsfUrl(), false, "Vous devez choisir une image");
 		}
-		try
-		{
+		try {
 			id = pictureService.insertPicture(author.getId(), picture.getTitle(), picture.getDescription(), picture.getFilename());
 		}
-		catch (final EventServiceException eventServiceException)
-		{
+		catch (final EventServiceException eventServiceException) {
 			HttpErrorHandler.print500(eventServiceException);
 			return;
 		}
-		MessageManager.putMessage("Photo publiée avec succès");
-		Redirector.redirect(WebPages.PICTURE_REPORT.createJsfUrl("pictureId", id));
+		Redirector.redirect(WebPages.PICTURE_REPORT.createJsfUrl("pictureId", id), false, "Photo publiée avec succès");
 	}
 }

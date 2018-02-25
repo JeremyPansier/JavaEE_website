@@ -7,9 +7,8 @@ import javax.inject.Named;
 import org.mindrot.jbcrypt.BCrypt;
 
 import com.website.persistence.AuthorService;
-import com.website.tools.context.MessageManager;
-import com.website.tools.context.Redirector;
-import com.website.tools.context.SessionManager;
+import com.website.tools.navigation.Redirector;
+import com.website.tools.navigation.SessionManager;
 import com.website.views.WebPages;
 
 /**
@@ -20,8 +19,8 @@ import com.website.views.WebPages;
  */
 @Named
 @RequestScoped
-public class Registration
-{
+public class Registration {
+
 	/** The service managing the author persistence. */
 	@Inject
 	private AuthorService authorService;
@@ -41,8 +40,7 @@ public class Registration
 	/**
 	 * @return the web page
 	 */
-	public WebPages getWebPage()
-	{
+	public WebPages getWebPage() {
 		return WEB_PAGE;
 	}
 
@@ -51,8 +49,7 @@ public class Registration
 	 *
 	 * @return the author name used to register
 	 */
-	public String getAuthorName()
-	{
+	public String getAuthorName() {
 		return authorName;
 	}
 
@@ -61,8 +58,7 @@ public class Registration
 	 *
 	 * @param authorName the new author name used to register
 	 */
-	public void setAuthorName(final String authorName)
-	{
+	public void setAuthorName(final String authorName) {
 		this.authorName = authorName;
 	}
 
@@ -71,8 +67,7 @@ public class Registration
 	 *
 	 * @return the password
 	 */
-	public String getPassword()
-	{
+	public String getPassword() {
 		return password;
 	}
 
@@ -81,8 +76,7 @@ public class Registration
 	 *
 	 * @param password the new password
 	 */
-	public void setPassword(final String password)
-	{
+	public void setPassword(final String password) {
 		this.password = password;
 	}
 
@@ -91,8 +85,7 @@ public class Registration
 	 *
 	 * @return the confirmation password
 	 */
-	public String getConfirmationPassword()
-	{
+	public String getConfirmationPassword() {
 		return confirmationPassword;
 	}
 
@@ -101,45 +94,28 @@ public class Registration
 	 *
 	 * @param confirmationPassword the new confirmation password
 	 */
-	public void setConfirmationPassword(final String confirmationPassword)
-	{
+	public void setConfirmationPassword(final String confirmationPassword) {
 		this.confirmationPassword = confirmationPassword;
 	}
 
 	/**
 	 * Registers the new author with the name and password he specified.
 	 */
-	public void signin()
-	{
-		SessionManager.putSessionUserName(authorName);
+	public void signin() {
+		SessionManager.trackUser(authorName);
 
-		if (0 != password.compareTo(confirmationPassword))
-		{
-			MessageManager.putMessage("Les mots de passes ne sont pas identiques");
-			SessionManager.clearSession();
-			reload();
+		if (0 != password.compareTo(confirmationPassword)) {
+			Redirector.redirect(WEB_PAGE.createJsfUrl(), true, "Les mots de passes ne sont pas identiques");
 			return;
 		}
 
-		if (0 == "".compareTo(authorName) || authorService.isAuthor(authorName))
-		{
-			MessageManager.putMessage("Ce nom d'utilisateur n'est pas valide");
-			SessionManager.clearSession();
-			reload();
+		if (0 == "".compareTo(authorName) || authorService.isAuthor(authorName)) {
+			Redirector.redirect(WEB_PAGE.createJsfUrl(), true, "Ce nom d'utilisateur n'est pas valide");
 			return;
 		}
 
 		final String passwordDB = BCrypt.hashpw(password, BCrypt.gensalt(12));
 		authorService.insertAuthor(authorName, passwordDB);
-		MessageManager.putMessage("Inscription réussie");
-		Redirector.redirect(WebPages.PROFILE_EDITION.createJsfUrl());
-	}
-
-	/**
-	 * Reloads the actual web page.
-	 */
-	private void reload()
-	{
-		Redirector.redirect(WEB_PAGE.createJsfUrl());
+		Redirector.redirect(WebPages.PROFILE_EDITION.createJsfUrl(), false, "Inscription réussie");
 	}
 }

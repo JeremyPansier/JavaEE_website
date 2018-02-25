@@ -18,8 +18,8 @@ import com.website.views.WebPages;
  * @author Jérémy Pansier
  */
 @Entity
-public class Event
-{
+public class Event {
+
 	/** The id. */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,9 +46,9 @@ public class Event
 	/**
 	 * Instantiates a new event.
 	 */
-	public Event()
-	{
+	public Event() {
 		this.author = new Author();
+		this.filename = null;
 	}
 
 	/**
@@ -56,8 +56,7 @@ public class Event
 	 *
 	 * @return the id
 	 */
-	public Long getId()
-	{
+	public Long getId() {
 		return id;
 	}
 
@@ -66,8 +65,7 @@ public class Event
 	 *
 	 * @return the author bound to this event
 	 */
-	public Author getAuthor()
-	{
+	public Author getAuthor() {
 		return author;
 	}
 
@@ -76,8 +74,7 @@ public class Event
 	 *
 	 * @return the title
 	 */
-	public String getTitle()
-	{
+	public String getTitle() {
 		return title;
 	}
 
@@ -86,8 +83,7 @@ public class Event
 	 *
 	 * @param title the new title
 	 */
-	public void setTitle(final String title)
-	{
+	public void setTitle(final String title) {
 		this.title = title;
 	}
 
@@ -96,8 +92,7 @@ public class Event
 	 *
 	 * @return the description
 	 */
-	public String getDescription()
-	{
+	public String getDescription() {
 		return description;
 	}
 
@@ -106,8 +101,7 @@ public class Event
 	 *
 	 * @param description the new description
 	 */
-	public void setDescription(final String description)
-	{
+	public void setDescription(final String description) {
 		this.description = description;
 	}
 
@@ -116,8 +110,7 @@ public class Event
 	 *
 	 * @return the filename
 	 */
-	public String getFilename()
-	{
+	public String getFilename() {
 		return filename;
 	}
 
@@ -126,8 +119,7 @@ public class Event
 	 *
 	 * @param filename the new filename
 	 */
-	public void setFilename(final String filename)
-	{
+	public void setFilename(final String filename) {
 		this.filename = filename;
 	}
 
@@ -136,8 +128,7 @@ public class Event
 	 *
 	 * @return the link to open the event web page
 	 */
-	public String getEventLink()
-	{
+	public String getEventLink() {
 		return eventLink;
 	}
 
@@ -146,8 +137,7 @@ public class Event
 	 * This method is called after the id has been generated during the persistence of the event.
 	 */
 	@PostLoad
-	private void updateEventLink()
-	{
+	private void updateEventLink() {
 		this.eventLink = WebPages.EVENT_MANAGEMENT.createJsfUrl("eventId", this.id);
 	}
 }

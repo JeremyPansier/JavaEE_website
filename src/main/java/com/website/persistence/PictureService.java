@@ -10,7 +10,7 @@ import javax.persistence.TypedQuery;
 
 import com.website.models.entities.Author;
 import com.website.models.entities.Picture;
-import com.website.tools.context.HttpErrorHandler;
+import com.website.tools.navigation.HttpErrorHandler;
 
 /**
  * The service managing the picture persistence.</br>

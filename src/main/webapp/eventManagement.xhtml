@@ -69,10 +69,9 @@
             <br />
             <div id="description">
                 <p>#{eventManagement.event.description}</p>
-                <ui:fragment rendered="#{eventManagement.event.filename != ''}">
+                <ui:fragment rendered="#{eventManagement.event.filename != null}">
                     <h:graphicImage
                         class="image"
-                        alt=""
                         value="FilesServlet/#{eventManagement.event.filename}" />
                     <br />
                 </ui:fragment>

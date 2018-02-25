@@ -14,11 +14,10 @@ import com.website.models.entities.Picture;
 import com.website.persistence.AuthorService;
 import com.website.persistence.PictureService;
 import com.website.tools.EventServiceException;
-import com.website.tools.context.HttpErrorHandler;
-import com.website.tools.context.MessageManager;
-import com.website.tools.context.Redirector;
-import com.website.tools.context.SessionManager;
 import com.website.tools.file.Uploader;
+import com.website.tools.navigation.HttpErrorHandler;
+import com.website.tools.navigation.Redirector;
+import com.website.tools.navigation.SessionManager;
 import com.website.views.WebPages;
 
 /**
@@ -29,10 +28,11 @@ import com.website.views.WebPages;
  */
 @Named
 @ViewScoped
-public class PictureEdition implements Serializable
-{
+public class PictureEdition implements Serializable {
+
 	/** The serial version UID. */
 	private static final long serialVersionUID = -9021006042600302770L;
+
 	/** The web page. */
 	public static final WebPages WEB_PAGE = WebPages.PICTURE_EDITION;
 
@@ -49,6 +49,7 @@ public class PictureEdition implements Serializable
 
 	/** The picture. */
 	private transient Picture picture;
+
 	/** The author. */
 	private transient Author author;
 
@@ -59,15 +60,12 @@ public class PictureEdition implements Serializable
 	 * Initializes the session user name and the author just after the construction.
 	 */
 	@PostConstruct
-	public void init()
-	{
-		try
-		{
+	public void init() {
+		try {
 			sessionUserName = SessionManager.checkSessionUserName();
 			author = authorService.selectAuthorByAuthorName(sessionUserName);
 		}
-		catch (final EventServiceException eventServiceException)
-		{
+		catch (final EventServiceException eventServiceException) {
 			HttpErrorHandler.print500(eventServiceException);
 			return;
 		}
@@ -76,26 +74,20 @@ public class PictureEdition implements Serializable
 	/**
 	 * Sets the picture on the web page loading, depending on the HTTP request parameter:
 	 */
-	public void load()
-	{
-		try
-		{
-			if (id != null)
-			{
-				if (!pictureService.isPicturesAuthor(id, sessionUserName))
-				{
+	public void load() {
+		try {
+			if (id != null) {
+				if (!pictureService.isPicturesAuthor(id, sessionUserName)) {
 					return;
 				}
 				picture = pictureService.selectPictureByPictureId(id);
 			}
 		}
-		catch (final NullPointerException e)
-		{
+		catch (final NullPointerException e) {
 			Redirector.redirect(WebPages.PICTURES_GALLERY.createJsfUrl());
 			return;
 		}
-		catch (final EventServiceException eventServiceException)
-		{
+		catch (final EventServiceException eventServiceException) {
 			HttpErrorHandler.print500(eventServiceException);
 			return;
 		}
@@ -106,8 +98,7 @@ public class PictureEdition implements Serializable
 	 *
 	 * @return the web page
 	 */
-	public WebPages getWebPage()
-	{
+	public WebPages getWebPage() {
 		return WEB_PAGE;
 	}
 
@@ -116,8 +107,7 @@ public class PictureEdition implements Serializable
 	 *
 	 * @return the id
 	 */
-	public Long getId()
-	{
+	public Long getId() {
 		return id;
 	}
 
@@ -126,8 +116,7 @@ public class PictureEdition implements Serializable
 	 *
 	 * @param id the new id
 	 */
-	public void setId(final Long id)
-	{
+	public void setId(final Long id) {
 		this.id = id;
 	}
 
@@ -136,8 +125,7 @@ public class PictureEdition implements Serializable
 	 *
 	 * @return the picture
 	 */
-	public Picture getPicture()
-	{
+	public Picture getPicture() {
 		return picture;
 	}
 
@@ -146,8 +134,7 @@ public class PictureEdition implements Serializable
 	 *
 	 * @return the author
 	 */
-	public Author getAuthor()
-	{
+	public Author getAuthor() {
 		return author;
 	}
 
@@ -156,22 +143,18 @@ public class PictureEdition implements Serializable
 	 *
 	 * @param fileUploadEvent the file upload event
 	 */
-	public void upload(final FileUploadEvent fileUploadEvent)
-	{
+	public void upload(final FileUploadEvent fileUploadEvent) {
 		picture.setFilename(Uploader.uploadFile(fileUploadEvent));
 	}
 
 	/**
 	 * Edits the picture.
 	 */
-	public void editPicture()
-	{
-		if (!pictureService.isPicturesAuthor(id, sessionUserName))
-		{
+	public void editPicture() {
+		if (!pictureService.isPicturesAuthor(id, sessionUserName)) {
 			return;
 		}
 		pictureService.updatePicture(id, picture.getTitle(), picture.getDescription(), picture.getFilename());
-		MessageManager.putMessage("Évènement édité avec succès");
-		Redirector.redirect(WebPages.PICTURE_REPORT.createJsfUrl("pictureId", id));
+		Redirector.redirect(WebPages.PICTURE_REPORT.createJsfUrl("pictureId", id), false, "Évènement édité avec succès");
 	}
 }

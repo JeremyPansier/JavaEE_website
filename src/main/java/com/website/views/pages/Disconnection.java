@@ -3,9 +3,7 @@ package com.website.views.pages;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 
-import com.website.tools.context.MessageManager;
-import com.website.tools.context.Redirector;
-import com.website.tools.context.SessionManager;
+import com.website.tools.navigation.Redirector;
 import com.website.views.WebPages;
 
 /**
@@ -16,15 +14,12 @@ import com.website.views.WebPages;
  */
 @Named
 @RequestScoped
-public class Disconnection
-{
+public class Disconnection {
+
 	/**
 	 * Logs the website user out.
 	 */
-	public void logout()
-	{
-		SessionManager.invalidateSession();
-		MessageManager.putMessage("Déconnection réussie");
-		Redirector.redirect(WebPages.HOME.createJsfUrl());
+	public void logout() {
+		Redirector.redirect(WebPages.HOME.createJsfUrl(), true, "Déconnection réussie");
 	}
 }

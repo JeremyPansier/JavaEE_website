@@ -9,16 +9,18 @@ import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
+import javax.faces.context.FacesContext;
 import javax.mail.Message;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import com.website.models.beans.Email;
 import com.website.tools.EventServiceException;
-import com.website.tools.context.ContextManager;
+import com.website.tools.navigation.ContextManager;
 import com.website.views.WebPages;
 
 import freemarker.cache.WebappTemplateLoader;
@@ -52,7 +54,7 @@ public class EmailObserver {
 					+ "\"\" alt=\"\" width=\"\"0\"\" height=\"\"0\"\"style=\"\"width: 0px; height: 0px; border:0px;\"\" />";
 			final String link = websiteOrigin + WebPages.EVENT_SUBSCRIPTION.createJsfUrl("token", email.getHash());
 
-			final WebappTemplateLoader templateLoader = new WebappTemplateLoader(ContextManager.getContext(), "WEB-INF/templates");
+			final WebappTemplateLoader templateLoader = new WebappTemplateLoader((ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext(), "WEB-INF/templates");
 
 			templateLoader.setURLConnectionUsesCaches(false);
 			templateLoader.setAttemptFileAccess(false);

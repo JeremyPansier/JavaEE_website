@@ -14,11 +14,10 @@ import com.website.models.entities.Event;
 import com.website.persistence.AuthorService;
 import com.website.persistence.EventService;
 import com.website.tools.EventServiceException;
-import com.website.tools.context.HttpErrorHandler;
-import com.website.tools.context.MessageManager;
-import com.website.tools.context.Redirector;
-import com.website.tools.context.SessionManager;
 import com.website.tools.file.Uploader;
+import com.website.tools.navigation.HttpErrorHandler;
+import com.website.tools.navigation.Redirector;
+import com.website.tools.navigation.SessionManager;
 import com.website.views.WebPages;
 
 /**
@@ -29,8 +28,8 @@ import com.website.views.WebPages;
  */
 @Named
 @ViewScoped
-public class EventEdition implements Serializable
-{
+public class EventEdition implements Serializable {
+
 	/** The serial version UID. */
 	private static final long serialVersionUID = -7682934518094297522L;
 
@@ -61,15 +60,12 @@ public class EventEdition implements Serializable
 	 * Initializes the session user name and the event just after the construction.
 	 */
 	@PostConstruct
-	public void init()
-	{
-		try
-		{
+	public void init() {
+		try {
 			sessionUserName = SessionManager.checkSessionUserName();
 			author = authorService.selectAuthorByAuthorName(sessionUserName);
 		}
-		catch (final EventServiceException eventServiceException)
-		{
+		catch (final EventServiceException eventServiceException) {
 			HttpErrorHandler.print500(eventServiceException);
 			return;
 		}
@@ -80,8 +76,7 @@ public class EventEdition implements Serializable
 	 *
 	 * @return the web page
 	 */
-	public WebPages getWebPage()
-	{
+	public WebPages getWebPage() {
 		return WEB_PAGE;
 	}
 
@@ -90,8 +85,7 @@ public class EventEdition implements Serializable
 	 *
 	 * @return the event id HTTP request parameter
 	 */
-	public Long getId()
-	{
+	public Long getId() {
 		return id;
 	}
 
@@ -100,8 +94,7 @@ public class EventEdition implements Serializable
 	 *
 	 * @param id the event id HTTP request parameter
 	 */
-	public void setId(final Long id)
-	{
+	public void setId(final Long id) {
 		this.id = id;
 	}
 
@@ -110,8 +103,7 @@ public class EventEdition implements Serializable
 	 *
 	 * @return the author
 	 */
-	public Author getAuthor()
-	{
+	public Author getAuthor() {
 		return author;
 	}
 
@@ -120,34 +112,27 @@ public class EventEdition implements Serializable
 	 *
 	 * @return the event
 	 */
-	public Event getEvent()
-	{
+	public Event getEvent() {
 		return event;
 	}
 
 	/**
 	 * Sets the event on the web page loading, depending on the HTTP request parameter.</br>
 	 */
-	public void load()
-	{
-		try
-		{
-			if (id != null)
-			{
-				if (!authorService.isEventsAuthor(id, sessionUserName))
-				{
+	public void load() {
+		try {
+			if (id != null) {
+				if (!authorService.isEventsAuthor(id, sessionUserName)) {
 					return;
 				}
 				event = eventService.selectEventByEventId(id);
 			}
 		}
-		catch (final NullPointerException e)
-		{
+		catch (final NullPointerException e) {
 			Redirector.redirect(WebPages.EVENTS_LIST.createJsfUrl());
 			return;
 		}
-		catch (final EventServiceException eventServiceException)
-		{
+		catch (final EventServiceException eventServiceException) {
 			HttpErrorHandler.print500(eventServiceException);
 			return;
 		}
@@ -158,22 +143,18 @@ public class EventEdition implements Serializable
 	 *
 	 * @param fileUploadEvent the file upload event
 	 */
-	public void upload(final FileUploadEvent fileUploadEvent)
-	{
+	public void upload(final FileUploadEvent fileUploadEvent) {
 		event.setFilename(Uploader.uploadFile(fileUploadEvent));
 	}
 
 	/**
 	 * Edits the event.
 	 */
-	public void editEvent()
-	{
-		if (!authorService.isEventsAuthor(id, sessionUserName))
-		{
+	public void editEvent() {
+		if (!authorService.isEventsAuthor(id, sessionUserName)) {
 			return;
 		}
 		eventService.updateEvent(id, event.getTitle(), event.getDescription(), event.getFilename());
-		MessageManager.putMessage("Évènement édité avec succès");
-		Redirector.redirect(WebPages.EVENT_MANAGEMENT.createJsfUrl("eventId", id));
+		Redirector.redirect(WebPages.EVENT_MANAGEMENT.createJsfUrl("eventId", id), false, "Évènement édité avec succès");
 	}
 }
