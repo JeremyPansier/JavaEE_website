@@ -3,11 +3,11 @@ CREATE TABLE `Event` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL,
   `description` mediumtext NOT NULL,
-  `filename` varchar(2000) NOT NULL,
+  `filename` varchar(2000) DEFAULT NULL,
   `authorId` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
-INSERT INTO `Event` VALUES (1,'Évènement Modèle','Ceci est un évènement modèle pour tester les statistique sur le jeu de données','Javengers.jpg',1);
+INSERT INTO `Event` VALUES (1,'Évènement Modèle','Ceci est un évènement modèle pour tester les statistique sur le jeu de données',null,1);
 
 DROP TABLE IF EXISTS `Picture`;
 CREATE TABLE `Picture` (

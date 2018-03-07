@@ -1,4 +1,4 @@
-package com.website.tools.data;
+package com.website.data;
 
 import java.util.Locale;
 import java.util.ResourceBundle;

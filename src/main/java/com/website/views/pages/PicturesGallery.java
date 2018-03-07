@@ -11,8 +11,6 @@ import com.website.models.entities.Author;
 import com.website.models.entities.Picture;
 import com.website.persistence.AuthorService;
 import com.website.persistence.PictureService;
-import com.website.tools.EventServiceException;
-import com.website.tools.navigation.HttpErrorHandler;
 import com.website.tools.navigation.Redirector;
 import com.website.tools.navigation.SessionManager;
 import com.website.views.WebPages;
@@ -25,8 +23,8 @@ import com.website.views.WebPages;
  */
 @Named
 @RequestScoped
-public class PicturesGallery
-{
+public class PicturesGallery {
+
 	/** The service managing the picture persistence. */
 	@Inject
 	private PictureService pictureService;
@@ -48,20 +46,11 @@ public class PicturesGallery
 	 * Initializes the picture and the author just after the construction.
 	 */
 	@PostConstruct
-	public void init()
-	{
-		final String username = SessionManager.checkSessionUserName();
+	public void init() {
+		final String username = SessionManager.getSessionUserNameOrRedirect();
 
-		try
-		{
-			pictures = pictureService.selectPicturesByAuthorName(username);
-			author = authorService.selectAuthorByAuthorName(username);
-		}
-		catch (final EventServiceException e)
-		{
-			HttpErrorHandler.print500(e);
-			return;
-		}
+		pictures = pictureService.findPicturesByAuthorName(username);
+		author = authorService.findAuthorByAuthorName(username);
 	}
 
 	/**
@@ -69,8 +58,7 @@ public class PicturesGallery
 	 *
 	 * @return the web page
 	 */
-	public WebPages getWebPage()
-	{
+	public WebPages getWebPage() {
 		return WEB_PAGE;
 	}
 
@@ -79,8 +67,7 @@ public class PicturesGallery
 	 *
 	 * @return the pictures
 	 */
-	public List<Picture> getPictures()
-	{
+	public List<Picture> getPictures() {
 		return pictures;
 	}
 
@@ -89,16 +76,14 @@ public class PicturesGallery
 	 *
 	 * @return the author
 	 */
-	public Author getAuthor()
-	{
+	public Author getAuthor() {
 		return author;
 	}
 
 	/**
 	 * Redirects to the picture publication web page.
 	 */
-	public void addNewPicture()
-	{
+	public void addNewPicture() {
 		Redirector.redirect(WebPages.PICTURE_PUBLICATION.createJsfUrl());
 	}
 
@@ -107,17 +92,8 @@ public class PicturesGallery
 	 *
 	 * @param picture the picture to remove
 	 */
-	public void removePicture(final Picture picture)
-	{
-		try
-		{
-			pictureService.deletePicture(picture.getId());
-		}
-		catch (final EventServiceException eventServiceException)
-		{
-			HttpErrorHandler.print500(eventServiceException);
-			return;
-		}
+	public void removePicture(final Picture picture) {
+		pictureService.removePicture(picture);
 		Redirector.redirect(WebPages.PICTURES_GALLERY.createJsfUrl());
 	}
 }

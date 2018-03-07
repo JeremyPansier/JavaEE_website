@@ -1,4 +1,4 @@
-package com.website.tools.data;
+package com.website.managers.visit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 import com.website.models.entities.Visit;
 
-public class TableManager
+public class VisitsManager
 {
 	public static final String WEBPAGES = "webpages";
 	private static final String XHTML = ".xhtml";

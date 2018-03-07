@@ -11,8 +11,6 @@ import com.website.models.entities.Author;
 import com.website.models.entities.Event;
 import com.website.persistence.AuthorService;
 import com.website.persistence.EventService;
-import com.website.tools.EventServiceException;
-import com.website.tools.navigation.HttpErrorHandler;
 import com.website.tools.navigation.Redirector;
 import com.website.tools.navigation.SessionManager;
 import com.website.views.WebPages;
@@ -25,8 +23,8 @@ import com.website.views.WebPages;
  */
 @Named
 @RequestScoped
-public class EventsList
-{
+public class EventsList {
+
 	/** The service managing the event persistence. */
 	@Inject
 	private EventService eventService;
@@ -48,20 +46,11 @@ public class EventsList
 	 * Initializes the event and the author just after the construction.
 	 */
 	@PostConstruct
-	public void init()
-	{
-		final String username = SessionManager.checkSessionUserName();
+	public void init() {
+		final String username = SessionManager.getSessionUserNameOrRedirect();
 
-		try
-		{
-			events = eventService.selectEventsByAuthorName(username);
-			author = authorService.selectAuthorByAuthorName(username);
-		}
-		catch (final EventServiceException e)
-		{
-			HttpErrorHandler.print500(e);
-			return;
-		}
+		author = authorService.findAuthorByAuthorName(username);
+		events = eventService.findEventsByAuthorId(author.getId());
 	}
 
 	/**
@@ -69,8 +58,7 @@ public class EventsList
 	 *
 	 * @return the web page
 	 */
-	public WebPages getWebPage()
-	{
+	public WebPages getWebPage() {
 		return WEB_PAGE;
 	}
 
@@ -79,8 +67,7 @@ public class EventsList
 	 *
 	 * @return the events
 	 */
-	public List<Event> getEvents()
-	{
+	public List<Event> getEvents() {
 		return events;
 	}
 
@@ -89,8 +76,7 @@ public class EventsList
 	 *
 	 * @return the author
 	 */
-	public Author getAuthor()
-	{
+	public Author getAuthor() {
 		return author;
 	}
 
@@ -99,16 +85,14 @@ public class EventsList
 	 *
 	 * @return the size
 	 */
-	public int getSize()
-	{
+	public int getSize() {
 		return events.size();
 	}
 
 	/**
 	 * Redirects to the event creation web page.
 	 */
-	public void createNewEvent()
-	{
+	public void createNewEvent() {
 		Redirector.redirect(WebPages.EVENT_CREATION.createJsfUrl());
 	}
 
@@ -117,17 +101,8 @@ public class EventsList
 	 *
 	 * @param event the event to remove
 	 */
-	public void removeEvent(final Event event)
-	{
-		try
-		{
-			eventService.deleteEvent(event.getId());
-		}
-		catch (final EventServiceException eventServiceException)
-		{
-			HttpErrorHandler.print500(eventServiceException);
-			return;
-		}
+	public void removeEvent(final Event event) {
+		eventService.removeEvent(event);
 		Redirector.redirect(WebPages.EVENTS_LIST.createJsfUrl());
 	}
 }

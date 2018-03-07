@@ -6,6 +6,7 @@ import javax.inject.Named;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+import com.website.models.entities.Author;
 import com.website.persistence.AuthorService;
 import com.website.tools.navigation.Redirector;
 import com.website.tools.navigation.SessionManager;
@@ -114,8 +115,11 @@ public class Registration {
 			return;
 		}
 
-		final String passwordDB = BCrypt.hashpw(password, BCrypt.gensalt(12));
-		authorService.insertAuthor(authorName, passwordDB);
+		final String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt(12));
+		final Author author = new Author();
+		author.setname(authorName);
+		author.setPassword(hashedPassword);
+		authorService.persistAuthor(author);
 		Redirector.redirect(WebPages.PROFILE_EDITION.createJsfUrl(), false, "Inscription réussie");
 	}
 }

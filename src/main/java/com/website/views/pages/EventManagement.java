@@ -7,14 +7,13 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.website.managers.email.EmailList;
 import com.website.models.entities.Event;
 import com.website.models.entities.Guest;
 import com.website.persistence.AuthorService;
 import com.website.persistence.EventService;
 import com.website.persistence.GuestService;
-import com.website.tools.EventServiceException;
-import com.website.tools.email.EmailList;
-import com.website.tools.navigation.HttpErrorHandler;
+import com.website.tools.error.HttpErrorHandler;
 import com.website.tools.navigation.SessionManager;
 import com.website.views.WebPages;
 
@@ -26,8 +25,8 @@ import com.website.views.WebPages;
  */
 @Named
 @ViewScoped
-public class EventManagement implements Serializable
-{
+public class EventManagement implements Serializable {
+
 	/** The serial version UID. */
 	private static final long serialVersionUID = 5873143732364895613L;
 
@@ -66,26 +65,17 @@ public class EventManagement implements Serializable
 	 * <li>Sets the guests.</li>
 	 * </ul>
 	 */
-	public void load()
-	{
-		try
-		{
-			final String username = SessionManager.checkSessionUserName();
-			if (!authorService.isEventsAuthor(id, username))
-			{
+	public void load() {
+		try {
+			final String username = SessionManager.getSessionUserNameOrRedirect();
+			if (!authorService.isEventsAuthor(id, username)) {
 				return;
 			}
-			event = eventService.selectEventByEventId(id);
-			guests = guestService.selectGuestsByEventId(id);
+			event = eventService.findEventByEventId(id);
+			guests = guestService.findGuestsByEventId(id);
 		}
-		catch (final EventServiceException e)
-		{
-			HttpErrorHandler.print500(e);
-			return;
-		}
-		catch (final IllegalStateException e)
-		{
-			HttpErrorHandler.print500(e, "forward impossible");
+		catch (final IllegalStateException illegalStateException) {
+			HttpErrorHandler.print500("forward impossible", illegalStateException);
 			return;
 		}
 	}
@@ -95,8 +85,7 @@ public class EventManagement implements Serializable
 	 *
 	 * @return the web page
 	 */
-	public WebPages getWebPage()
-	{
+	public WebPages getWebPage() {
 		return WEB_PAGE;
 	}
 
@@ -105,8 +94,7 @@ public class EventManagement implements Serializable
 	 *
 	 * @return the event id HTTP request parameter
 	 */
-	public Long getId()
-	{
+	public Long getId() {
 		return id;
 	}
 
@@ -115,8 +103,7 @@ public class EventManagement implements Serializable
 	 *
 	 * @param id the event id HTTP request parameter
 	 */
-	public void setId(final Long id)
-	{
+	public void setId(final Long id) {
 		this.id = id;
 	}
 
@@ -125,8 +112,7 @@ public class EventManagement implements Serializable
 	 *
 	 * @return the event to manage
 	 */
-	public Event getEvent()
-	{
+	public Event getEvent() {
 		return event;
 	}
 
@@ -135,8 +121,7 @@ public class EventManagement implements Serializable
 	 *
 	 * @return the event guests
 	 */
-	public List<Guest> getGuests()
-	{
+	public List<Guest> getGuests() {
 		return guests;
 	}
 
@@ -145,8 +130,7 @@ public class EventManagement implements Serializable
 	 *
 	 * @return the e-mails to be sent to guests
 	 */
-	public String getEmails()
-	{
+	public String getEmails() {
 		return emails;
 	}
 
@@ -155,39 +139,30 @@ public class EventManagement implements Serializable
 	 *
 	 * @param emailList the e-mails to be sent to guests
 	 */
-	public void setEmails(final String emailList)
-	{
+	public void setEmails(final String emailList) {
 		this.emails = emailList;
 	}
 
 	/**
 	 * Adds guests to the event.
 	 */
-	public void addGuests()
-	{
-		try
-		{
-			final String username = SessionManager.checkSessionUserName();
-			if (!authorService.isEventsAuthor(id, username))
-			{
+	public void addGuests() {
+		try {
+			final String username = SessionManager.getSessionUserNameOrRedirect();
+			if (!authorService.isEventsAuthor(id, username)) {
 				return;
 			}
-			event = eventService.selectEventByEventId(id);
-			if (emails == null || emails.trim().isEmpty())
-			{
+			event = eventService.findEventByEventId(id);
+			if (emails == null || emails.trim().isEmpty()) {
 				return;
 			}
-			guestService.insertGuests(event, emails);
-			guests = guestService.selectGuestsByEventId(id);
+			for (final String email : emails.split(";")) {
+				guestService.persistGuest(event, email);
+			}
+			guests = guestService.findGuestsByEventId(id);
 		}
-		catch (final NumberFormatException e)
-		{
-			HttpErrorHandler.print404(e, "Le parametre de la requete http ne peut pas etre converti en Integer dans le doPost de EventLinkServlet");
-			return;
-		}
-		catch (final EventServiceException e)
-		{
-			HttpErrorHandler.print500(e);
+		catch (final NumberFormatException numberFormatException) {
+			HttpErrorHandler.print404("Le parametre de la requete http ne peut pas etre converti en Integer dans le doPost de EventLinkServlet", numberFormatException);
 			return;
 		}
 	}
@@ -197,17 +172,8 @@ public class EventManagement implements Serializable
 	 * 
 	 * @param guest the guest to remove from the event
 	 */
-	public void removeGuest(final Guest guest)
-	{
-		try
-		{
-			guestService.deleteGuest(guest.getId());
-			guests = guestService.selectGuestsByEventId(id);
-		}
-		catch (final EventServiceException eventServiceException)
-		{
-			HttpErrorHandler.print500(eventServiceException);
-			return;
-		}
+	public void removeGuest(final Guest guest) {
+		guestService.removeGuest(guest);
+		guests = guestService.findGuestsByEventId(id);
 	}
 }

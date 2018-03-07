@@ -88,7 +88,7 @@ public class Connection {
 			return;
 		}
 
-		final String storedPassword = authorService.selectPasswordByAuthorName(authorName);
+		final String storedPassword = authorService.findPasswordByAuthorName(authorName);
 
 		if (!BCrypt.checkpw(password, storedPassword)) {
 			Redirector.redirect(WEB_PAGE.createJsfUrl(), true, "Utilisateur inconnu ou mot de passe incorrect");

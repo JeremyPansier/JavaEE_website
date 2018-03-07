@@ -13,8 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.website.data.GuestStatus;
 import com.website.persistence.GuestService;
-import com.website.tools.data.GuestStatus;
 
 /**
  * The guest model.</br>
@@ -48,10 +48,10 @@ public class Guest {
 
 	/**
 	 * If the guest is aware of the invitation to the event, i.e. if he has opened the invitation email (not informed = 0, informed = 1).</br>
-	 * This field is used by the guest service directly from the persistence unit. This entity only lets to set it.
+	 * This field is used by the guest service directly from the persistence unit. This class only lets to set it.
 	 * 
-	 * @see GuestService#countGuestsBySatusAndByEventAfterBeingInformed
-	 * @see GuestService#countInformedGuestsByEvent
+	 * @see GuestService#countGuestsByStatusAndByEventAfterBeingInformed
+	 * @see GuestService#countInformedGuestsByEventId
 	 */
 	@SuppressWarnings("unused")
 	private int informed;
@@ -62,7 +62,7 @@ public class Guest {
 	private Date emaildate;
 
 	/**
-	 * This default constructor is needed by the Java Persistence API.
+	 * Default constructor needed by the Java Persistence API.
 	 */
 	@SuppressWarnings("unused")
 	private Guest() {}

@@ -1,3 +1,4 @@
+package com.website.trash;
 // package com.website.tools.authentication;
 //
 // import javax.annotation.security.RolesAllowed;

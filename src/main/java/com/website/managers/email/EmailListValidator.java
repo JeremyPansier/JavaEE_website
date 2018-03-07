@@ -1,4 +1,4 @@
-package com.website.tools.email;
+package com.website.managers.email;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

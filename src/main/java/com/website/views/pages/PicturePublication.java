@@ -9,13 +9,11 @@ import javax.inject.Named;
 
 import org.primefaces.event.FileUploadEvent;
 
+import com.website.managers.file.Uploader;
 import com.website.models.entities.Author;
 import com.website.models.entities.Picture;
 import com.website.persistence.AuthorService;
 import com.website.persistence.PictureService;
-import com.website.tools.EventServiceException;
-import com.website.tools.file.Uploader;
-import com.website.tools.navigation.HttpErrorHandler;
 import com.website.tools.navigation.Redirector;
 import com.website.tools.navigation.SessionManager;
 import com.website.views.WebPages;
@@ -48,7 +46,7 @@ public class PicturePublication implements Serializable {
 	private Long id;
 
 	/** The picture. */
-	private transient Picture picture = new Picture();
+	private transient Picture picture;
 
 	/** The author. */
 	private transient Author author;
@@ -58,13 +56,8 @@ public class PicturePublication implements Serializable {
 	 */
 	@PostConstruct
 	public void init() {
-		try {
-			author = authorService.selectAuthorByAuthorName(SessionManager.checkSessionUserName());
-		}
-		catch (final EventServiceException eventServiceException) {
-			HttpErrorHandler.print500(eventServiceException);
-			return;
-		}
+		author = authorService.findAuthorByAuthorName(SessionManager.getSessionUserNameOrRedirect());
+		picture = new Picture(author);
 	}
 
 	/**
@@ -128,13 +121,7 @@ public class PicturePublication implements Serializable {
 		if (picture.getFilename() == null) {
 			Redirector.redirect(WebPages.PICTURE_PUBLICATION.createJsfUrl(), false, "Vous devez choisir une image");
 		}
-		try {
-			id = pictureService.insertPicture(author.getId(), picture.getTitle(), picture.getDescription(), picture.getFilename());
-		}
-		catch (final EventServiceException eventServiceException) {
-			HttpErrorHandler.print500(eventServiceException);
-			return;
-		}
-		Redirector.redirect(WebPages.PICTURE_REPORT.createJsfUrl("pictureId", id), false, "Photo publiée avec succès");
+		pictureService.persistPicture(picture);
+		Redirector.redirect(WebPages.PICTURE_REPORT.createJsfUrl("pictureId", picture.getId()), false, "Photo publiée avec succès");
 	}
 }

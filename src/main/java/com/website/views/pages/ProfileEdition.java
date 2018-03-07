@@ -10,8 +10,6 @@ import javax.inject.Named;
 import com.website.models.entities.Author;
 import com.website.models.entities.Profile;
 import com.website.persistence.AuthorService;
-import com.website.tools.EventServiceException;
-import com.website.tools.navigation.HttpErrorHandler;
 import com.website.tools.navigation.Redirector;
 import com.website.tools.navigation.SessionManager;
 import com.website.views.WebPages;
@@ -24,8 +22,8 @@ import com.website.views.WebPages;
  */
 @Named
 @ViewScoped
-public class ProfileEdition implements Serializable
-{
+public class ProfileEdition implements Serializable {
+
 	/** The serial version UID. */
 	private static final long serialVersionUID = -1355154107935948964L;
 
@@ -46,25 +44,11 @@ public class ProfileEdition implements Serializable
 	 * Initializes the author just after the construction.
 	 */
 	@PostConstruct
-	public void init()
-	{
-		try
-		{
-			final String username = SessionManager.checkSessionUserName();
-			author = authorService.selectAuthorByAuthorName(username);
+	public void init() {
+		final String username = SessionManager.getSessionUserNameOrRedirect();
+		author = authorService.findAuthorByAuthorName(username);
 
-			// profile = eventService.selectProfileByIdProfile(author.getId());
-		}
-		catch (final NullPointerException e)
-		{
-			// ec.redirect(ec.getRequestContextPath() + "/faces/" + Webpagename.eventCreation.toString() + "." + Webpagename.xhtml.toString());
-			return;
-		}
-		catch (final EventServiceException eventServiceException)
-		{
-			HttpErrorHandler.print500(eventServiceException);
-			return;
-		}
+		// profile = eventService.selectProfileByIdProfile(author.getId());
 	}
 
 	/**
@@ -72,8 +56,7 @@ public class ProfileEdition implements Serializable
 	 *
 	 * @return the web page
 	 */
-	public WebPages getWebPage()
-	{
+	public WebPages getWebPage() {
 		return WEB_PAGE;
 	}
 
@@ -82,8 +65,7 @@ public class ProfileEdition implements Serializable
 	 *
 	 * @return the profile
 	 */
-	public Profile getProfile()
-	{
+	public Profile getProfile() {
 		return profile;
 	}
 
@@ -92,8 +74,7 @@ public class ProfileEdition implements Serializable
 	 *
 	 * @return the author
 	 */
-	public Author getAuthor()
-	{
+	public Author getAuthor() {
 		return author;
 	}
 
@@ -107,8 +88,7 @@ public class ProfileEdition implements Serializable
 	/**
 	 * Edits the profile.
 	 */
-	public void editProfile()
-	{
+	public void editProfile() {
 // if (!eventService.isEventsAuthor(id, sessionUsername, ec)) {
 // return null;
 // }

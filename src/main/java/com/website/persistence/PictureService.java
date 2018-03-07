@@ -1,16 +1,16 @@
 package com.website.persistence;
 
+import static com.website.persistence.EntityAttributes.ID;
+import static com.website.persistence.EntityAttributes.NAME;
+
 import java.util.List;
 
 import javax.ejb.Stateless;
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
-import com.website.models.entities.Author;
 import com.website.models.entities.Picture;
-import com.website.tools.navigation.HttpErrorHandler;
 
 /**
  * The service managing the picture persistence.</br>
@@ -18,93 +18,99 @@ import com.website.tools.navigation.HttpErrorHandler;
  * @author Jérémy Pansier
  */
 @Stateless
-public class PictureService
-{
+public class PictureService {
 
 	/** The entity manager binding the model to the persistence entity. */
 	@PersistenceContext(unitName = "website")
 	private EntityManager entityManager;
 
-	/** The service managing the author persistence. */
-	@Inject
-	private AuthorService authorService;
-
-	/** The user name persistence data category name. */
-	private static final String NAME = PersistenceDataCategories.NAME.getName();
-
-	/** The picture id persistence data category name. */
-	private static final String PICTUREID = PersistenceDataCategories.PICTUREID.getName();
-
-	/** The id persistence data category name. */
-	private static final String ID = PersistenceDataCategories.ID.getName();
-
-	public List<Picture> selectPicturesByAuthorName(final String authorName)
-	{
-		final String jpql = "SELECT p FROM Picture p JOIN p.author a WHERE a.name =:name";
-		final TypedQuery<Picture> query = entityManager.createQuery(jpql, Picture.class);
-		query.setParameter(NAME, authorName);
-		return query.getResultList();
-	}
-
-	public void deletePicture(final Long id)
-	{
-		final Picture picture = entityManager.find(Picture.class, id);
-		entityManager.remove(picture);
-	}
-
-	public Long insertPicture(final Long id, final String title, final String description, final String filename)
-	{
-		final Picture p = new Picture();
-		p.setTitle(title);
-		p.setDescription(description);
-		if (filename != null)
-		{
-			p.setFilename(filename);
-		}
-		p.getAuthor().setId(id);
-		entityManager.persist(p);
-		return p.getId();
-	}
-
-	public boolean isPicturesAuthor(final Long id, final String authorName)
-	{
-		if (!countPicturesById(id))
-		{
-			HttpErrorHandler.print404("There is no event for this id in the database");
-			return false;
-		}
-		final Author author = authorService.selectAuthorByAuthorName(authorName);
-		if (author.getId() != selectAuthorIdByPictureId(id))
-		{
-			HttpErrorHandler.print401("The author cannot access to this event");
-			return false;
-		}
-		return true;
-	}
-
-	private Long selectAuthorIdByPictureId(final Long pictureId)
-	{
-		final String jpql = "SELECT p.author.id FROM Picture p WHERE p.id = :pictureId";
+	/**
+	 * Counts the pictures with the specified id.
+	 *
+	 * @param pictureId the picture id
+	 * @return the pictures count
+	 */
+	public Long countPicturesById(final Long pictureId) {
+		final String jpql = "SELECT COUNT(picture) FROM Picture picture WHERE picture.id=:id";
 		final TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);
-		query.setParameter(PICTUREID, pictureId);
+		query.setParameter(ID.getName(), pictureId);
 		return query.getSingleResult();
 	}
 
-	private boolean countPicturesById(final Long id)
-	{
-		final String jpql = "SELECT COUNT(p) FROM Picture p WHERE p.id=:id";
+	/**
+	 * Finds the author id for the specified picture id.
+	 *
+	 * @param pictureId the picture id
+	 * @return the found author id
+	 */
+	public Long findAuthorIdByPictureId(final Long pictureId) {
+		final String jpql = "SELECT picture.author.id FROM Picture picture WHERE picture.id = :id";
 		final TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);
-		query.setParameter(ID, id);
-		return query.getSingleResult() == 1L;
+		query.setParameter(ID.getName(), pictureId);
+		return query.getSingleResult();
 	}
 
-	public Picture selectPictureByPictureId(final Long id)
-	{
-		return entityManager.find(Picture.class, id);
+	/**
+	 * Finds the pictures for specified author name.
+	 *
+	 * @param authorName the author name
+	 * @return the found pictures or an empty list if there is no picture for the specified author name
+	 */
+	public List<Picture> findPicturesByAuthorName(final String authorName) {
+		final String jpql = "SELECT picture FROM Picture picture JOIN picture.author author WHERE author.name =:name";
+		final TypedQuery<Picture> query = entityManager.createQuery(jpql, Picture.class);
+		query.setParameter(NAME.getName(), authorName);
+		return query.getResultList();
 	}
 
-	public void updatePicture(final Long id, final String title, final String description, final String filename)
-	{
-		// TODO fill this method
+	/**
+	 * Finds the picture with the specified picture id.
+	 *
+	 * @param pictureId the picture id
+	 * @return the found picture
+	 */
+	public Picture findPictureByPictureId(final Long pictureId) {
+		return entityManager.find(Picture.class, pictureId);
+	}
+
+	/**
+	 * Persists the specified picture.
+	 * 
+	 * @param picture the picture to persist
+	 */
+	public void persistPicture(final Picture picture) {
+		entityManager.persist(picture);
+	}
+
+	/**
+	 * Removes the specified picture.
+	 * </p>
+	 * <b>Note:</b> </br>
+	 * This method uses the {@link EntityManager}.</br>
+	 * But here's the thing: {@link EntityManager#remove} works only on entities which are managed in the current transaction/context. To remove entities which are not managed, the only way is to make
+	 * it managed by merging the specified entity with the managed entity that have the same id.</br>
+	 * For this purpose, this method first checks if the entity is managed (with {@link EntityManager#contains}) and if not, then make it managed (with {@link EntityManager#merge}).</br>
+	 * Only then will the entity be removed (with {@link EntityManager#remove}).
+	 * 
+	 * @param picture the picture to remove
+	 */
+	public void removePicture(final Picture picture) {
+		Picture managedPicture = picture;
+		/* Check if the picture is managed */
+		if (!entityManager.contains(picture)) {
+			/* If not, then make it managed */
+			managedPicture = entityManager.merge(picture);
+		}
+		/* Remove the picture */
+		entityManager.remove(managedPicture);
+	}
+
+	/**
+	 * Updates the specified picture.
+	 *
+	 * @param picture the picture to update
+	 */
+	public void updatePicture(final Picture picture) {
+		entityManager.merge(picture);
 	}
 }

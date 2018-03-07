@@ -9,13 +9,11 @@ import javax.inject.Named;
 
 import org.primefaces.event.FileUploadEvent;
 
+import com.website.managers.file.Uploader;
 import com.website.models.entities.Author;
 import com.website.models.entities.Event;
 import com.website.persistence.AuthorService;
 import com.website.persistence.EventService;
-import com.website.tools.EventServiceException;
-import com.website.tools.file.Uploader;
-import com.website.tools.navigation.HttpErrorHandler;
 import com.website.tools.navigation.Redirector;
 import com.website.tools.navigation.SessionManager;
 import com.website.views.WebPages;
@@ -61,14 +59,8 @@ public class EventEdition implements Serializable {
 	 */
 	@PostConstruct
 	public void init() {
-		try {
-			sessionUserName = SessionManager.checkSessionUserName();
-			author = authorService.selectAuthorByAuthorName(sessionUserName);
-		}
-		catch (final EventServiceException eventServiceException) {
-			HttpErrorHandler.print500(eventServiceException);
-			return;
-		}
+		sessionUserName = SessionManager.getSessionUserNameOrRedirect();
+		author = authorService.findAuthorByAuthorName(sessionUserName);
 	}
 
 	/**
@@ -125,26 +117,26 @@ public class EventEdition implements Serializable {
 				if (!authorService.isEventsAuthor(id, sessionUserName)) {
 					return;
 				}
-				event = eventService.selectEventByEventId(id);
+				event = eventService.findEventByEventId(id);
 			}
 		}
 		catch (final NullPointerException e) {
 			Redirector.redirect(WebPages.EVENTS_LIST.createJsfUrl());
 			return;
 		}
-		catch (final EventServiceException eventServiceException) {
-			HttpErrorHandler.print500(eventServiceException);
-			return;
-		}
 	}
 
 	/**
-	 * Uploads the file corresponding to the specified file upload event.
+	 * Uploads the file corresponding to the specified file upload event.</br>
+	 * Updates the event filename only if it is not null in such a way to keep the old file if the file upload fails.
 	 *
 	 * @param fileUploadEvent the file upload event
 	 */
 	public void upload(final FileUploadEvent fileUploadEvent) {
-		event.setFilename(Uploader.uploadFile(fileUploadEvent));
+		final String uploadedFilename = Uploader.uploadFile(fileUploadEvent);
+		if (null != uploadedFilename) {
+			event.setFilename(uploadedFilename);
+		}
 	}
 
 	/**
@@ -154,7 +146,7 @@ public class EventEdition implements Serializable {
 		if (!authorService.isEventsAuthor(id, sessionUserName)) {
 			return;
 		}
-		eventService.updateEvent(id, event.getTitle(), event.getDescription(), event.getFilename());
+		eventService.updateEvent(event);
 		Redirector.redirect(WebPages.EVENT_MANAGEMENT.createJsfUrl("eventId", id), false, "Évènement édité avec succès");
 	}
 }

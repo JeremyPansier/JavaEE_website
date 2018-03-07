@@ -1,5 +1,7 @@
 package com.website.persistence;
 
+import static com.website.persistence.EntityAttributes.URL;
+
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -22,24 +24,17 @@ public class VisitService {
 	@PersistenceContext(unitName = "website")
 	private EntityManager entityManager;
 
-	public void insertVisit(final String url, final String ip) {
-		final Visit s = new Visit();
-		s.setUrl(url);
-		s.setIp(ip);
-		entityManager.persist(s);
-	}
-
-	public List<Visit> selectVisits() {
-		final String jpql = "SELECT v FROM Visit v";
-		final TypedQuery<Visit> query = entityManager.createQuery(jpql, Visit.class);
-		return query.getResultList();
-	}
-
+	/**
+	 * Counts the visits for the specified URL grouped by URL.
+	 *
+	 * @param url the visited URL
+	 * @return the visits count
+	 */
 	public Long countVisitsByUrlGroupByUrl(final String url) {
 		try {
-			final String jpql = "SELECT COUNT(v) FROM Visit v WHERE v.url = :url GROUP BY v.url";
+			final String jpql = "SELECT COUNT(visit) FROM Visit visit WHERE visit.url = :url GROUP BY visit.url";
 			final TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);
-			query.setParameter("url", url);
+			query.setParameter(URL.getName(), url);
 			return query.getSingleResult();
 		}
 		catch (final NoResultException e) {
@@ -47,8 +42,35 @@ public class VisitService {
 		}
 	}
 
-	public void deleteVisits() {
-		final List<Visit> visits = selectVisits();
+	/**
+	 * Finds the visits.
+	 *
+	 * @return the found visits
+	 */
+	public List<Visit> findVisits() {
+		final String jpql = "SELECT visit FROM Visit visit";
+		final TypedQuery<Visit> query = entityManager.createQuery(jpql, Visit.class);
+		return query.getResultList();
+	}
+
+	/**
+	 * Persists a new visit with the specified URL and IP address.
+	 *
+	 * @param url the visited URL
+	 * @param ip the visitor IP address
+	 */
+	public void persistVisit(final String url, final String ip) {
+		final Visit visit = new Visit();
+		visit.setUrl(url);
+		visit.setIp(ip);
+		entityManager.persist(visit);
+	}
+
+	/**
+	 * Removes all the visits.
+	 */
+	public void removeVisits() {
+		final List<Visit> visits = findVisits();
 		for (final Visit visit : visits) {
 			entityManager.remove(visit);
 		}

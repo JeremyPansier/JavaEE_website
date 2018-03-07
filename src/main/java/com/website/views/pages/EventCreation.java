@@ -9,13 +9,11 @@ import javax.inject.Named;
 
 import org.primefaces.event.FileUploadEvent;
 
+import com.website.managers.file.Uploader;
 import com.website.models.entities.Author;
 import com.website.models.entities.Event;
 import com.website.persistence.AuthorService;
 import com.website.persistence.EventService;
-import com.website.tools.EventServiceException;
-import com.website.tools.file.Uploader;
-import com.website.tools.navigation.HttpErrorHandler;
 import com.website.tools.navigation.Redirector;
 import com.website.tools.navigation.SessionManager;
 import com.website.views.WebPages;
@@ -55,15 +53,9 @@ public class EventCreation implements Serializable {
 	 */
 	@PostConstruct
 	public void init() {
-		try {
-			event = new Event();
-			final String sessionUserName = SessionManager.checkSessionUserName();
-			author = authorService.selectAuthorByAuthorName(sessionUserName);
-		}
-		catch (final EventServiceException eventServiceException) {
-			HttpErrorHandler.print500(eventServiceException);
-			return;
-		}
+		final String sessionUserName = SessionManager.getSessionUserNameOrRedirect();
+		author = authorService.findAuthorByAuthorName(sessionUserName);
+		event = new Event(author);
 	}
 
 	/**
@@ -107,17 +99,9 @@ public class EventCreation implements Serializable {
 	public void createEvent() {
 		String message = "avec succès";
 		if (null == event.getFilename()) {
-// event.setFilename("");
 			message = "sans image";
 		}
-		Long id = null;
-		try {
-			id = eventService.insertEvent(author.getId(), event.getTitle(), event.getDescription(), event.getFilename());
-		}
-		catch (final EventServiceException eventServiceException) {
-			HttpErrorHandler.print500(eventServiceException);
-			return;
-		}
-		Redirector.redirect(WebPages.EVENT_MANAGEMENT.createJsfUrl("eventId", id), false, "Évènement créé " + message);
+		eventService.persistEvent(event);
+		Redirector.redirect(WebPages.EVENT_MANAGEMENT.createJsfUrl("eventId", event.getId()), false, "Évènement créé " + message);
 	}
 }

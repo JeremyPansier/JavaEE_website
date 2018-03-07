@@ -7,16 +7,15 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.website.data.GuestStatus;
+import com.website.managers.event.EventDataManager;
 import com.website.models.entities.Author;
 import com.website.models.entities.Event;
 import com.website.models.entities.Guest;
 import com.website.persistence.AuthorService;
 import com.website.persistence.EventService;
 import com.website.persistence.GuestService;
-import com.website.tools.EventServiceException;
-import com.website.tools.data.EventDataManager;
-import com.website.tools.data.GuestStatus;
-import com.website.tools.navigation.HttpErrorHandler;
+import com.website.tools.error.HttpErrorHandler;
 import com.website.tools.navigation.SessionManager;
 import com.website.views.WebPages;
 
@@ -133,13 +132,13 @@ public class EventReport implements Serializable {
 	 */
 	public void load() {
 		try {
-			final String sessionUserName = SessionManager.checkSessionUserName();
+			final String sessionUserName = SessionManager.getSessionUserNameOrRedirect();
 			if (!authorService.isEventsAuthor(id, sessionUserName)) {
 				return;
 			}
-			author = authorService.selectAuthorByAuthorName(sessionUserName);
-			event = eventService.selectEventByEventId(id);
-			guests = guestService.selectGuestsByEventId(id);
+			author = authorService.findAuthorByAuthorName(sessionUserName);
+			event = eventService.findEventByEventId(id);
+			guests = guestService.findGuestsByEventId(id);
 
 			eventDataManager.setEventId(id);
 
@@ -153,27 +152,23 @@ public class EventReport implements Serializable {
 			eventDataManager.setDeclinedInvitationsCount(guestService.countGuestsByEventAndByStatus(id, GuestStatus.DECLINE.getCode()));
 
 			/* count event guests who are aware of the invitation email */
-			eventDataManager.setKnownInvitationsCount(guestService.countInformedGuestsByEvent(id));
+			eventDataManager.setKnownInvitationsCount(guestService.countInformedGuestsByEventId(id));
 
 			/* count event guests who accepted the invitation after being informed */
 			eventDataManager.setAcceptedKnownInvitationsCount(
-					guestService.countGuestsBySatusAndByEventAfterBeingInformed(id, GuestStatus.ACCEPT.getCode()));
+					guestService.countGuestsByStatusAndByEventAfterBeingInformed(id, GuestStatus.ACCEPT.getCode()));
 
 			/* count event guests who declined the invitation after being informed */
 			eventDataManager.setDeclinedKnownInvitationsCount(
-					guestService.countGuestsBySatusAndByEventAfterBeingInformed(id, GuestStatus.DECLINE.getCode()));
+					guestService.countGuestsByStatusAndByEventAfterBeingInformed(id, GuestStatus.DECLINE.getCode()));
 
 		}
-		catch (final EventServiceException e) {
-			HttpErrorHandler.print500(e);
+		catch (final NumberFormatException numberFormatException) {
+			HttpErrorHandler.print404("Cannot convert to Integer. Method: " + Thread.currentThread().getStackTrace()[1].getMethodName() + " Class: " + this.getClass().getName(), numberFormatException);
 			return;
 		}
-		catch (final NumberFormatException e) {
-			HttpErrorHandler.print404(e, "Cannot convert to Integer. Method: " + Thread.currentThread().getStackTrace()[1].getMethodName() + " Class: " + this.getClass().getName());
-			return;
-		}
-		catch (final IllegalStateException e) {
-			HttpErrorHandler.print500(e, "forward impossible");
+		catch (final IllegalStateException illegalStateException) {
+			HttpErrorHandler.print500("forward impossible", illegalStateException);
 			return;
 		}
 	}

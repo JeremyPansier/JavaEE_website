@@ -1,7 +1,13 @@
-package com.website.tools.data;
+package com.website.managers.event;
 
-public class EventDataManager
-{
+/**
+ * The event data manager.</br>
+ * Calculates some data depending on the specified ones.
+ *
+ * @author Jérémy Pansier
+ */
+public class EventDataManager {
+
 	/** The event id. */
 	private Long eventId;
 
@@ -37,8 +43,7 @@ public class EventDataManager
 	 *
 	 * @return the event id
 	 */
-	public Long getEventId()
-	{
+	public Long getEventId() {
 		return eventId;
 	}
 
@@ -47,8 +52,7 @@ public class EventDataManager
 	 *
 	 * @param eventId the new event id
 	 */
-	public void setEventId(final Long eventId)
-	{
+	public void setEventId(final Long eventId) {
 		this.eventId = eventId;
 	}
 
@@ -57,8 +61,7 @@ public class EventDataManager
 	 *
 	 * @return the invitations count
 	 */
-	public int getInvitationsCount()
-	{
+	public int getInvitationsCount() {
 		return invitationsCount;
 	}
 
@@ -67,8 +70,7 @@ public class EventDataManager
 	 *
 	 * @param invitationsCount the new invitations count
 	 */
-	public void setInvitationsCount(final int invitationsCount)
-	{
+	public void setInvitationsCount(final int invitationsCount) {
 		this.invitationsCount = invitationsCount;
 	}
 
@@ -77,8 +79,7 @@ public class EventDataManager
 	 *
 	 * @return the accepted invitations count
 	 */
-	public Long getAcceptedInvitationsCount()
-	{
+	public Long getAcceptedInvitationsCount() {
 		return acceptedInvitationsCount;
 	}
 
@@ -87,8 +88,7 @@ public class EventDataManager
 	 *
 	 * @param acceptedInvitationsCount the new accepted invitations count
 	 */
-	public void setAcceptedInvitationsCount(final Long acceptedInvitationsCount)
-	{
+	public void setAcceptedInvitationsCount(final Long acceptedInvitationsCount) {
 		this.acceptedInvitationsCount = acceptedInvitationsCount;
 	}
 
@@ -97,8 +97,7 @@ public class EventDataManager
 	 *
 	 * @return the declined invitations count
 	 */
-	public Long getDeclinedInvitationsCount()
-	{
+	public Long getDeclinedInvitationsCount() {
 		return declinedInvitationsCount;
 	}
 
@@ -108,8 +107,7 @@ public class EventDataManager
 	 *
 	 * @param declinedInvitationsCount the new declined invitations count
 	 */
-	public void setDeclinedInvitationsCount(final Long declinedInvitationsCount)
-	{
+	public void setDeclinedInvitationsCount(final Long declinedInvitationsCount) {
 		this.declinedInvitationsCount = declinedInvitationsCount;
 		pendingAnswerInvitationsCount = invitationsCount - declinedInvitationsCount - acceptedInvitationsCount;
 	}
@@ -119,8 +117,7 @@ public class EventDataManager
 	 *
 	 * @return the count of the invitations pending an answer
 	 */
-	public Long getPendingAnswerInvitationsCount()
-	{
+	public Long getPendingAnswerInvitationsCount() {
 		return pendingAnswerInvitationsCount;
 	}
 
@@ -129,8 +126,7 @@ public class EventDataManager
 	 *
 	 * @param pendingAnswerInvitationsCount the new count of the invitations pending an answer
 	 */
-	public void setPendingAnswerInvitationsCount(final Long pendingAnswerInvitationsCount)
-	{
+	public void setPendingAnswerInvitationsCount(final Long pendingAnswerInvitationsCount) {
 		this.pendingAnswerInvitationsCount = pendingAnswerInvitationsCount;
 	}
 
@@ -139,8 +135,7 @@ public class EventDataManager
 	 *
 	 * @return the count of invitations which are known by their receivers (i
 	 */
-	public Long getKnownInvitationsCount()
-	{
+	public Long getKnownInvitationsCount() {
 		return knownInvitationsCount;
 	}
 
@@ -150,8 +145,7 @@ public class EventDataManager
 	 *
 	 * @param knownInvitationsCount the new count of invitations which are known by their receivers (i
 	 */
-	public void setKnownInvitationsCount(final Long knownInvitationsCount)
-	{
+	public void setKnownInvitationsCount(final Long knownInvitationsCount) {
 		this.knownInvitationsCount = knownInvitationsCount;
 		notKnownInvitationsCount = invitationsCount - knownInvitationsCount;
 	}
@@ -161,8 +155,7 @@ public class EventDataManager
 	 *
 	 * @return the count of invitations which are not known by their receivers (i
 	 */
-	public Long getNotKnownInvitationsCount()
-	{
+	public Long getNotKnownInvitationsCount() {
 		return notKnownInvitationsCount;
 	}
 
@@ -171,8 +164,7 @@ public class EventDataManager
 	 *
 	 * @param notKnownInvitationsCount the new count of invitations which are not known by their receivers (i
 	 */
-	public void setNotKnownInvitationsCount(final Long notKnownInvitationsCount)
-	{
+	public void setNotKnownInvitationsCount(final Long notKnownInvitationsCount) {
 		this.notKnownInvitationsCount = notKnownInvitationsCount;
 	}
 
@@ -181,8 +173,7 @@ public class EventDataManager
 	 *
 	 * @return the count of invitations which are known and accepted by their receivers (i
 	 */
-	public Long getAcceptedKnownInvitationsCount()
-	{
+	public Long getAcceptedKnownInvitationsCount() {
 		return acceptedKnownInvitationsCount;
 	}
 
@@ -191,8 +182,7 @@ public class EventDataManager
 	 *
 	 * @param acceptedKnownInvitationsCount the new count of invitations which are known and accepted by their receivers (i
 	 */
-	public void setAcceptedKnownInvitationsCount(final Long acceptedKnownInvitationsCount)
-	{
+	public void setAcceptedKnownInvitationsCount(final Long acceptedKnownInvitationsCount) {
 		this.acceptedKnownInvitationsCount = acceptedKnownInvitationsCount;
 	}
 
@@ -201,8 +191,7 @@ public class EventDataManager
 	 *
 	 * @return the count of invitations which are known and declined by their receivers (i
 	 */
-	public Long getDeclinedKnownInvitationsCount()
-	{
+	public Long getDeclinedKnownInvitationsCount() {
 		return declinedKnownInvitationsCount;
 	}
 
@@ -211,8 +200,7 @@ public class EventDataManager
 	 *
 	 * @param declinedKnownInvitationsCount the new count of invitations which are known and declined by their receivers (i
 	 */
-	public void setDeclinedKnownInvitationsCount(final Long declinedKnownInvitationsCount)
-	{
+	public void setDeclinedKnownInvitationsCount(final Long declinedKnownInvitationsCount) {
 		this.declinedKnownInvitationsCount = declinedKnownInvitationsCount;
 		pendingAnswerKnownInvitationsCount = knownInvitationsCount - acceptedKnownInvitationsCount - declinedKnownInvitationsCount;
 	}
@@ -222,8 +210,7 @@ public class EventDataManager
 	 *
 	 * @return the count of invitations which are known and has not been replied by their receivers (i
 	 */
-	public Long getPendingAnswerKnownInvitationsCount()
-	{
+	public Long getPendingAnswerKnownInvitationsCount() {
 		return pendingAnswerKnownInvitationsCount;
 	}
 
@@ -232,8 +219,7 @@ public class EventDataManager
 	 *
 	 * @param pendingAnswerKnownInvitationsCount the new count of invitations which are known and has not been replied by their receivers (i
 	 */
-	public void setPendingAnswerKnownInvitationsCount(final Long pendingAnswerKnownInvitationsCount)
-	{
+	public void setPendingAnswerKnownInvitationsCount(final Long pendingAnswerKnownInvitationsCount) {
 		this.pendingAnswerKnownInvitationsCount = pendingAnswerKnownInvitationsCount;
 	}
 }

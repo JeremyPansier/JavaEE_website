@@ -10,8 +10,7 @@ import com.website.models.entities.User;
 import com.website.persistence.EventService;
 import com.website.persistence.GuestService;
 import com.website.persistence.UserService;
-import com.website.tools.EventServiceException;
-import com.website.tools.navigation.HttpErrorHandler;
+import com.website.tools.error.HttpErrorHandler;
 import com.website.views.WebPages;
 
 /**
@@ -22,8 +21,8 @@ import com.website.views.WebPages;
  */
 @Named
 @RequestScoped
-public class EventSubscriptionConfirmation
-{
+public class EventSubscriptionConfirmation {
+
 	/** The service managing the event persistence. */
 	@Inject
 	private EventService eventService;
@@ -59,24 +58,14 @@ public class EventSubscriptionConfirmation
 	 * <li>Sets the user.</li>
 	 * </ul>
 	 */
-	public void load()
-	{
-		try
-		{
-			if (!guestService.countGuestsByHash(hash))
-			{
-				HttpErrorHandler.print404("The following hash doesn't exist in the database : " + hash);
-				return;
-			}
-			guest = guestService.selectGuestByHash(hash);
-			event = eventService.selectEventByEventId(guest.getEvent().getId());
-			user = userService.selectUserById(guest.getUser().getId());
-		}
-		catch (final EventServiceException eventServiceException)
-		{
-			HttpErrorHandler.print500(eventServiceException);
+	public void load() {
+		if (0 == guestService.countGuestsByHash(hash)) {
+			HttpErrorHandler.print404("The following hash doesn't exist in the database : " + hash);
 			return;
 		}
+		guest = guestService.findGuestByHash(hash);
+		event = eventService.findEventByEventId(guest.getEvent().getId());
+		user = userService.findUserById(guest.getUser().getId());
 	}
 
 	/**
@@ -84,8 +73,7 @@ public class EventSubscriptionConfirmation
 	 *
 	 * @return the web page
 	 */
-	public WebPages getWebPage()
-	{
+	public WebPages getWebPage() {
 		return WEB_PAGE;
 	}
 
@@ -94,8 +82,7 @@ public class EventSubscriptionConfirmation
 	 *
 	 * @return the guest
 	 */
-	public Guest getGuest()
-	{
+	public Guest getGuest() {
 		return guest;
 	}
 
@@ -104,8 +91,7 @@ public class EventSubscriptionConfirmation
 	 *
 	 * @param guest the new guest
 	 */
-	public void setGuest(final Guest guest)
-	{
+	public void setGuest(final Guest guest) {
 		this.guest = guest;
 	}
 
@@ -114,8 +100,7 @@ public class EventSubscriptionConfirmation
 	 *
 	 * @return the event
 	 */
-	public Event getEvent()
-	{
+	public Event getEvent() {
 		return event;
 	}
 
@@ -124,8 +109,7 @@ public class EventSubscriptionConfirmation
 	 *
 	 * @param event the new event
 	 */
-	public void setEvent(final Event event)
-	{
+	public void setEvent(final Event event) {
 		this.event = event;
 	}
 
@@ -134,8 +118,7 @@ public class EventSubscriptionConfirmation
 	 *
 	 * @return the user
 	 */
-	public User getUser()
-	{
+	public User getUser() {
 		return user;
 	}
 
@@ -144,8 +127,7 @@ public class EventSubscriptionConfirmation
 	 *
 	 * @param user the new user
 	 */
-	public void setUser(final User user)
-	{
+	public void setUser(final User user) {
 		this.user = user;
 	}
 
@@ -154,8 +136,7 @@ public class EventSubscriptionConfirmation
 	 *
 	 * @return the hash
 	 */
-	public String getHash()
-	{
+	public String getHash() {
 		return hash;
 	}
 
@@ -164,8 +145,7 @@ public class EventSubscriptionConfirmation
 	 *
 	 * @param hash the new hash
 	 */
-	public void setHash(final String hash)
-	{
+	public void setHash(final String hash) {
 		this.hash = hash;
 	}
 }

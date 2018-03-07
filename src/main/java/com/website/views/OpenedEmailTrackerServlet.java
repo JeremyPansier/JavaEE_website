@@ -13,8 +13,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.website.persistence.GuestService;
-import com.website.tools.EventServiceException;
-import com.website.tools.navigation.HttpErrorHandler;
 
 /**
  * The email tracker.</br>
@@ -49,10 +47,6 @@ public class OpenedEmailTrackerServlet extends HttpServlet {
 
 			request.getRequestDispatcher("/images/pixel.png")
 					.forward(request, response);
-		}
-		catch (final EventServiceException e) {
-			HttpErrorHandler.print500(response, e);
-			return;
 		}
 		catch (final Exception e) {
 			LOGGER.error("forward issue", e);

@@ -1,4 +1,4 @@
-package com.website.cdi;
+package com.website.tools.authentication;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.TYPE;

@@ -25,7 +25,7 @@ public class Event {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	/** The author bound to this event. */
+	/** The author of this event. */
 	@ManyToOne
 	@JoinColumn(name = "authorId")
 	private final Author author;
@@ -39,15 +39,29 @@ public class Event {
 	/** The filename. */
 	private String filename;
 
-	/** The link to open the event web page. */
+	/**
+	 * The link to open the event management web page.
+	 * 
+	 * @see #updateEventLink()
+	 */
 	@Transient
 	private String eventLink;
 
 	/**
-	 * Instantiates a new event.
+	 * Default constructor needed by the Java Persistence API.
 	 */
-	public Event() {
-		this.author = new Author();
+	@SuppressWarnings("unused")
+	private Event() {
+		this.author = null;
+	}
+
+	/**
+	 * Instantiates a new event.
+	 * 
+	 * @param author the author
+	 */
+	public Event(final Author author) {
+		this.author = author;
 		this.filename = null;
 	}
 
@@ -61,9 +75,9 @@ public class Event {
 	}
 
 	/**
-	 * Gets the author bound to this event.
+	 * Gets the author of this event.
 	 *
-	 * @return the author bound to this event
+	 * @return the author of this event
 	 */
 	public Author getAuthor() {
 		return author;
@@ -124,9 +138,10 @@ public class Event {
 	}
 
 	/**
-	 * Gets the link to open the event web page.
+	 * Gets the link to open the event management web page.
 	 *
 	 * @return the link to open the event web page
+	 * @see #updateEventLink()
 	 */
 	public String getEventLink() {
 		return eventLink;

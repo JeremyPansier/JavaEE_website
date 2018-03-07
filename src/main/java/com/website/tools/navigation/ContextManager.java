@@ -1,8 +1,13 @@
 package com.website.tools.navigation;
 
+import java.io.IOException;
+
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * The context manager.</br>
@@ -13,6 +18,9 @@ public class ContextManager {
 
 	/** The flash message key. */
 	private static final String MESSAGE_KEY = "flash.message";
+
+	/** The Logger. */
+	private static final Logger LOGGER = LogManager.getLogger();
 
 	/**
 	 * The private constructor to hide the implicit empty public one.
@@ -59,5 +67,20 @@ public class ContextManager {
 	 */
 	public static HttpServletResponse getResponse() {
 		return (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+	}
+
+	/**
+	 * Sends an error to the HTTP response.
+	 *
+	 * @param httpErrorCode the HTTP error code
+	 * @param clientErrorMessage the client error message
+	 */
+	public static void sendError(final int httpErrorCode, final String clientErrorMessage) {
+		try {
+			FacesContext.getCurrentInstance().getExternalContext().responseSendError(httpErrorCode, clientErrorMessage);
+		}
+		catch (final IOException ioException) {
+			LOGGER.fatal(ioException);
+		}
 	}
 }

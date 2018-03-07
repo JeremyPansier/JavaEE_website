@@ -1,8 +1,5 @@
 package com.website.tools.navigation;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-
 import com.website.views.WebPages;
 
 /**
@@ -13,7 +10,7 @@ import com.website.views.WebPages;
 public class SessionManager {
 
 	/** The user cookie name. */
-	private static final String USER_COOKIE_NAME = "user";
+	private static final String USER_KEY = "user";
 
 	/**
 	 * The private constructor to hide the implicit empty public one.
@@ -21,11 +18,12 @@ public class SessionManager {
 	private SessionManager() {}
 
 	/**
-	 * Checks if the session user is connected.
+	 * Gets the session user name stored in the JSESSIONID cookie.</br>
+	 * Redirects to the connection web page if its null.
 	 *
-	 * @return the session user name
+	 * @return the session user name or null if there is no session user name stored in the JSESSIONID cookie
 	 */
-	public static String checkSessionUserName() {
+	public static String getSessionUserNameOrRedirect() {
 		final String username = getSessionUserName();
 		if (null == username) {
 			Redirector.redirect(WebPages.CONNECTION.createJsfUrl(), true, "Connexion requise");
@@ -35,74 +33,30 @@ public class SessionManager {
 	}
 
 	/**
-	 * Gets the session user name.
+	 * Gets the session user name stored in the JSESSIONID cookie.</br>
 	 *
-	 * @return the session user name
+	 * @return the session user name or null if there is no session user name stored in the JSESSIONID cookie
 	 */
 	public static String getSessionUserName() {
-		final Cookie cookie = getUserCookie();
-		String name = null;
-		if (null != cookie) {
-			name = cookie.getValue();
-		}
-		return name;
+		final Object attribute = ContextManager.getRequest().getSession().getAttribute(USER_KEY);
+		return attribute == null ? null : attribute.toString();
 	}
 
 	/**
-	 * Tracks the specified user with a cookie.</br>
+	 * Tracks the specified user with a parameter stored in the JSESSIONID cookie.</br>
 	 * The cookie will persist in the session until browser shutdown.
 	 *
-	 * @param username the user name
+	 * @param username the user name to store
 	 */
 	public static void trackUser(final String username) {
-
-		Cookie cookie = getUserCookie();
-
-		if (cookie != null) {
-			cookie.setValue(username);
-		} else {
-			cookie = new Cookie(USER_COOKIE_NAME, username);
-			cookie.setPath(ContextManager.getRequest().getContextPath());
-		}
-
-		ContextManager.getResponse().addCookie(cookie);
+		ContextManager.getRequest().getSession().setAttribute(USER_KEY, username);
 	}
 
 	/**
-	 * Releases the browser current user.
+	 * Releases the browser current user.</br>
+	 * Invalidates the session and by the way destroy the JSESSIONID cookie.
 	 */
 	public static void releaseUser() {
-
-		Cookie cookie = getUserCookie();
-
-		if (cookie == null) {
-			cookie = new Cookie(USER_COOKIE_NAME, null);
-			cookie.setPath(ContextManager.getRequest().getContextPath());
-		}
-
-		cookie.setMaxAge(0);
-
-		ContextManager.getResponse().addCookie(cookie);
-	}
-
-	/**
-	 * Gets the user cookie.
-	 *
-	 * @return the user cookie
-	 */
-	private static Cookie getUserCookie() {
-
-		final HttpServletRequest request = ContextManager.getRequest();
-
-		final Cookie[] userCookies = request.getCookies();
-		Cookie cookie = null;
-		if (userCookies != null && userCookies.length > 0) {
-			for (int i = 0; i < userCookies.length; i++) {
-				if (userCookies[i].getName().equals(USER_COOKIE_NAME)) {
-					cookie = userCookies[i];
-				}
-			}
-		}
-		return cookie;
+		ContextManager.getRequest().getSession().invalidate();
 	}
 }

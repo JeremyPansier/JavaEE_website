@@ -12,9 +12,8 @@ import com.website.models.entities.Picture;
 import com.website.persistence.AuthorService;
 import com.website.persistence.PictureService;
 import com.website.persistence.VisitService;
-import com.website.tools.EventServiceException;
+import com.website.tools.error.HttpErrorHandler;
 import com.website.tools.navigation.ContextManager;
-import com.website.tools.navigation.HttpErrorHandler;
 import com.website.tools.navigation.SessionManager;
 import com.website.views.WebPages;
 
@@ -66,14 +65,8 @@ public class PictureReport implements Serializable {
 	 */
 	@PostConstruct
 	public void init() {
-		try {
-			sessionUserName = SessionManager.checkSessionUserName();
-			author = authorService.selectAuthorByAuthorName(sessionUserName);
-		}
-		catch (final EventServiceException eventServiceException) {
-			HttpErrorHandler.print500(eventServiceException);
-			return;
-		}
+		sessionUserName = SessionManager.getSessionUserNameOrRedirect();
+		author = authorService.findAuthorByAuthorName(sessionUserName);
 	}
 
 	/**
@@ -81,26 +74,24 @@ public class PictureReport implements Serializable {
 	 */
 	public void load() {
 		try {
-			if (!pictureService.isPicturesAuthor(id, sessionUserName)) {
+			if (!authorService.isPictureAuthor(id, sessionUserName)) {
 				return;
 			}
 			final String websiteURL = ContextManager.getWebsiteUrl();
 
-			picture = pictureService.selectPictureByPictureId(id);
+			picture = pictureService.findPictureByPictureId(id);
 
 			final String url = websiteURL + "/" + "FilesServlet" + "/" + picture.getFilename();
 			viewsCount = visitService.countVisitsByUrlGroupByUrl(url);
 		}
-		catch (final EventServiceException e) {
-			HttpErrorHandler.print500(e);
+		catch (final NumberFormatException numberFormatException) {
+			HttpErrorHandler.print404(
+					"The http parameter cannot be formatted to Integer. Method: " + Thread.currentThread().getStackTrace()[1].getMethodName() + " Class: " + this.getClass().getName(),
+					numberFormatException);
 			return;
 		}
-		catch (final NumberFormatException e) {
-			HttpErrorHandler.print404(e, "The http parameter cannot be formatted to Integer. Method: " + Thread.currentThread().getStackTrace()[1].getMethodName() + " Class: " + this.getClass().getName());
-			return;
-		}
-		catch (final IllegalStateException e) {
-			HttpErrorHandler.print500(e, "Forward issue");
+		catch (final IllegalStateException illegalStateException) {
+			HttpErrorHandler.print500("Forward issue", illegalStateException);
 			return;
 		}
 	}

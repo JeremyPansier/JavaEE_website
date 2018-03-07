@@ -4,13 +4,12 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.website.data.GuestStatus;
 import com.website.models.entities.Event;
 import com.website.models.entities.Guest;
 import com.website.persistence.EventService;
 import com.website.persistence.GuestService;
-import com.website.tools.EventServiceException;
-import com.website.tools.data.GuestStatus;
-import com.website.tools.navigation.HttpErrorHandler;
+import com.website.tools.error.HttpErrorHandler;
 import com.website.tools.navigation.Redirector;
 import com.website.views.WebPages;
 
@@ -22,8 +21,8 @@ import com.website.views.WebPages;
  */
 @Named
 @RequestScoped
-public class EventSubscription
-{
+public class EventSubscription {
+
 	/** The service managing the event persistence. */
 	@Inject
 	private EventService eventService;
@@ -44,21 +43,13 @@ public class EventSubscription
 	/**
 	 * Sets the event on the web page loading, depending on the HTTP request parameter:
 	 */
-	public void load()
-	{
-		try
-		{
-			final Guest guest = guestService.selectGuestByHash(hash);
-			event = eventService.selectEventByEventId(guest.getEvent().getId());
+	public void load() {
+		try {
+			final Guest guest = guestService.findGuestByHash(hash);
+			event = eventService.findEventByEventId(guest.getEvent().getId());
 		}
-		catch (final EventServiceException eventServiceException)
-		{
-			HttpErrorHandler.print500(eventServiceException);
-			return;
-		}
-		catch (final NullPointerException nullPointerException)
-		{
-			HttpErrorHandler.print404(nullPointerException, "The hash of the current http request doesn't exist in the database");
+		catch (final NullPointerException nullPointerException) {
+			HttpErrorHandler.print404("The hash of the current http request doesn't exist in the database", nullPointerException);
 			return;
 		}
 	}
@@ -66,8 +57,7 @@ public class EventSubscription
 	/**
 	 * @return the web page
 	 */
-	public WebPages getWebPage()
-	{
+	public WebPages getWebPage() {
 		return WEB_PAGE;
 	}
 
@@ -76,8 +66,7 @@ public class EventSubscription
 	 *
 	 * @return the event
 	 */
-	public Event getEvent()
-	{
+	public Event getEvent() {
 		return event;
 	}
 
@@ -86,8 +75,7 @@ public class EventSubscription
 	 *
 	 * @return the hash
 	 */
-	public String getHash()
-	{
+	public String getHash() {
 		return hash;
 	}
 
@@ -96,42 +84,23 @@ public class EventSubscription
 	 *
 	 * @param hash the new hash
 	 */
-	public void setHash(final String hash)
-	{
+	public void setHash(final String hash) {
 		this.hash = hash;
 	}
 
 	/**
 	 * Updates the guest status on invitation acceptance.
 	 */
-	public void accept()
-	{
-		try
-		{
-			guestService.updateGuestStatusByHash(hash, GuestStatus.ACCEPT);
-		}
-		catch (final EventServiceException e)
-		{
-			HttpErrorHandler.print500(e);
-			return;
-		}
+	public void accept() {
+		guestService.updateGuestStatusByHash(hash, GuestStatus.ACCEPT);
 		Redirector.redirect(WebPages.EVENT_SUBSCRIPTION_CONFIRMATION.createJsfUrl("token", hash));
 	}
 
 	/**
 	 * Updates the guest status on invitation decline.
 	 */
-	public void decline()
-	{
-		try
-		{
-			guestService.updateGuestStatusByHash(hash, GuestStatus.DECLINE);
-		}
-		catch (final EventServiceException e)
-		{
-			HttpErrorHandler.print500(e);
-			return;
-		}
+	public void decline() {
+		guestService.updateGuestStatusByHash(hash, GuestStatus.DECLINE);
 		Redirector.redirect(WebPages.EVENT_SUBSCRIPTION_CONFIRMATION.createJsfUrl("token", hash));
 	}
 }

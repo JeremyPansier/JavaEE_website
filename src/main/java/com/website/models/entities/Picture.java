@@ -18,8 +18,8 @@ import com.website.views.WebPages;
  * @author Jérémy Pansier
  */
 @Entity
-public class Picture
-{
+public class Picture {
+
 	/** The id. */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,16 +39,30 @@ public class Picture
 	/** The filename. */
 	private String filename;
 
-	/** The picture link. */
+	/**
+	 * The link to open the picture edition web page.
+	 * 
+	 * @see #updatePictureLink()
+	 */
 	@Transient
 	private String pictureLink;
 
 	/**
-	 * Instantiates a new picture.</br>
+	 * Default constructor needed by the Java Persistence API.
 	 */
-	public Picture()
-	{
-		this.author = new Author();
+	@SuppressWarnings("unused")
+	private Picture() {
+		this.author = null;
+	}
+
+	/**
+	 * Instantiates a new picture.
+	 * 
+	 * @param author the author
+	 */
+	public Picture(final Author author) {
+		this.author = author;
+		this.filename = null;
 	}
 
 	/**
@@ -56,8 +70,7 @@ public class Picture
 	 *
 	 * @return the id
 	 */
-	public Long getId()
-	{
+	public Long getId() {
 		return id;
 	}
 
@@ -66,8 +79,7 @@ public class Picture
 	 *
 	 * @return the author of this picture
 	 */
-	public Author getAuthor()
-	{
+	public Author getAuthor() {
 		return author;
 	}
 
@@ -76,8 +88,7 @@ public class Picture
 	 *
 	 * @return the title
 	 */
-	public String getTitle()
-	{
+	public String getTitle() {
 		return title;
 	}
 
@@ -86,8 +97,7 @@ public class Picture
 	 *
 	 * @param title the new title
 	 */
-	public void setTitle(final String title)
-	{
+	public void setTitle(final String title) {
 		this.title = title;
 	}
 
@@ -96,8 +106,7 @@ public class Picture
 	 *
 	 * @return the description
 	 */
-	public String getDescription()
-	{
+	public String getDescription() {
 		return description;
 	}
 
@@ -106,8 +115,7 @@ public class Picture
 	 *
 	 * @param description the new description
 	 */
-	public void setDescription(final String description)
-	{
+	public void setDescription(final String description) {
 		this.description = description;
 	}
 
@@ -116,8 +124,7 @@ public class Picture
 	 *
 	 * @return the filename
 	 */
-	public String getFilename()
-	{
+	public String getFilename() {
 		return filename;
 	}
 
@@ -126,18 +133,17 @@ public class Picture
 	 *
 	 * @param filename the new filename
 	 */
-	public void setFilename(final String filename)
-	{
+	public void setFilename(final String filename) {
 		this.filename = filename;
 	}
 
 	/**
-	 * Gets the picture link.
+	 * Gets the link to open the picture edition web page.
 	 *
 	 * @return the picture link
+	 * @see #updatePictureLink()
 	 */
-	public String getPictureLink()
-	{
+	public String getPictureLink() {
 		return pictureLink;
 	}
 
@@ -146,8 +152,7 @@ public class Picture
 	 * This method is called after the id has been generated during the persistence of the event.
 	 */
 	@PostLoad
-	private void updatePictureLink()
-	{
+	private void updatePictureLink() {
 		this.pictureLink = WebPages.PICTURE_EDITION.createJsfUrl("pictureId", this.id);
 	}
 }

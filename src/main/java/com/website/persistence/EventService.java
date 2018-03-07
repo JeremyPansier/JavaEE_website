@@ -1,5 +1,7 @@
 package com.website.persistence;
 
+import static com.website.persistence.EntityAttributes.ID;
+
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -10,7 +12,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import com.website.models.entities.Event;
-import com.website.models.entities.Visit;
+import com.website.models.entities.Guest;
 
 /**
  * The service managing the event persistence.</br>
@@ -18,81 +20,101 @@ import com.website.models.entities.Visit;
  * @author Jérémy Pansier
  */
 @Stateless
-public class EventService
-{
+public class EventService {
+
 	/** The entity manager binding the model to the persistence entity. */
 	@PersistenceContext(unitName = "website")
 	private EntityManager entityManager;
 
 	/** The service managing the guest persistence. */
 	@Inject
-	GuestService guestService;
+	private GuestService guestService;
 
-	/** The event id persistence data category name. */
-	private static final String EVENTID = PersistenceDataCategories.EVENTID.getName();
-
-	/** The user name persistence data category name. */
-	private static final String NAME = PersistenceDataCategories.NAME.getName();
-
-	public Long insertEvent(final Long id, final String title, final String description, final String filename)
-	{
-		final Event e = new Event();
-		e.setTitle(title);
-		e.setDescription(description);
-		if (filename != null)
-		{
-			e.setFilename(filename);
+	/**
+	 * Counts the events with the specified id.
+	 *
+	 * @param eventId the event id
+	 * @return the events count
+	 */
+	public Long countEventsById(final Long eventId) {
+		try {
+			final String jpql = "SELECT COUNT(e) FROM Event e WHERE e.id = :id";
+			final TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);
+			query.setParameter(ID.getName(), eventId);
+			return query.getSingleResult();
 		}
-		e.getAuthor().setId(id);
-		entityManager.persist(e);
-		return e.getId();
+		catch (final NoResultException noSuchResultException) {
+			return 0L;
+		}
 	}
 
-	public Event selectEventByEventId(final Long id)
-	{
+	/**
+	 * Finds the event with the specified event id.
+	 *
+	 * @param id the id
+	 * @return the found event
+	 */
+	public Event findEventByEventId(final Long id) {
 		return entityManager.find(Event.class, id);
 	}
 
-	public List<Event> selectEventsByAuthorName(final String authorName)
-	{
-		final String jpql = "SELECT e FROM Event e JOIN e.author a WHERE a.name =:name";
+	/**
+	 * Finds the events with the specified author id.
+	 *
+	 * @param authorId the author id
+	 * @return the found events or an empty list if there is no event corresponding to specified id
+	 */
+	public List<Event> findEventsByAuthorId(final Long authorId) {
+		final String jpql = "SELECT event FROM Event event JOIN event.author author WHERE author.id =:id";
 		final TypedQuery<Event> query = entityManager.createQuery(jpql, Event.class);
-		query.setParameter(NAME, authorName);
+		query.setParameter(ID.getName(), authorId);
 		return query.getResultList();
 	}
 
-	public boolean countEventsById(final Long eventId)
-	{
-		try
-		{
-			final String jpql = "SELECT COUNT(e) FROM Event e WHERE e.id = :eventId";
-			final TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);
-			query.setParameter(EVENTID, eventId);
-			return query.getSingleResult() == 1L;
-		}
-		catch (final NoResultException e)
-		{
-			return false;
-		}
+	/**
+	 * Persists the specified event.
+	 * 
+	 * @param event the event to persist
+	 */
+	public void persistEvent(final Event event) {
+		entityManager.persist(event);
 	}
 
-	public void updateEvent(final Long id, final String title, final String description, final String filename)
-	{
-		final Event e = entityManager.find(Event.class, id);
-		if (e != null)
-		{
-			e.setTitle(title);
-			e.setDescription(description);
-			if (filename != null)
-				e.setFilename(filename);
+	/**
+	 * Removes the specified event and all its guests.
+	 * </p>
+	 * <b>Note:</b> </br>
+	 * This method uses the {@link EntityManager}.</br>
+	 * But here's the thing: {@link EntityManager#remove} works only on entities which are managed in the current transaction/context. To remove entities which are not managed, the only way is to make
+	 * it managed by merging the specified entity with the managed entity that have the same id.</br>
+	 * For this purpose, this method first checks if the entity is managed (with {@link EntityManager#contains}) and if not, then make it managed (with {@link EntityManager#merge}).</br>
+	 * Only then will the entity be removed (with {@link EntityManager#remove}).
+	 * 
+	 * @param event the event to remove
+	 */
+	public void removeEvent(final Event event) {
+		/* Remove all the event guests */
+		final List<Guest> guests = guestService.findGuestsByEventId(event.getId());
+		for (final Guest guest : guests) {
+			guestService.removeGuest(guest);
 		}
+
+		Event managedEvent = event;
+		/* Check if the event is managed */
+		if (!entityManager.contains(event)) {
+			/* If not, then make it managed */
+			managedEvent = entityManager.merge(event);
+		}
+		/* Remove the event */
+		entityManager.remove(managedEvent);
 	}
 
-	public void deleteEvent(final Long id)
-	{
-		guestService.deleteGuestsByEventId(id);
-		final Event event = entityManager.find(Event.class, id);
-		entityManager.remove(event);
+	/**
+	 * Updates the specified event.
+	 * 
+	 * @param event the event to update
+	 */
+	public void updateEvent(final Event event) {
+		entityManager.merge(event);
 	}
-
 }

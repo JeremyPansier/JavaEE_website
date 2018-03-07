@@ -1,4 +1,4 @@
-package com.website.cdi;
+package com.website.managers.email;
 
 import java.io.StringWriter;
 import java.io.Writer;
@@ -19,7 +19,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import com.website.models.beans.Email;
-import com.website.tools.EventServiceException;
 import com.website.tools.navigation.ContextManager;
 import com.website.views.WebPages;
 
@@ -78,8 +77,7 @@ public class EmailObserver {
 
 		}
 		catch (final Exception e) {
-			LOGGER.info("Issue with Freemarker template location within the class " + this.getClass().toString());
-			throw new EventServiceException("Error - Email not send", e);
+			LOGGER.warning("Issue with Freemarker template location within the class " + this.getClass().toString());
 		}
 	}
 }
