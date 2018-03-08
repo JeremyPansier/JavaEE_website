@@ -207,21 +207,21 @@ Application programming interface: [JPA (Java Persistence API)](http://www.oracl
 ## Supported browsers
 
 This project have been manually tested with the following browsers:
-* Chrome, Chromium
-* Firefox
-* IE 9 and 10
+* Google Chrome, Chromium
+* Mozilla Firefox
+* Internet Explorer 11
 * Opera
 * Safari
 
 ## Authors
 
-* **Jérémy Pansier** - *Initial work* - [JeremyPansier](https://github.com/JeremyPansier "link to Jérémy's profile")
+* [Jeremy Pansier](https://github.com/JeremyPansier "link to Jérémy's profile") - *Initial work*
 
 See also the list of [contributors](https://github.com/JeremyPansier/JavaEE_website/contributors "link to the contributors of the project") who participated in this project.
 
 ## Acknowledgments
 
-* Special thanks to my brother Gwenall Pansier who helped me from my early days as developer.
+* Special thanks to my brother [Gwenall Pansier](https://github.com/Gwenall "link to Gwenall's profile") who helped me from my early days as developer.
 * Thanks to Thomas Gros, the trainer who teached me basics in JavaEE.
 * Thanks to Pascal Cunin, my schoolmate, with whom I started this project.
 
