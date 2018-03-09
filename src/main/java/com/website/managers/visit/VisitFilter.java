@@ -10,7 +10,7 @@ import com.website.persistence.VisitService;
 import com.website.tools.navigation.ContextManager;
 
 /**
- * The phase-listener for recording website visits (<i>cf.</i> faces-config.xml).
+ * The phase-listener for the website visits recording (<i>cf.</i> faces-config.xml).
  *
  * @author Jérémy Pansier
  */

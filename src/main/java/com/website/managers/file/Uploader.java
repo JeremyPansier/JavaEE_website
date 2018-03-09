@@ -21,7 +21,7 @@ public class Uploader {
 	private static final Logger LOGGER = LogManager.getLogger();
 
 	/** The uploads directory name. */
-	private static final String UPLOAD_DIRECTORY_NAME = "/Uploads/";
+	public static final String UPLOAD_DIRECTORY_NAME = "/Uploads/";
 
 	/**
 	 * The private constructor to hide the implicit empty public one.</br>
@@ -52,9 +52,9 @@ public class Uploader {
 					Files.createDirectory(uploadsDirectory.toPath());
 				}
 
-				final File temporaryFile = new File(getHomePath() + UPLOAD_DIRECTORY_NAME + temporaryFileName);
+				final File temporaryFile = createUploadedFile(temporaryFileName);
 				Files.copy(inputStream, temporaryFile.toPath());
-				final File file = new File(getHomePath() + UPLOAD_DIRECTORY_NAME + fileName);
+				final File file = createUploadedFile(fileName);
 
 				if (!temporaryFile.renameTo(file)) {
 					LOGGER.warn("File rename issue, aborted.");
@@ -67,6 +67,16 @@ public class Uploader {
 			LOGGER.info("File copy issue, this file may already exists in the directory", e);
 		}
 		return fileName;
+	}
+
+	/**
+	 * Creates a new file with the uploads directory path and the specified filename.
+	 *
+	 * @param filename the filename
+	 * @return the file depending on the uploads directory path
+	 */
+	static File createUploadedFile(final String filename) {
+		return new File(getHomePath() + UPLOAD_DIRECTORY_NAME, filename);
 	}
 
 	/**
