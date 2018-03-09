@@ -10,7 +10,6 @@ import javax.inject.Named;
 import com.website.managers.email.EmailList;
 import com.website.models.entities.Event;
 import com.website.models.entities.Guest;
-import com.website.persistence.AuthorService;
 import com.website.persistence.EventService;
 import com.website.persistence.GuestService;
 import com.website.tools.error.HttpErrorHandler;
@@ -36,10 +35,6 @@ public class EventManagement implements Serializable {
 	/** The service managing the event persistence. */
 	@Inject
 	private EventService eventService;
-
-	/** The service managing the author persistence. */
-	@Inject
-	private AuthorService authorService;
 
 	/** The service managing the guest persistence. */
 	@Inject
@@ -68,7 +63,7 @@ public class EventManagement implements Serializable {
 	public void load() {
 		try {
 			final String username = SessionManager.getSessionUserNameOrRedirect();
-			if (!authorService.isEventsAuthor(id, username)) {
+			if (!eventService.isEventsAuthor(id, username)) {
 				return;
 			}
 			event = eventService.findEventByEventId(id);
@@ -149,7 +144,7 @@ public class EventManagement implements Serializable {
 	public void addGuests() {
 		try {
 			final String username = SessionManager.getSessionUserNameOrRedirect();
-			if (!authorService.isEventsAuthor(id, username)) {
+			if (!eventService.isEventsAuthor(id, username)) {
 				return;
 			}
 			event = eventService.findEventByEventId(id);

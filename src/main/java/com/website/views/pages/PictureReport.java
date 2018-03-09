@@ -74,7 +74,7 @@ public class PictureReport implements Serializable {
 	 */
 	public void load() {
 		try {
-			if (!authorService.isPictureAuthor(id, sessionUserName)) {
+			if (!pictureService.isPictureAuthor(id, sessionUserName)) {
 				return;
 			}
 			final String websiteURL = ContextManager.getWebsiteUrl();

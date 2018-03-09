@@ -11,8 +11,10 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import com.website.models.entities.Author;
 import com.website.models.entities.Event;
 import com.website.models.entities.Guest;
+import com.website.tools.error.HttpErrorHandler;
 
 /**
  * The service managing the event persistence.</br>
@@ -25,6 +27,10 @@ public class EventService {
 	/** The entity manager binding the model to the persistence entity. */
 	@PersistenceContext(unitName = "website")
 	private EntityManager entityManager;
+
+	/** The service managing the author persistence. */
+	@Inject
+	private AuthorService authorService;
 
 	/** The service managing the guest persistence. */
 	@Inject
@@ -69,6 +75,26 @@ public class EventService {
 		final TypedQuery<Event> query = entityManager.createQuery(jpql, Event.class);
 		query.setParameter(ID.getName(), authorId);
 		return query.getResultList();
+	}
+
+	/**
+	 * Checks if the specified name is the name of the specified id event author.
+	 *
+	 * @param eventId the event id
+	 * @param authorName the author name
+	 * @return true, if the specified name is the name of the specified id event author
+	 */
+	public boolean isEventsAuthor(final Long eventId, final String authorName) {
+		if (0 == countEventsById(eventId)) {
+			HttpErrorHandler.print404("There is no event for this id in the database");
+			return false;
+		}
+		final Author author = authorService.findAuthorByAuthorName(authorName);
+		if (null != author.getId() && author.getId() != authorService.findAuthorIdByEventId(eventId)) {
+			HttpErrorHandler.print401("The author cannot access to this event");
+			return false;
+		}
+		return true;
 	}
 
 	/**
@@ -117,4 +143,5 @@ public class EventService {
 	public void updateEvent(final Event event) {
 		entityManager.merge(event);
 	}
+
 }

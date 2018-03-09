@@ -69,7 +69,7 @@ public class PictureEdition implements Serializable {
 	public void load() {
 		try {
 			if (id != null) {
-				if (!authorService.isPictureAuthor(id, sessionUserName)) {
+				if (!pictureService.isPictureAuthor(id, sessionUserName)) {
 					return;
 				}
 				picture = pictureService.findPictureByPictureId(id);
@@ -143,7 +143,7 @@ public class PictureEdition implements Serializable {
 	 * Edits the picture.
 	 */
 	public void editPicture() {
-		if (!authorService.isPictureAuthor(id, sessionUserName)) {
+		if (!pictureService.isPictureAuthor(id, sessionUserName)) {
 			return;
 		}
 		pictureService.updatePicture(picture);

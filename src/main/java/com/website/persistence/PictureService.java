@@ -6,11 +6,14 @@ import static com.website.persistence.EntityAttributes.NAME;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import com.website.models.entities.Author;
 import com.website.models.entities.Picture;
+import com.website.tools.error.HttpErrorHandler;
 
 /**
  * The service managing the picture persistence.</br>
@@ -23,6 +26,10 @@ public class PictureService {
 	/** The entity manager binding the model to the persistence entity. */
 	@PersistenceContext(unitName = "website")
 	private EntityManager entityManager;
+
+	/** The service managing the author persistence. */
+	@Inject
+	private AuthorService authorService;
 
 	/**
 	 * Counts the pictures with the specified id.
@@ -74,6 +81,30 @@ public class PictureService {
 	}
 
 	/**
+	 * Checks if the specified name is name of the author of the picture with the specified id.
+	 *
+	 * @param pictureId the picture id
+	 * @param authorName the author name
+	 * @return
+	 *         <ul>
+	 *         <li>true, if the specified name is name of the author of the picture with the specified id</li>
+	 *         <li>false, otherwise or if there is no event for the specified id in the database</li>
+	 *         </ul>
+	 */
+	public boolean isPictureAuthor(final Long pictureId, final String authorName) {
+		if (0 == countPicturesById(pictureId)) {
+			HttpErrorHandler.print404("There is no event for this id in the database");
+			return false;
+		}
+		final Author author = authorService.findAuthorByAuthorName(authorName);
+		if (author.getId() != findAuthorIdByPictureId(pictureId)) {
+			HttpErrorHandler.print401("The author cannot access to this event");
+			return false;
+		}
+		return true;
+	}
+
+	/**
 	 * Persists the specified picture.
 	 * 
 	 * @param picture the picture to persist
@@ -113,4 +144,5 @@ public class PictureService {
 	public void updatePicture(final Picture picture) {
 		entityManager.merge(picture);
 	}
+
 }

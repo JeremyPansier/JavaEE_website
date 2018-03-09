@@ -114,7 +114,7 @@ public class EventEdition implements Serializable {
 	public void load() {
 		try {
 			if (id != null) {
-				if (!authorService.isEventsAuthor(id, sessionUserName)) {
+				if (!eventService.isEventsAuthor(id, sessionUserName)) {
 					return;
 				}
 				event = eventService.findEventByEventId(id);
@@ -143,7 +143,7 @@ public class EventEdition implements Serializable {
 	 * Edits the event.
 	 */
 	public void editEvent() {
-		if (!authorService.isEventsAuthor(id, sessionUserName)) {
+		if (!eventService.isEventsAuthor(id, sessionUserName)) {
 			return;
 		}
 		eventService.updateEvent(event);

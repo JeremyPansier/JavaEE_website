@@ -133,7 +133,7 @@ public class EventReport implements Serializable {
 	public void load() {
 		try {
 			final String sessionUserName = SessionManager.getSessionUserNameOrRedirect();
-			if (!authorService.isEventsAuthor(id, sessionUserName)) {
+			if (!eventService.isEventsAuthor(id, sessionUserName)) {
 				return;
 			}
 			author = authorService.findAuthorByAuthorName(sessionUserName);
@@ -164,7 +164,8 @@ public class EventReport implements Serializable {
 
 		}
 		catch (final NumberFormatException numberFormatException) {
-			HttpErrorHandler.print404("Cannot convert to Integer. Method: " + Thread.currentThread().getStackTrace()[1].getMethodName() + " Class: " + this.getClass().getName(), numberFormatException);
+			HttpErrorHandler.print404("Cannot convert to Integer. Method: " + Thread.currentThread().getStackTrace()[1].getMethodName() + " Class: " + this.getClass().getName(),
+					numberFormatException);
 			return;
 		}
 		catch (final IllegalStateException illegalStateException) {
