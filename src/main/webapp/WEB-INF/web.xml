@@ -26,4 +26,9 @@
         <param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
         <param-value>resources.application</param-value>
     </context-param>
+    <!-- increase the response buffer to avoid response commit before cookie setting (see: https://stackoverflow.com/questions/17762462/getting-warning-from-jsf-the-response-was-already-committed-by-the-time-we-trie) -->
+    <context-param>
+        <param-name>javax.faces.FACELETS_BUFFER_SIZE</param-name>
+        <param-value>131072</param-value>
+    </context-param>
 </web-app>
