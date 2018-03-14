@@ -180,7 +180,8 @@ Type the command: `mvn clean wildfly:deploy`
 After [running](#running "go to the 'running' chapter") the project, go to http://localhost:8080.
 
 ### Code analysis
-[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=com.sonarqube.examples%3Ajava-maven-travis-project&metric=alert_status)](https://sonarcloud.io/dashboard/index/com.sonarqube.examples:java-maven-travis-project)
+
+[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=com.website%3Awebsite)](https://sonarcloud.io/dashboard/index/com.website:website)
 
 ### Continuous integration
 
