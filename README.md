@@ -1,4 +1,5 @@
-﻿# **JavaEE website**
+﻿# **JavaEE website** [![Build Status](https://travis-ci.org/JeremyPansier/JavaEE_website.svg?branch=master)](https://travis-ci.org/JeremyPansier/JavaEE_website)[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=com.sonarqube.examples%3Ajava-maven-travis-project&metric=alert_status)](https://sonarcloud.io/dashboard/index/com.sonarqube.examples:java-maven-travis-project)
+
 
 ## Table of Contents
 
@@ -110,7 +111,7 @@ Choose DataSource: MySQL Datasource<br/>
 On step 1/3, set:
 
 	Name: website
-	JNDI Name: java:jboss/DataSources/website
+	JNDI Name: java:jboss/DataSources/website (name used in persistence.xml <jta-data-source>)
 On step 2/3 go to the tab "Detected Driver" and choose: mysql-connector-java-5.1.40-bin.jar_com.mysql.jdbc.Driver_5_1
 On step 3/3, set:
 
@@ -181,6 +182,9 @@ After [running](#running "go to the 'running' chapter") the project, go to http:
 ### Continuous integration
 
 [![Build Status](https://travis-ci.org/JeremyPansier/JavaEE_website.svg?branch=master)](https://travis-ci.org/JeremyPansier/JavaEE_website)
+
+### Code analysis
+[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=com.sonarqube.examples%3Ajava-maven-travis-project&metric=alert_status)](https://sonarcloud.io/dashboard/index/com.sonarqube.examples:java-maven-travis-project)
 
 ## Built With
 
