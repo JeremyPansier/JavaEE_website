@@ -189,9 +189,7 @@ After [running](#running "go to the 'running' chapter") the project, go to http:
 [![Quality Gate](https://sonarcloud.io/api/badges/gate?key=com.website%3Awebsite)](https://sonarcloud.io/dashboard/index/com.website:website)
 [![Quality Gate](https://sonarcloud.io/api/badges/measure?key=com.website%3Awebsite&metric=lines)](https://sonarcloud.io/dashboard/index/com.website:website)
 [![Quality Gate](https://sonarcloud.io/api/badges/measure?key=com.website%3Awebsite&metric=comment_lines_density)](https://sonarcloud.io/dashboard/index/com.website:website)
-
-(https://sonarcloud.io/api/badges/measure?key=com.website%3Awebsite&metric=maintainability_rating)](https://sonarcloud.io/dashboard/index/com.website:website)
-[![Quality Gate](https://sonarcloud.io/api/badges/measure?key=com.website%3Awebsite&metric=reliability_rating)](https://sonarcloud.io/dashboard/index/com.website:website)
+[![Quality Gate](https://sonarcloud.io/api/badges/measure?key=com.website%3Awebsite&metric=sqale_rating)](https://sonarcloud.io/dashboard/index/com.website:website)
 [![Quality Gate](https://sonarcloud.io/api/badges/measure?key=com.website%3Awebsite&metric=security_rating)](https://sonarcloud.io/dashboard/index/com.website:website)
 
 ### Continuous integration
