@@ -1,5 +1,6 @@
-﻿# **JavaEE website** [![Build Status](https://travis-ci.org/JeremyPansier/JavaEE_website.svg?branch=master)](https://travis-ci.org/JeremyPansier/JavaEE_website) [![Quality Gate](https://sonarcloud.io/api/badges/gate?key=com.website%3Awebsite)](https://sonarcloud.io/dashboard/index/com.website:website)
+﻿# **JavaEE website**
 
+[![Build Status](https://travis-ci.org/JeremyPansier/JavaEE_website.svg?branch=master)](https://travis-ci.org/JeremyPansier/JavaEE_website) [![Quality Gate](https://sonarcloud.io/api/badges/gate?key=com.website%3Awebsite)](https://sonarcloud.io/dashboard/index/com.website:website)
 
 ## Table of Contents
 
@@ -22,6 +23,8 @@
 	* [Deployment](#deployment)
 * [Testing](#testing)
 	* [Manual test](#manual-test)
+* [Status](#status)
+	* [Code quality](#code-quality)
 	* [Continuous integration](#continuous-integration)
 * [Built With](#built-with)
 * [Supported browsers](#supported-browsers)
@@ -179,9 +182,38 @@ Type the command: `mvn clean wildfly:deploy`
 
 After [running](#running "go to the 'running' chapter") the project, go to http://localhost:8080.
 
-### Code analysis
+## Status
+
+### Code quality
 
 [![Quality Gate](https://sonarcloud.io/api/badges/gate?key=com.website%3Awebsite)](https://sonarcloud.io/dashboard/index/com.website:website)
+[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=com.website%3Awebsite&metric=lines)](https://sonarcloud.io/dashboard/index/com.website:website)
+[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=com.website%3Awebsite&metric=comment_lines_density)](https://sonarcloud.io/dashboard/index/com.website:website)
+
+[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=com.website%3Awebsite&metric=ncloc)](https://sonarcloud.io/dashboard/index/com.website:website)
+[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=com.website%3Awebsite&metric=public_documented_api_density)](https://sonarcloud.io/dashboard/index/com.website:website)
+[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=com.website%3Awebsite&metric=function_complexity)](https://sonarcloud.io/dashboard/index/com.website:website)
+[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=com.website%3Awebsite&metric=coverage)](https://sonarcloud.io/dashboard/index/com.website:website)
+[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=com.website%3Awebsite&metric=new_coverage)](https://sonarcloud.io/dashboard/index/com.website:website)
+[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=com.website%3Awebsite&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard/index/com.website:website)
+[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=com.website%3Awebsite&metric=new_duplicated_lines_density)](https://sonarcloud.io/dashboard/index/com.website:website)
+[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=com.website%3Awebsite&metric=blocker_violations)](https://sonarcloud.io/dashboard/index/com.website:website)
+[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=com.website%3Awebsite&metric=critical_violations)](https://sonarcloud.io/dashboard/index/com.website:website)
+[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=com.website%3Awebsite&metric=new_blocker_violations)](https://sonarcloud.io/dashboard/index/com.website:website)
+[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=com.website%3Awebsite&metric=new_critical_violations)](https://sonarcloud.io/dashboard/index/com.website:website)
+[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=com.website%3Awebsite&metric=code_smells)](https://sonarcloud.io/dashboard/index/com.website:website)
+[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=com.website%3Awebsite&metric=new_code_smells)](https://sonarcloud.io/dashboard/index/com.website:website)
+[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=com.website%3Awebsite&metric=bugs)](https://sonarcloud.io/dashboard/index/com.website:website)
+[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=com.website%3Awebsite&metric=new_bugs)](https://sonarcloud.io/dashboard/index/com.website:website)
+[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=com.website%3Awebsite&metric=vulnerabilities)](https://sonarcloud.io/dashboard/index/com.website:website)
+[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=com.website%3Awebsite&metric=new_vulnerabilities)](https://sonarcloud.io/dashboard/index/com.website:website)
+[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=com.website%3Awebsite&metric=sqale_debt_ratio)](https://sonarcloud.io/dashboard/index/com.website:website)
+[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=com.website%3Awebsite&metric=new_sqale_debt_ratio)](https://sonarcloud.io/dashboard/index/com.website:website)
+[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=com.website%3Awebsite&metric=new_maintainability_rating)](https://sonarcloud.io/dashboard/index/com.website:website)
+[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=com.website%3Awebsite&metric=new_reliability_rating)](https://sonarcloud.io/dashboard/index/com.website:website)
+[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=com.website%3Awebsite&metric=ncloc)](https://sonarcloud.io/dashboard/index/com.website:website)
+[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=com.website%3Awebsite&metric=ncloc)](https://sonarcloud.io/dashboard/index/com.website:website)
+[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=com.website%3Awebsite&metric=new_security_rating)](https://sonarcloud.io/dashboard/index/com.website:website)
 
 ### Continuous integration
 
@@ -212,11 +244,11 @@ Application programming interface: [JPA (Java Persistence API)](http://www.oracl
 ## Supported browsers
 
 This project have been manually tested with the following browsers:
-* Google Chrome, Chromium
-* Mozilla Firefox
+* Google Chrome 65, Chromium 51
+* Mozilla Firefox 59
 * Internet Explorer 11
-* Opera
-* Safari
+* Opera 51
+* Safari 5.1.7
 
 ## Authors
 
