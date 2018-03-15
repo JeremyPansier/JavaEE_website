@@ -1,6 +1,11 @@
 ﻿# **JavaEE website**
 
-[![Build Status](https://travis-ci.org/JeremyPansier/JavaEE_website.svg?branch=master)](https://travis-ci.org/JeremyPansier/JavaEE_website) [![Quality Gate](https://sonarcloud.io/api/badges/gate?key=com.website%3Awebsite)](https://sonarcloud.io/dashboard/index/com.website:website)
+[![Build Status](https://travis-ci.org/JeremyPansier/JavaEE_website.svg?branch=master)](https://travis-ci.org/JeremyPansier/JavaEE_website)
+[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=com.website%3Awebsite)](https://sonarcloud.io/dashboard/index/com.website:website)
+[![Quality Gate](https://sonarcloud.io/api/badges/measure?key=com.website%3Awebsite&metric=lines)](https://sonarcloud.io/dashboard/index/com.website:website)
+[![Quality Gate](https://sonarcloud.io/api/badges/measure?key=com.website%3Awebsite&metric=comment_lines_density)](https://sonarcloud.io/dashboard/index/com.website:website)
+[![Quality Gate](https://sonarcloud.io/api/badges/measure?key=com.website%3Awebsite&metric=sqale_rating)](https://sonarcloud.io/dashboard/index/com.website:website)
+[![Quality Gate](https://sonarcloud.io/api/badges/measure?key=com.website%3Awebsite&metric=security_rating)](https://sonarcloud.io/dashboard/index/com.website:website)
 
 ## Table of Contents
 
@@ -23,9 +28,6 @@
 	* [Deployment](#deployment)
 * [Testing](#testing)
 	* [Manual test](#manual-test)
-* [Status](#status)
-	* [Code quality](#code-quality)
-	* [Continuous integration](#continuous-integration)
 * [Built With](#built-with)
 * [Supported browsers](#supported-browsers)
 * [Authors](#authors)
@@ -181,20 +183,6 @@ Type the command: `mvn clean wildfly:deploy`
 ### Manual test
 
 After [running](#running "go to the 'running' chapter") the project, go to http://localhost:8080.
-
-## Status
-
-### Code quality
-
-[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=com.website%3Awebsite)](https://sonarcloud.io/dashboard/index/com.website:website)
-[![Quality Gate](https://sonarcloud.io/api/badges/measure?key=com.website%3Awebsite&metric=lines)](https://sonarcloud.io/dashboard/index/com.website:website)
-[![Quality Gate](https://sonarcloud.io/api/badges/measure?key=com.website%3Awebsite&metric=comment_lines_density)](https://sonarcloud.io/dashboard/index/com.website:website)
-[![Quality Gate](https://sonarcloud.io/api/badges/measure?key=com.website%3Awebsite&metric=sqale_rating)](https://sonarcloud.io/dashboard/index/com.website:website)
-[![Quality Gate](https://sonarcloud.io/api/badges/measure?key=com.website%3Awebsite&metric=security_rating)](https://sonarcloud.io/dashboard/index/com.website:website)
-
-### Continuous integration
-
-[![Build Status](https://travis-ci.org/JeremyPansier/JavaEE_website.svg?branch=master)](https://travis-ci.org/JeremyPansier/JavaEE_website)
 
 ## Built With
 
