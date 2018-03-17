@@ -89,7 +89,7 @@ standalone.sh | standalone.bat | standalone.sh -b 0.0.0.0
 
 **create the database:**
 
-Find the source [file](https://github.com/JeremyPansier/JavaEE_website/tree/master/database "The folder of the file to found in the cloned project") containing the tables creation script . It will be called <<file>> and its path will be called <<path>> in the following table.
+Find the source [file](https://github.com/JeremyPansier/JavaEE_website/tree/master/database "The folder of the file to found in the cloned project") containing the tables creation script . It will be called $FILE and its path will be called $PATH in the following table.
 
 For Linux                                               | For Windows
 ------------------------------------------------------- | ---
@@ -98,8 +98,8 @@ Start the MySQL console: <code>mysql -u root -p</code>. | [Open the administrati
 Then, type the following commands:                      | Then, open the administration module MySQL : PhpMyAdmin 4.1.4.
 mysql> CREATE DATABASE website;                         | Create a new database named website.
 mysql> USE website;                                     | Select the database: website.
-mysql> SOURCE <<path>><<file>>;                         | Go to the 'import' tab.
-mysql> quit;                                            | Import <<file>> file located into <<path>>.
+mysql> SOURCE $PATH$FILE;                               | Go to the 'import' tab.
+mysql> quit;                                            | Import $FILE file located into $PATH.
 
 **setup wildfly to connect to the database:**
 
