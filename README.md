@@ -69,7 +69,8 @@ Add the variable to the Path.
 Download the application server: wildfly-10.0.0.Final.<br/>
 Create an environment variable called JBOSS_HOME pointing on the bin folder of wildfly.<br/>
 Go to the bin folder of wildfly.<br/>
-To add a new user, run:<br/>
+To add a new user, run:
+
 For Linux   | For Windows
 ----------- | ---
 add-user.sh | add-user.bat
@@ -78,7 +79,8 @@ add-user.sh | add-user.bat
 
 ### Starting the server
 
-Go to the bin folder of wildfly and run.<br/>
+Go to the bin folder of wildfly and run:
+
 For Linux     | For Windows    | For a remote Linux server
 ------------- | -------------- | ---
 standalone.sh | standalone.bat | standalone.sh -b 0.0.0.0
@@ -87,16 +89,17 @@ standalone.sh | standalone.bat | standalone.sh -b 0.0.0.0
 
 **create the database:**
 
-For Linux                                                    | For Windows
------------------------------------------------------------- | ---
-In the [CLI](https://en.wikipedia.org/wiki/Command-line_interface "CLI definition on Wikipedia"), go to the folder [dataBase](https://github.com/JeremyPansier/JavaEE_website/blob/master/database/website.sql "targeted file to found in the cloned project").<br/>                       | Download easyPHP and run it.<br/>
-Start MySQL: <code>sudo service mysql start</code>.<br/>     | [Open the administration](http://127.0.0.1/home/ "easyPHP administration interface")<br/>
-Start the MySQL console: <code>mysql -u root -p</code>.<br/> | Then, open the administration module MySQL : PhpMyAdmin 4.1.4<br/>
-Type the following commands:<br/>                            | Create a new database named website.<br/>
-	mysql> CREATE DATABASE website;<br/>                     | Import the .sql file located into /src/dataBase.
-	mysql> USE website;<br/>                                 | 
-	mysql> SOURCE website.sql;<br/>                          | 
-	mysql> quit;<br/>                                        | 
+Find the source [file](https://github.com/JeremyPansier/JavaEE_website/tree/master/database "The folder of the file to found in the cloned project") containing the tables creation script . It will be called <file> and its path will be called <path> in the following table.
+
+For Linux                                               | For Windows
+------------------------------------------------------- | ---
+Start MySQL: <code>sudo service mysql start</code>.     | Download easyPHP and run it.<br/>
+Start the MySQL console: <code>mysql -u root -p</code>. | [Open the administration](http://127.0.0.1/home/ "easyPHP administration interface")<br/>
+                                                        | Then, open the administration module MySQL : PhpMyAdmin 4.1.4<br/>
+mysql> CREATE DATABASE website;                         | Create a new database named website.<br/>
+mysql> USE website;                                     | 
+mysql> SOURCE <path><file>;                             | Import <file> file located into <path>.
+mysql> quit;                                            | 
 
 **setup wildfly to connect to the database:**
 
