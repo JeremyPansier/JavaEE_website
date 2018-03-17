@@ -67,8 +67,8 @@ Add the variable to the Path.
 ### The application server
 
 Download the application server: wildfly-10.0.0.Final.<br/>
-Create an environment variable called JBOSS_HOME pointing on the bin folder of wildfly.<br/>
-Go to the bin folder of wildfly.<br/>
+Create an environment variable called JBOSS_HOME pointing on the bin folder of WildFly.<br/>
+Go to the bin folder of WildFly.<br/>
 To add a new user, run:
 
 For Linux   | For Windows
@@ -79,7 +79,7 @@ add-user.sh | add-user.bat
 
 ### Starting the server
 
-Go to the bin folder of wildfly and run:
+Go to the bin folder of WildFly and run:
 
 For Linux     | For Windows    | For a remote Linux server
 ------------- | -------------- | ---
@@ -89,22 +89,22 @@ standalone.sh | standalone.bat | standalone.sh -b 0.0.0.0
 
 **create the database:**
 
-Find the source [file](https://github.com/JeremyPansier/JavaEE_website/tree/master/database "The folder of the file to found in the cloned project") containing the tables creation script . It will be called $FILE and its path will be called $PATH in the following table.
+Find the database source file ([website.sql](https://github.com/JeremyPansier/JavaEE_website/tree/master/database/website.sql)) containing the tables creation script. It will be called $FILE and its path will be called $PATH in the following table.
 
 For Linux                                               | For Windows
 ------------------------------------------------------- | ---
-Start MySQL: <code>sudo service mysql start</code>.     | Download easyPHP and run it.
-Start the MySQL console: <code>mysql -u root -p</code>. | [Open the administration](http://127.0.0.1/home/ "easyPHP administration interface").
-Then, type the following commands:                      | Then, open the administration module MySQL : PhpMyAdmin 4.1.4.
+Download MySQL: <code>sudo apt-get install mysql-server --fix-missing</code>.     | Download easyPHP and run it.
+Start MySQL: <code>sudo service mysql start</code>.     | [Open the administration](http://127.0.0.1/home/ "easyPHP administration interface").
+Start the MySQL console: <code>mysql -u root -p</code>. | Then, open the administration module MySQL : PhpMyAdmin 4.1.4.
 mysql> CREATE DATABASE website;                         | Create a new database named website.
 mysql> USE website;                                     | Select the database: website.
 mysql> SOURCE $PATH$FILE;                               | Go to the 'import' tab.
 mysql> quit;                                            | Import $FILE file located into $PATH.
 
-**setup wildfly to connect to the database:**
+**setup WildFly to connect to the database:**
 
-Download the driver mysql-connector-java-5.1.4: https://dev.mysql.com/downloads/file/?id=465644.<br/>
-<br/>**1.** [Open the administration of wildfly](http://localhost:9990 "wildfly administration interface").<br/>
+Download the driver [mysql-connector-java-5.1.4](https://dev.mysql.com/downloads/file/?id=465644 "MySQL connector download page").<br/>
+<br/>**1.** [Open the administration of WildFly](http://localhost:9990 "The WildFly administration interface").<br/>
 <br/>**2.** Go to "Deployments" and click on "Add".<br/>
 Upload a new deployment.<br/>
 Find mysql-connector-java-5.1.40-bin.jar.<br/>
@@ -123,9 +123,9 @@ On step 3/3, set:
 
 ### Connection to the mail box
 
-**setup wildfly to connect to the mail box:**
+**setup WildFly to connect to the mail box:**
 
-Open the administration of wildfly: http://localhost:9990.<br/>
+[Open the administration of WildFly](http://localhost:9990 "WildFly administration interface").<br/>
 <br/>**1.** Go to "Configuration", then "Socket Binding" and click on "View".<br/>
 Click on "View>", then on "OutBound Remote", then on "Add" and set:
 
@@ -146,7 +146,7 @@ Click on "View>", then on "OutBound Remote", then on "Add" and set:
 	Password: (yourEmailPassword)
 	Use SSL (tick)
 *Save*<br/>
-<br/>**3.** Restart wildfly (in the shell: "Ctrl+C", then [start the server](#starting-the-server "go to the 'starting the server' section")).
+<br/>**3.** Restart WildFly (in the shell: "Ctrl+C", then [start the server](#starting-the-server "go to the 'starting the server' section")).
 
 **setup your mail box to accept external applications:**
 
@@ -165,7 +165,7 @@ Start MySQL: <code>sudo service mysql start</code> | Run easyPHP
 ### Deployment
 
 [Starting the server](#starting-the-server "go to the 'starting the server' section")
-In the [CLI](https://en.wikipedia.org/wiki/Command-line_interface "CLI definition on Wikipedia"), go to the root folder of the java project, containing the pom.xml.<br/>
+In the [CLI](https://en.wikipedia.org/wiki/Command-line_interface "Command Line Interface definition on Wikipedia"), go to the root folder of the java project, containing the pom.xml.<br/>
 Type the command: `mvn clean wildfly:deploy`
 
 ## Testing
@@ -207,13 +207,13 @@ This project have been manually tested with the following browsers:
 
 ## Authors
 
-* [Jeremy Pansier](https://github.com/JeremyPansier "link to Jérémy's profile") - *Initial work*
+* [Jeremy Pansier](https://github.com/JeremyPansier "Jérémy's profile on GitHub") - *Initial work*
 
-See also the list of [contributors](https://github.com/JeremyPansier/JavaEE_website/contributors "link to the contributors of the project") who participated in this project.
+See also the list of [contributors](https://github.com/JeremyPansier/JavaEE_website/contributors "Contributors of the project") who participated in this project.
 
 ## Acknowledgments
 
-* Special thanks to my brother [Gwenall Pansier](https://github.com/Gwenall "link to Gwenall's profile") who helped me from my early days as developer.
+* Special thanks to my brother [Gwenall Pansier](https://github.com/Gwenall "Gwenall's profile on GitHub") who helped me from my early days as developer.
 * Thanks to Thomas Gros, the trainer who teached me basics in JavaEE.
 * Thanks to Pascal Cunin, my schoolmate, with whom I started this project.
 
