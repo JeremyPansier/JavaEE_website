@@ -24,7 +24,6 @@
 	* [Connection to the mail box](#connection-to-the-mail-box)
 * [Running](#running)
 	* [Starting the database](#starting-the-database)
-	* [Starting the server](#starting-the-server)
 	* [Deployment](#deployment)
 * [Testing](#testing)
 	* [Manual test](#manual-test)
@@ -71,39 +70,38 @@ Download the application server: wildfly-10.0.0.Final.<br/>
 Create an environment variable called JBOSS_HOME pointing on the bin folder of wildfly.<br/>
 Go to the bin folder of wildfly.<br/>
 To add a new user, run:<br/>
-For Linux         | For Windows
------------------ | ---
-`add-user.sh` | `add-user.bat`
+For Linux   | For Windows
+----------- | ---
+add-user.sh | add-user.bat
 
 ## Installing
 
 ### Starting the server
 
 Go to the bin folder of wildfly and run.<br/>
-For Linux           | For Windows           | For a remote Linux server
-------------------- | --------------------- | ---
-`standalone.sh` | `standalone.bat` | `standalone.sh -b 0.0.0.0`
+For Linux     | For Windows    | For a remote Linux server
+------------- | -------------- | ---
+standalone.sh | standalone.bat | standalone.sh -b 0.0.0.0
 
 ### Connection to the database
 
 **create the database:**
 
-For Linux                                                                                                                          | For Windows
----------------------------------------------------------------------------------------------------------------------------------- | ---
-In the [CLI](https://en.wikipedia.org/wiki/Command-line_interface "CLI definition on Wikipedia"), go to the folder [dataBase](https://github.com/JeremyPansier/JavaEE_website/blob/master/database/website.sql "targeted file to found in the cloned project"). | Download easyPHP and run it.
-Start MySQL: <code>sudo service mysql start</code>.                                                                                | Open the administration: http://127.0.0.1/home/.
-Start the MySQL console: <code>mysql -u root -p</code>.                                                                            | Then, open the administration module MySQL : PhpMyAdmin 4.1.4
-Type the following commands:                                                                                                       | Create a new database named website.
-
-	mysql> CREATE DATABASE website;                                                                    | Import the .sql file located into /src/dataBase.
-	mysql> USE website;                                                                                | 
-	mysql> SOURCE website.sql;                                                                         | 
-	mysql> quit;                                                                                       | 
+For Linux                                                    | For Windows
+------------------------------------------------------------ | ---
+In the [CLI](https://en.wikipedia.org/wiki/Command-line_interface "CLI definition on Wikipedia"), go to the folder [dataBase](https://github.com/JeremyPansier/JavaEE_website/blob/master/database/website.sql "targeted file to found in the cloned project").<br/>                       | Download easyPHP and run it.<br/>
+Start MySQL: <code>sudo service mysql start</code>.<br/>     | [Open the administration](http://127.0.0.1/home/ "easyPHP administration interface")<br/>
+Start the MySQL console: <code>mysql -u root -p</code>.<br/> | Then, open the administration module MySQL : PhpMyAdmin 4.1.4<br/>
+Type the following commands:<br/>                            | Create a new database named website.<br/>
+	mysql> CREATE DATABASE website;<br/>                     | Import the .sql file located into /src/dataBase.
+	mysql> USE website;<br/>                                 | 
+	mysql> SOURCE website.sql;<br/>                          | 
+	mysql> quit;<br/>                                        | 
 
 **setup wildfly to connect to the database:**
 
 Download the driver mysql-connector-java-5.1.4: https://dev.mysql.com/downloads/file/?id=465644.<br/>
-<br/>**1.** Open the administration of wildfly: http://localhost:9990.<br/>
+<br/>**1.** [Open the administration of wildfly](http://localhost:9990 "wildfly administration interface").<br/>
 <br/>**2.** Go to "Deployments" and click on "Add".<br/>
 Upload a new deployment.<br/>
 Find mysql-connector-java-5.1.40-bin.jar.<br/>
@@ -157,14 +155,13 @@ Click on "View>", then on "OutBound Remote", then on "Add" and set:
 
 ### Starting the database
 
-For Linux                                      | For Windows
----------------------------------------------- | ---
-Start MySQL: `sudo service mysql start` | Run easyPHP
-
-### [Starting the server](#starting-the-server "go to the 'starting the server' section in the 'installing' part")
+For Linux                                          | For Windows
+-------------------------------------------------- | ---
+Start MySQL: <code>sudo service mysql start</code> | Run easyPHP
 
 ### Deployment
 
+[Starting the server](#starting-the-server "go to the 'starting the server' section")
 In the [CLI](https://en.wikipedia.org/wiki/Command-line_interface "CLI definition on Wikipedia"), go to the root folder of the java project, containing the pom.xml.<br/>
 Type the command: `mvn clean wildfly:deploy`
 
