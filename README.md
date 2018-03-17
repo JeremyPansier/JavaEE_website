@@ -93,13 +93,13 @@ Find the source [file](https://github.com/JeremyPansier/JavaEE_website/tree/mast
 
 For Linux                                               | For Windows
 ------------------------------------------------------- | ---
-Start MySQL: <code>sudo service mysql start</code>.     | Download easyPHP and run it.<br/>
-Start the MySQL console: <code>mysql -u root -p</code>. | [Open the administration](http://127.0.0.1/home/ "easyPHP administration interface")<br/>
-                                                        | Then, open the administration module MySQL : PhpMyAdmin 4.1.4<br/>
-mysql> CREATE DATABASE website;                         | Create a new database named website.<br/>
-mysql> USE website;                                     | 
-mysql> SOURCE <path><file>;                             | Import <file> file located into <path>.
-mysql> quit;                                            | 
+Start MySQL: <code>sudo service mysql start</code>.     | Download easyPHP and run it.
+Start the MySQL console: <code>mysql -u root -p</code>. | [Open the administration](http://127.0.0.1/home/ "easyPHP administration interface").
+Then, type the following commands:                      | Then, open the administration module MySQL : PhpMyAdmin 4.1.4.
+mysql> CREATE DATABASE website;                         | Create a new database named website.
+mysql> USE website;                                     | Select the database: website.
+mysql> SOURCE <path><file>;                             | Go to the 'import' tab.
+mysql> quit;                                            | Import <file> file located into <path>.
 
 **setup wildfly to connect to the database:**
 
@@ -114,7 +114,7 @@ On step 1/3, set:
 
 	Name: website
 	JNDI Name: java:jboss/DataSources/website (name used in persistence.xml <jta-data-source>)
-On step 2/3 go to the tab "Detected Driver" and choose: mysql-connector-java-5.1.40-bin.jar_com.mysql.jdbc.Driver_5_1
+On step 2/3 go to the tab "Detected Driver" and choose: mysql-connector-java-5.1.40-bin.jar_com.mysql.jdbc.Driver_5_1<br/>
 On step 3/3, set:
 
 	Connection URL: jdbc:mysql://localhost:3306/website
