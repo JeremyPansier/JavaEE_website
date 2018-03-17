@@ -2,10 +2,10 @@
 
 [![Build Status](https://travis-ci.org/JeremyPansier/JavaEE_website.svg?branch=master)](https://travis-ci.org/JeremyPansier/JavaEE_website)
 [![Quality Gate](https://sonarcloud.io/api/badges/gate?key=com.website%3Awebsite)](https://sonarcloud.io/dashboard/index/com.website:website)
-[![Quality Gate](https://sonarcloud.io/api/badges/measure?key=com.website%3Awebsite&metric=lines)](https://sonarcloud.io/dashboard/index/com.website:website)
-[![Quality Gate](https://sonarcloud.io/api/badges/measure?key=com.website%3Awebsite&metric=comment_lines_density)](https://sonarcloud.io/dashboard/index/com.website:website)
-[![Quality Gate](https://sonarcloud.io/api/badges/measure?key=com.website%3Awebsite&metric=sqale_rating)](https://sonarcloud.io/dashboard/index/com.website:website)
-[![Quality Gate](https://sonarcloud.io/api/badges/measure?key=com.website%3Awebsite&metric=security_rating)](https://sonarcloud.io/dashboard/index/com.website:website)
+[![Quality Gate](https://sonarcloud.io/api/badges/measure?key=com.website%3Awebsite&metric=lines)](https://sonarcloud.io/component_measures?id=com.website%3Awebsite&metric=lines)
+[![Quality Gate](https://sonarcloud.io/api/badges/measure?key=com.website%3Awebsite&metric=comment_lines_density)](https://sonarcloud.io/component_measures?id=com.website%3Awebsite&metric=comment_lines_density)
+[![Quality Gate](https://sonarcloud.io/api/badges/measure?key=com.website%3Awebsite&metric=sqale_rating)](https://sonarcloud.io/component_measures?id=com.website%3Awebsite&metric=sqale_rating)
+[![Quality Gate](https://sonarcloud.io/api/badges/measure?key=com.website%3Awebsite&metric=security_rating)](https://sonarcloud.io/component_measures?id=com.website%3Awebsite&metric=security_rating)
 
 ## Table of Contents
 
@@ -70,39 +70,35 @@ Add the variable to the Path.
 Download the application server: wildfly-10.0.0.Final.<br/>
 Create an environment variable called JBOSS_HOME pointing on the bin folder of wildfly.<br/>
 Go to the bin folder of wildfly.<br/>
-Add a new user:<br/>
-* For Linux, run: `add-user.sh`
-* For Windows, run: `add-user.bat`
+To add a new user, run:<br/>
+For Linux         | For Windows
+----------------- | ---
+`add-user.sh` | `add-user.bat`
 
 ## Installing
 
 ### Starting the server
 
-Go to the bin folder of wildfly.<br/>
-* Launcher for Linux: `standalone.sh`
-* Launcher for Windows: `standalone.bat`
-* On a remote Linux server, use: `standalone.sh -b 0.0.0.0`
+Go to the bin folder of wildfly and run.<br/>
+For Linux           | For Windows           | For a remote Linux server
+------------------- | --------------------- | ---
+`standalone.sh` | `standalone.bat` | `standalone.sh -b 0.0.0.0`
 
 ### Connection to the database
 
 **create the database:**
 
-<ul><li/>For Linux:<br/>
-In the shell, go to the folder /src/dataBase.<br/>
-Start MySQL: <code>sudo service mysql start</code>.<br/>
-Start the MySQL console: <code>mysql -u root -p</code>.<br/>
-Type the following commands:</li></ul>
+For Linux                                                                                                                          | For Windows
+---------------------------------------------------------------------------------------------------------------------------------- | ---
+In the [CLI](https://en.wikipedia.org/wiki/Command-line_interface "CLI definition on Wikipedia"), go to the folder [dataBase](https://github.com/JeremyPansier/JavaEE_website/blob/master/database/website.sql "targeted file to found in the cloned project"). | Download easyPHP and run it.
+Start MySQL: <code>sudo service mysql start</code>.                                                                                | Open the administration: http://127.0.0.1/home/.
+Start the MySQL console: <code>mysql -u root -p</code>.                                                                            | Then, open the administration module MySQL : PhpMyAdmin 4.1.4
+Type the following commands:                                                                                                       | Create a new database named website.
 
-	mysql> CREATE DATABASE website;
-	mysql> USE website;
-	mysql> SOURCE website.sql;
-	mysql> quit;
-<ul><li>For Windows:<br/>
-Download easyPHP and run it.<br/>
-Open the administration: http://127.0.0.1/home/.<br/>
-Then, open the administration module MySQL : PhpMyAdmin 4.1.4.<br/>
-Create a new database named website.<br/>
-Import the .sql file located into /src/dataBase.</li></ul>
+	mysql> CREATE DATABASE website;                                                                    | Import the .sql file located into /src/dataBase.
+	mysql> USE website;                                                                                | 
+	mysql> SOURCE website.sql;                                                                         | 
+	mysql> quit;                                                                                       | 
 
 **setup wildfly to connect to the database:**
 
@@ -149,7 +145,7 @@ Click on "View>", then on "OutBound Remote", then on "Add" and set:
 	Password: (yourEmailPassword)
 	Use SSL (tick)
 *Save*<br/>
-<br/>**3.** Restart wildfly (in the shell: "Ctrl+C", then [start the server](#starting-the-server "go to the 'starting the server' chapter")).
+<br/>**3.** Restart wildfly (in the shell: "Ctrl+C", then [start the server](#starting-the-server "go to the 'starting the server' section")).
 
 **setup your mail box to accept external applications:**
 
@@ -161,21 +157,15 @@ Click on "View>", then on "OutBound Remote", then on "Add" and set:
 
 ### Starting the database
 
-* For Linux:<br/>
-Start MySQL: `sudo service mysql start`.
-* For Windows:<br/>
-Run easyPHP.
+For Linux                                      | For Windows
+---------------------------------------------- | ---
+Start MySQL: `sudo service mysql start` | Run easyPHP
 
-### Starting the server
-
-Go to the bin folder of wildfly.<br/>
-* Launcher for Linux: `standalone.sh`
-* Launcher for Windows: `standalone.bat`
-On a remote server, use: `standalone.sh -b 0.0.0.0`
+### [Starting the server](#starting-the-server "go to the 'starting the server' section in the 'installing' part")
 
 ### Deployment
 
-In the shell, go to the root folder of the java project, containing the pom.xml.<br/>
+In the [CLI](https://en.wikipedia.org/wiki/Command-line_interface "CLI definition on Wikipedia"), go to the root folder of the java project, containing the pom.xml.<br/>
 Type the command: `mvn clean wildfly:deploy`
 
 ## Testing
