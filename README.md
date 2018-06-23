@@ -93,7 +93,7 @@ Find the database source file ([website.sql](https://github.com/JeremyPansier/Ja
 
 For Linux                                               | For Windows
 ------------------------------------------------------- | ---
-Download MySQL: <code>sudo apt-get install mysql-server --fix-missing</code>.     | Download easyPHP and run it.
+Download MySQL: <code>sudo apt install mysql-server</code>.     | Download easyPHP and run it.
 Start MySQL: <code>sudo service mysql start</code>.     | [Open the administration](http://127.0.0.1/home/ "easyPHP administration interface").
 Start the MySQL console: <code>mysql -u root -p</code>. | Then, open the administration module MySQL : PhpMyAdmin 4.1.4.
 mysql> CREATE DATABASE website;                         | Create a new database named website.
