@@ -1,11 +1,11 @@
 ﻿# **JavaEE website**
 
 [![Build Status](https://travis-ci.org/JeremyPansier/JavaEE_website.svg?branch=master)](https://travis-ci.org/JeremyPansier/JavaEE_website)
-[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=com.website%3Awebsite)](https://sonarcloud.io/dashboard/index/com.website:website)
-[![Quality Gate](https://sonarcloud.io/api/badges/measure?key=com.website%3Awebsite&metric=lines)](https://sonarcloud.io/component_measures?id=com.website%3Awebsite&metric=lines)
-[![Quality Gate](https://sonarcloud.io/api/badges/measure?key=com.website%3Awebsite&metric=comment_lines_density)](https://sonarcloud.io/component_measures?id=com.website%3Awebsite&metric=comment_lines_density)
-[![Quality Gate](https://sonarcloud.io/api/badges/measure?key=com.website%3Awebsite&metric=sqale_rating)](https://sonarcloud.io/component_measures?id=com.website%3Awebsite&metric=sqale_rating)
-[![Quality Gate](https://sonarcloud.io/api/badges/measure?key=com.website%3Awebsite&metric=security_rating)](https://sonarcloud.io/component_measures?id=com.website%3Awebsite&metric=security_rating)
+[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=LocDVD&metric=alert_status)](https://sonarcloud.io/dashboard/index/com.website:website)
+[![Lines of code](https://sonarcloud.io/api/project_badges/measure?project=com.website%3Awebsite&metric=ncloc)](https://sonarcloud.io/component_measures?id=com.website%3Awebsite&metric=ncloc)
+[![Maintainability](https://sonarcloud.io/api/project_badges/measure?project=com.website%3Awebsite&metric=sqale_rating)](https://sonarcloud.io/component_measures?id=com.website%3Awebsite&metric=sqale_rating)
+[![Security](https://sonarcloud.io/api/project_badges/measure?project=com.website%3Awebsite&metric=security_rating)](https://sonarcloud.io/component_measures?id=com.website%3Awebsite&metric=security_rating)
+[![Duplicated Lines](https://sonarcloud.io/api/project_badges/measure?project=com.website%3Awebsite&metric=duplicated_lines_density)](https://sonarcloud.io/component_measures?id=com.website%3Awebsite&metric=duplicated_lines_density)
 
 ## Table of Contents
 
@@ -213,7 +213,7 @@ See also the list of [contributors](https://github.com/JeremyPansier/JavaEE_webs
 
 ## Acknowledgments
 
-* Special thanks to my brother [Gwenall Pansier](https://github.com/Gwenall "Gwenall's profile on GitHub") who helped me from my early days as developer.
+* Special thanks to my brother [Gwenall Pansier](https://github.com/Gwenall "Gwenall's profile on GitHub") who helped me from my early days as a developer.
 * Thanks to Thomas Gros, the trainer who teached me basics in JavaEE.
 * Thanks to Pascal Cunin, my schoolmate, with whom I started this project.
 
